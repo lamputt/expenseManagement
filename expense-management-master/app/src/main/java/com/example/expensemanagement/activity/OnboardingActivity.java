@@ -1,13 +1,11 @@
 package com.example.expensemanagement.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.widget.Button;
-import androidx.activity.EdgeToEdge;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager.widget.ViewPager;
 import com.example.expensemanagement.OnboardingAdapter;
 import com.example.expensemanagement.R;
@@ -33,7 +31,8 @@ public class OnboardingActivity extends AppCompatActivity {
         Button btnLogin = findViewById(R.id.btnLogin);
 
         btnSignUp.setOnClickListener(v -> {
-            // Xử lý chuyển đến màn hình đăng ký
+            Intent intent = new Intent(OnboardingActivity.this, SignUpActivity.class);
+            startActivity(intent);
         });
 
         btnLogin.setOnClickListener(v -> {

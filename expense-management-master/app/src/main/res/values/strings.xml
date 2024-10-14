@@ -1,3 +1,5 @@
 <resources>
     <string name = "app_name">expenseManagement</string>
+    <string name="txtLogin">Login</string>
+    <string name="txt_signup">Sign Up</string>
 </resources>
