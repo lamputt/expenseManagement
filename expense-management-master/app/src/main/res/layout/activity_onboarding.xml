@@ -1,0 +1,53 @@
+<RelativeLayout xmlns:android = "http://schemas.android.com/apk/res/android"
+                android:layout_width = "match_parent"
+                android:layout_height = "match_parent" xmlns:app = "http://schemas.android.com/apk/res-auto"
+                android:background = "#FFFFFF">
+    
+    <!-- ViewPager cho các trang giới thiệu -->
+    <androidx.viewpager.widget.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:contentDescription="Enter How Much Cookies You Want"
+            android:hint="e.g 8"/>
+    
+    <!-- Indicator cho các trang -->
+    <com.google.android.material.tabs.TabLayout
+            android:id="@+id/tabIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_above="@id/btnSignUp"
+            android:layout_marginBottom="16dp"
+            app:tabIndicatorColor="@color/purple_500"
+            app:tabSelectedTextColor="@color/purple_500"
+            app:tabTextColor="@color/light_gray" />
+    
+    <!-- Nút "Sign Up" -->
+    <Button
+            android:id="@+id/btnSignUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="80dp"
+            android:backgroundTint="@color/purple_500"
+            android:text="Sign Up"
+            android:textColor="#FFFFFF"
+            android:textSize="18sp"/>
+    
+    <!-- Nút "Login" -->
+    <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="40dp"
+            android:backgroundTint="@android:color/transparent"
+            android:text="Login"
+            android:textColor="#CCCCCC"
+            android:textSize="18sp"/>
+
+</RelativeLayout>
