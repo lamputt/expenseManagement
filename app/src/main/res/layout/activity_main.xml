@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    tools:context=".activity.MainActivity">
+
+        <!-- Nội dung chính của màn hình -->
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/frame_layout" />
+
+        <!-- BottomAppBar -->
+        <com.google.android.material.bottomappbar.BottomAppBar
+            android:id="@+id/bottomAppBar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            app:backgroundTint="@color/background_bottom_bar"
+            app:fabCradleMargin="10dp"
+            app:fabCradleRoundedCornerRadius="30dp"
+            app:fabCradleVerticalOffset="10dp"
+            app:fabAlignmentMode="center">
+
+                <!-- BottomNavigationView -->
+                <com.google.android.material.bottomnavigation.BottomNavigationView
+                    android:id="@+id/bottomNavigationView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_anchor="@id/bottomAppBar"
+                    app:layout_anchorGravity="bottom"
+                    app:itemIconTint="@color/bottom_nav_item_color"
+                    app:itemTextColor="@color/bottom_nav_item_color"
+                    app:labelVisibilityMode="labeled"
+                    android:background="@android:color/transparent"
+                    app:menu="@menu/bottom_menu" />
+
+        </com.google.android.material.bottomappbar.BottomAppBar>
+
+        <!-- FloatingActionButton ở giữa BottomAppBar -->
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/floatingActionButton"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|bottom"
+            android:layout_marginBottom="45dp"
+            android:backgroundTint="@color/select_nav_item"
+            android:src="@drawable/vector"
+            app:maxImageSize="30dp"
+            app:tint="@color/white" />
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

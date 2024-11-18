@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="#FFFFFF"
+    tools:context=".activity.SignUpActivity">
+
+    <!-- Back Arrow -->
+    <ImageView
+        android:id="@+id/backArrowSignUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_arrow_back"
+        android:contentDescription="@string/back"
+        android:layout_gravity="start"
+        android:padding="8dp" />
+
+    <!-- Title: Sign Up -->
+
+    <!-- Name EditText -->
+    <TextView
+        android:id="@+id/signUpTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="16dp"
+        android:text="Sign Up"
+        android:textColor="#000000"
+        android:textSize="24sp" />
+
+    <EditText
+        android:id="@+id/etName"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:hint="Name"
+        android:layout_marginTop="24dp"
+        android:padding="12dp"
+        android:inputType="textPersonName"
+        android:background="@drawable/rounded_edittext"/>
+
+    <!-- Email EditText -->
+    <EditText
+        android:id="@+id/etEmail"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:hint="Email"
+        android:layout_marginTop="24dp"
+        android:padding="12dp"
+        android:inputType="textEmailAddress"
+        android:background="@drawable/rounded_edittext"/>
+
+    <!-- Password EditText -->
+    <EditText
+        android:id="@+id/etPassword"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:hint="Password"
+        android:layout_marginTop="24dp"
+        android:padding="12dp"
+        android:inputType="textPassword"
+        android:background="@drawable/rounded_edittext"/>
+
+    <!-- Terms and Conditions Checkbox -->
+    <Button
+        android:id="@+id/btnSignUp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_signup"
+        android:textAllCaps="false"
+        android:backgroundTint="@color/background_button"
+        android:textColor="#FFFFFF"
+        android:layout_marginTop="27dp"
+        android:height="56dp"
+        android:textSize="18sp"
+        />
+</LinearLayout>

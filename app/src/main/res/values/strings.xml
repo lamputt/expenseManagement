@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">expenseManagement</string>
+    <string name="txtLogin">Login</string>
+    <string name="txt_signup">Sign Up</string>
+    <string name="don_t_have_an_account_yet_sign_up">Don\'t have an account yet? Sign Up</string>
+    <string name="forgot_password">Forgot Password?</string>
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="back">Back</string>
+    <string name="gain_total_control_of_your_money">Gain total control of your money</string>
+    <string name="become_your_own_money_manager_and_make_every_cent_count">Become your own money manager and make every cent count</string>
+    <string name="track_your_transaction_easily_with_categories_and_financial_report">Track your transaction easily, with categories and financial report</string>
+    <string name="know_where_your_money_goes">Know where your money goes</string>
+    <string name="setup_your_budget_for_each_category_so_you_in_control">Setup your budget for each category so you in control</string>
+    <string name="planning_ahead">Planning ahead</string>
+    <string name="forgot_password_app_bar">Forgot password</string>
+    <string name="title_forgot_password">Don’t worry. Enter your email and we’ll send you a link to reset your password.</string>
+    <string name="txtContinue">Continue</string>
+    <string name="your_email_is_on_the_way">Your email is on the way</string>
+    <string name="description_check_your_email">Check your email test@test.com and follow the instructions to reset your password</string>
+    <string name="back_to_login">Back to login</string>
+    <string name="new_password">New password</string>
+    <string name="retype_new_password">Retype new password</string>
+    <string name="reset_password">Reset password</string>
+    <string name="looks_like_you_are_new_to_our_app">Looks Like You Are New To Our App!</string>
+    <string name="description_authen_success">Thank you for completing the steps to use the application. We wish you a great experience and effective management of your expenses.</string>
+    <string name="let_s_go">Let\'s go</string>
+    <string name="home">Home</string>
+    <string name="transaction">Transaction</string>
+    <string name="add">Add</string>
+    <string name="budget">Budget</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="account_blance">Account Blance</string>
+    <string name="income">Income</string>
+    <string name="expense">Expense</string>
+    <string name="see_all">See all</string>
+</resources>

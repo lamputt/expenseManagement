@@ -1,0 +1,39 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#8A2BE2">
+    
+    <!-- Đường chéo trắng mờ -->
+    <ImageView
+            android:id="@+id/diagonal_line"
+            android:layout_width="300dp"
+            android:layout_height="2dp"
+            android:layout_centerInParent="true"
+            android:rotation="45"
+            android:translationY="10dp"
+            android:src="@drawable/diagonal_line" />
+    
+    <!-- Chấm sáng phía sau TextView -->
+    <View
+            android:id="@+id/light_spot"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_centerInParent="true"
+            android:background="@drawable/light_spot"
+            android:translationY="-30dp"
+            android:translationX="-60dp" />
+    
+    <!-- TextView hiển thị tiêu đề -->
+    <TextView
+            android:id="@+id/splash_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Expense\nmanagement"
+            android:textColor="#FFFFFF"
+            android:textSize="50sp"
+            android:textStyle="bold"
+            android:layout_centerInParent="true"
+            android:gravity="center"
+            android:lineSpacingExtra="8dp" />
+
+</RelativeLayout>
