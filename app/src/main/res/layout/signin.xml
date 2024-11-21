@@ -6,45 +6,28 @@
     android:orientation="vertical"
     android:padding="16dp"
     android:background="#FFFFFF"
-<<<<<<<< HEAD:app/src/main/res/layout/signin.xml
     tools:context=".activity.SignInActivity">
 
 
     <!-- Back Arrow -->
+
+
+    <!-- Name EditText -->
     <ImageView
         android:id="@+id/backArrowSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:src="@drawable/ic_arrow_back"
         android:contentDescription="@string/back"
-========
-    tools:context=".activity.SignUpActivity">
-
-    <!-- Back Arrow -->
-    <ImageView
-        android:id="@+id/backArrow"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:src="@drawable/ic_arrow_back"
-        android:contentDescription="Back"
->>>>>>>> e5516c615f64456d5ff14e6b81cabeee79a78800:app/src/main/res/layout/sign_in.xml
-        android:layout_gravity="start"
-        android:padding="8dp" />
+        tools:context=".activity.SignUpActivity" />
 
-    <!-- Title: Sign Up -->
-
-    <!-- Name EditText -->
     <TextView
         android:id="@+id/signInTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_marginTop="16dp"
-<<<<<<<< HEAD:app/src/main/res/layout/signin.xml
         android:text="@string/login"
-========
-        android:text="Login"
->>>>>>>> e5516c615f64456d5ff14e6b81cabeee79a78800:app/src/main/res/layout/sign_in.xml
         android:textColor="#000000"
         android:textSize="24sp" />
 
@@ -54,11 +37,7 @@
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-<<<<<<<< HEAD:app/src/main/res/layout/signin.xml
         android:hint="@string/email"
-========
-        android:hint="Email"
->>>>>>>> e5516c615f64456d5ff14e6b81cabeee79a78800:app/src/main/res/layout/sign_in.xml
         android:layout_marginTop="24dp"
         android:padding="12dp"
         android:inputType="textEmailAddress"
@@ -69,11 +48,7 @@
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-<<<<<<<< HEAD:app/src/main/res/layout/signin.xml
         android:hint="@string/password"
-========
-        android:hint="Password"
->>>>>>>> e5516c615f64456d5ff14e6b81cabeee79a78800:app/src/main/res/layout/sign_in.xml
         android:layout_marginTop="24dp"
         android:padding="12dp"
         android:inputType="textPassword"
@@ -94,18 +69,11 @@
         />
 
     <TextView
-<<<<<<<< HEAD:app/src/main/res/layout/signin.xml
         android:id="@+id/tvforgotPassword"
         android:layout_marginTop="33dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/forgot_password"
-========
-        android:layout_marginTop="33dp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Forgot Password?"
->>>>>>>> e5516c615f64456d5ff14e6b81cabeee79a78800:app/src/main/res/layout/sign_in.xml
         android:textAlignment="center"
         android:textSize="18sp"
         android:textStyle="bold"
@@ -113,17 +81,10 @@
         />
 
     <TextView
-<<<<<<<< HEAD:app/src/main/res/layout/signin.xml
         android:id="@+id/tvSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/don_t_have_an_account_yet_sign_up"
-========
-        android:id="@+id/tvSignUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Don't have an account yet? Sign Up"
->>>>>>>> e5516c615f64456d5ff14e6b81cabeee79a78800:app/src/main/res/layout/sign_in.xml
         android:textColor="@android:color/darker_gray"
         android:textSize="16sp"
         android:gravity="center"

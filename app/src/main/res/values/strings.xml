@@ -36,4 +36,7 @@
     <string name="income">Income</string>
     <string name="expense">Expense</string>
     <string name="see_all">See all</string>
+    <string name="setting">Setting</string>
+    <string name="export_data">Export Data</string>
+    <string name="what_format_do_you_want_to_export">What format do you want to export?</string>
 </resources>
