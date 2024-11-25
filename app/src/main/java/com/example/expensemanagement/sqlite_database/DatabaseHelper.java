@@ -4,10 +4,9 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class DatabaseHelper extends SQLiteOpenHelper {
+import com.example.expensemanagement.utils.Constant;
 
-    private static final String DATABASE_NAME = "finance_app.db";
-    private static final int DATABASE_VERSION = 1;
+public class DatabaseHelper extends SQLiteOpenHelper {
 
     // Tạo bảng users
     private static final String CREATE_TABLE_USERS =
@@ -85,7 +84,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     ");";
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
     }
 
     @Override

@@ -18,7 +18,6 @@ public class SignUpActivity extends AppCompatActivity {
 
     private UserDAO userDAO;
     private EditText nameEditText, emailEditText, passwordEditText;
-    private CheckBox checkBoxAgreeTerms;
     private Button signUpButton;
     private ImageView backArrow;
 
