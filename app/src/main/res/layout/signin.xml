@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#FFFFFF"
     tools:context=".activity.SignInActivity">
 
     <ImageView
@@ -17,6 +17,9 @@
         android:padding="8dp"
         android:src="@drawable/ic_arrow_back" />
 
+    <!-- Title: Sign Up -->
+
+    <!-- Name EditText -->
     <TextView
         android:id="@+id/signInTitle"
         android:layout_width="wrap_content"
@@ -28,7 +31,6 @@
         android:textSize="24sp" />
 
 
-    <!-- Email EditText -->
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="match_parent"

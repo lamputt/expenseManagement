@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ public class FinancialReportActivity extends AppCompatActivity {
     private ViewPager2 viewPagerTop;
     private ViewPager2 viewPagerBottom;
     private TabLayout tabLayout;
+    private ImageView back;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +40,7 @@ public class FinancialReportActivity extends AppCompatActivity {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-
+    
         Spinner spinner = findViewById(R.id.spinner);
 
         // Tạo adapter cho Spinner
@@ -49,7 +51,13 @@ public class FinancialReportActivity extends AppCompatActivity {
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-
+        back = findViewById(R.id.back_financialReport);
+        back.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         // Bắt sự kiện chọn
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
