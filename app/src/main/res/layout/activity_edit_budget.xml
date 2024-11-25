@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/background_button"
-    android:id="@+id/main"
+    android:id="@+id/edit_budget"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.CreateBudgetActivity">
+    tools:context=".activity.EditBudgetActivity">
 
     <LinearLayout
         android:layout_marginTop="16dp"
@@ -27,7 +27,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingStart="105dp"
-            android:text="Create Budget"
+            android:text="Edit Budget"
             android:textColor="@color/white"
             android:textSize="18sp"
             android:textStyle="bold" />
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content">
         <EditText
             android:textColor="@color/white"
-            android:id="@+id/et_amountBudget"
+            android:id="@+id/et_amountEditBudget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:hint="@string/_0"
@@ -78,7 +78,7 @@
         >
 
         <EditText
-            android:id="@+id/edtSelectCategoryBudget"
+            android:id="@+id/edtSelectCategoryEditBudget"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_marginTop="16dp"
@@ -93,7 +93,7 @@
             android:textSize="16sp" />
 
         <Button
-            android:id="@+id/btnContinueCreateBudget"
+            android:id="@+id/btnContinueEditBudget"
             android:layout_marginTop="16dp"
             android:backgroundTint="@color/background_button"
             android:layout_width="match_parent"

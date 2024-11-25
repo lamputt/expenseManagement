@@ -13,6 +13,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ExpenseManagement">
         <activity
+            android:name=".activity.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.EditBudgetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.DetailBudgetActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.CreateBudgetActivity"
             android:exported="false" />
         <activity
