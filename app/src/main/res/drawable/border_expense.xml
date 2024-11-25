@@ -1,6 +1,6 @@
 <shape xmlns:android="http://schemas.android.com/apk/res/android">
     <!-- Màu nền (có thể bỏ nếu không cần) -->
-    <solid android:color="@color/color_expense" />
+    <solid android:color="#7F3DFF" />
 
     <!-- Bo góc -->
     <corners android:radius="28dp" />
@@ -8,6 +8,6 @@
     <!-- Đường viền -->
     <stroke
         android:width="2dp"
-        android:color="@color/color_expense" />
+        android:color="#000" />
 
 </shape>
