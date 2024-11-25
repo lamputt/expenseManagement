@@ -31,6 +31,9 @@ import com.example.expensemanagement.fragments.ProfileFragment;
 import com.example.expensemanagement.fragments.TransactionFragment;
 
 public class MainActivity extends AppCompatActivity {
+
+
+
     private Button add;
     ActivityMainBinding binding;
     @Override

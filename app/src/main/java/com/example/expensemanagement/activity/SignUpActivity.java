@@ -10,9 +10,13 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.expensemanagement.R;
+import com.example.expensemanagement.sqlite_database.DatabaseHelper;
+import com.example.expensemanagement.sqlite_database.dao.AccountDAO;
+import com.example.expensemanagement.sqlite_database.dao.UserDAO;
 
 public class SignUpActivity extends AppCompatActivity {
 
+    private UserDAO userDAO;
     private EditText nameEditText, emailEditText, passwordEditText;
     private CheckBox checkBoxAgreeTerms;
     private Button signUpButton;
@@ -21,6 +25,7 @@ public class SignUpActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        userDAO = new UserDAO(this);
         setContentView(R.layout.sign_up);
 
         // Initialize views
@@ -49,11 +54,17 @@ public class SignUpActivity extends AppCompatActivity {
 
                 if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(SignUpActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
-                } else if (!checkBoxAgreeTerms.isChecked()) {
-                    Toast.makeText(SignUpActivity.this, "You must agree to the terms", Toast.LENGTH_SHORT).show();
                 } else {
                     // Perform sign up logic here (e.g., API call)
                     Toast.makeText(SignUpActivity.this, "Sign up successful", Toast.LENGTH_SHORT).show();
+                }
+
+                // Lưu vào SQLite
+                long result = userDAO.addUser(name, email,password);
+                if (result != -1) {
+                    Toast.makeText(SignUpActivity.this, "Data saved locally!", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(SignUpActivity.this, "Failed to save data!", Toast.LENGTH_SHORT).show();
                 }
             }
         });
