@@ -1,4 +1,4 @@
-package com.example.expensemanagement;
+package com.example.expensemanagement.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +7,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+
+import com.example.expensemanagement.R;
 
 public class IncomeTabFragment extends Fragment {
     @Nullable

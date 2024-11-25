@@ -2,12 +2,12 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/home"
+        android:id="@+id/homepage"
         android:title="@string/home"
         android:icon="@drawable/home"
         />
     <item
-        android:id="@+id/transaction"
+        android:id="@+id/transactionpage"
         android:title="@string/transaction"
         android:icon="@drawable/transaction"
         />
@@ -17,13 +17,13 @@
         android:enabled="false"
         />
     <item
-        android:id="@+id/budget"
+        android:id="@+id/budgetpage"
         android:title="@string/budget"
         android:icon="@drawable/budget"
         />
     <item
-        android:id="@+id/profile"
-        android:title="Profile"
+        android:id="@+id/profilepage"
+        android:title="@string/profile"
         android:icon="@drawable/user"
         />
 </menu>

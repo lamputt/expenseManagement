@@ -1,4 +1,4 @@
-package com.example.expensemanagement;
+package com.example.expensemanagement.fragments;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensemanagement.Model.ItemDateTransaction;
+import com.example.expensemanagement.R;
 import com.example.expensemanagement.adapter.ItemDateTransactionAdapter;
 
 import java.util.ArrayList;

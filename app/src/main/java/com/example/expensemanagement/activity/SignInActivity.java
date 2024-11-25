@@ -34,7 +34,7 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin);
         TextView forgotPassword = findViewById(R.id.tvforgotPassword);
-        back = findViewById(R.id.backArrowSignIn);
+        back = findViewById(R.id.backArrow);
         login = findViewById(R.id.btnLogin);
         email = findViewById(R.id.etEmail);
         password = findViewById(R.id.etPassword);

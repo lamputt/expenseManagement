@@ -36,4 +36,38 @@
     <string name="income">Income</string>
     <string name="expense">Expense</string>
     <string name="see_all">See all</string>
+    <string name="profile">Profile</string>
+    <string name="transfer">transfer</string>
+    <string name="Transfer">Transfer</string>
+    <string name="see_your_financial_report">See your financial report</string>
+    <string name="username">Username</string>
+    <string name="add_new_wallet">+ Add new wallet</string>
+    <string name="balance">Balance</string>
+    <string name="account_number">Account number</string>
+    <string name="select_bank_account">Select bank account</string>
+    <string name="agribank">Agribank</string>
+    <string name="how_much">How much</string>
+    <string name="description">Description</string>
+    <string name="category">Category</string>
+    <string name="wallet">Wallet</string>
+    <string name="from">From</string>
+    <string name="to">To</string>
+    <string name="select_date">Select Date</string>
+    <string name="financial_report">Financial Report</string>
+    <string name="expense_tab">Expense Tab</string>
+    <string name="total">Total</string>
+    <string name="add_new_category">Add new Category</string>
+    <string name="enter_your_category">Enter your category</string>
+    <string name="enter_your_description">Enter your description</string>
+    <string name="description_no_data_budget">You don’t have a budget. Let’s make one so you in control.</string>
+    <string name="create_a_budget">Create a budget</string>
+    <string name="select_category">Select Category</string>
+    <string name="_0">0</string>
+    <string name="d">đ</string>
+    <string name="how_much_do_yo_want_to_spend">How much do yo want to spend?</string>
+    <string-array name="spinner_items">
+        <item>Month</item>
+        <item>Year</item>
+        <item>Day</item>
+    </string-array>
 </resources>

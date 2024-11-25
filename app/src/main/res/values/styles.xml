@@ -3,6 +3,11 @@
     <style name="roundedImageView">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
-
+    </style>
+    <style name="TabLayoutStyle" parent="Widget.MaterialComponents.TabLayout">
+<!--        <item name="tabIndicatorColor">@color/background_button</item>-->
+        <item name="tabSelectedTextColor">@color/white</item>
+        <item name="tabTextColor">@color/color_text</item>
+        <item name="tabBackground">@drawable/tab_background</item>
     </style>
 </resources>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name = "black">#FF000000</color>
+    <color name= "color_text"> #161719 </color>
     <color name = "white">#FFFFFFFF</color>
     <color name = "light_gray">#E3E5E5</color>
     <!-- Color for background button -->
@@ -15,4 +16,6 @@
     <color name="color_expense"> #FD3C4A </color>
     <color name="color_transfer">#0077FF </color>
     <color name="button_see_all"> #EEE5FF </color>
+    <color name="background_profile"> #F6F6F6</color>
+    <color name="background_logout_item"> #FFE2E4 </color>
 </resources>

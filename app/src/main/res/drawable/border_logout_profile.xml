@@ -1,4 +1,12 @@
-<?xml version="1.0" encoding="utf-8"?>
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Màu nền (có thể bỏ nếu không cần) -->
+    <solid android:color="@color/background_logout_item" />
 
-</selector>
+    <!-- Bo góc -->
+    <corners android:radius="24dp" />
+
+    <!-- Đường viền -->
+    <stroke
+        android:width="2dp"
+        android:color="@color/background_logout_item" />
+</shape>
