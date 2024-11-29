@@ -24,6 +24,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.expensemanagement.R;
+import com.example.expensemanagement.sqlite_database.dao.BankDAO;
 
 import java.text.DecimalFormat;
 
@@ -32,6 +33,7 @@ public class AddNewWalletActivity extends AppCompatActivity {
     private EditText selectBankAccount;
     private EditText etAmount;
     private Button btnContinue;
+    private BankDAO bankDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,16 +43,18 @@ public class AddNewWalletActivity extends AppCompatActivity {
         btnContinue = findViewById(R.id.btnContinueAddNewWallet);
         EditText accountNumber = findViewById(R.id.edtAccountNumber);
         etAmount = findViewById(R.id.et_amount);
-
+        bankDAO = new BankDAO(this);
         // Thêm TextWatcher để xử lý việc định dạng số tiền nhập vào
         etAmount.addTextChangedListener(new TextWatcher() {
             private String current = "";
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
@@ -60,7 +64,7 @@ public class AddNewWalletActivity extends AppCompatActivity {
                     String cleanString = s.toString().replaceAll("[^0-9]", "");
 
                     if (cleanString.length() > 9) {
-                        Toast.makeText(AddNewWalletActivity.this, "Không được nhập quá 9 chữ số", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(AddNewWalletActivity.this, "Do not enter more than 9 digits", Toast.LENGTH_SHORT).show();
                         cleanString = cleanString.substring(0, 9);
                     }
 
@@ -85,18 +89,20 @@ public class AddNewWalletActivity extends AppCompatActivity {
                 if (accountNumber.getText().toString().isEmpty() ||
                         etAmount.getText().toString().isEmpty() ||
                         selectBankAccount.getText().toString().isEmpty()) {
-                    Toast.makeText(AddNewWalletActivity.this, "Vui lòng điền đầy đủ thông tin", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(AddNewWalletActivity.this, "Please fill in all information", Toast.LENGTH_SHORT).show();
                     return;
+                } else {
+                    long result = bankDAO.addBank(selectBankAccount.getText().toString(),  accountNumber.getText().toString(),  etAmount.getText().toString().replaceAll("[^0-9]", ""));
+                    if (result != -1) {
+                        Toast.makeText(AddNewWalletActivity.this, "Data saved locally!", Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent();
+                        Toast.makeText(AddNewWalletActivity.this, "Add bank successfully", Toast.LENGTH_SHORT).show();
+                        finish();
+                    } else {
+                        Toast.makeText(AddNewWalletActivity.this, "Failed to save data!", Toast.LENGTH_SHORT).show();
+                    }
                 }
 
-                // Truyền dữ liệu về ProfileAccountActivity
-                Intent intent = new Intent();
-                intent.putExtra("bankName", selectBankAccount.getText().toString());
-                intent.putExtra("amount", etAmount.getText().toString().replaceAll("[^0-9]", "")); // Chuyển đổi số tiền về dạng không có dấu chấm
-                intent.putExtra("accountNumber", accountNumber.getText().toString());
-                setResult(RESULT_OK, intent);
-                Toast.makeText(AddNewWalletActivity.this, "Thêm ngân hàng thành công", Toast.LENGTH_SHORT).show();
-                finish();
             }
         });
 

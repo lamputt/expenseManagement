@@ -19,16 +19,16 @@ public class BankDAO {
     }
 
     // Thêm Bank
-    public long addBank(Bank bank) {
+    public long addBank(String bankName , String accountNumber , String amount  ) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("name", bank.getName());
-        values.put("account_number", bank.getAccountNumber());
-        values.put("account_type", bank.getAccountType());
-        values.put("amount", bank.getAmount());
-        values.put("created_at", bank.getCreatedAt());
-        values.put("updated_at", bank.getUpdatedAt());
-        values.put("deleted_at", bank.getDeletedAt());
+        values.put("name", bankName);
+        values.put("account_number", accountNumber);
+        values.put("account_type", "");
+        values.put("amount", amount);
+        values.put("created_at", "");
+        values.put("updated_at", "");
+        values.put("deleted_at", "");
         long id = db.insert("banks", null, values);
         db.close();
         return id;
