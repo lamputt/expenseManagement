@@ -13,12 +13,45 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ExpenseManagement">
         <activity
+            android:name=".activity.EditProfileActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.EditBudgetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.DetailBudgetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.CreateBudgetActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AddNewCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ProfileCategoriesActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.FinancialReportActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.IncomeActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ExpenseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.AddNewWalletActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.ProfileAccountActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.OtpAuthenSuccessActivity"
             android:exported="false" />
         <activity
             android:name=".activity.OtpAuthenticationActivity"
-            android:windowSoftInputMode="stateVisible|adjustResize"
-            android:exported="false" />
+            android:exported="false"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
         <activity
             android:name=".activity.ResetPasswordActivity"
             android:exported="false" />

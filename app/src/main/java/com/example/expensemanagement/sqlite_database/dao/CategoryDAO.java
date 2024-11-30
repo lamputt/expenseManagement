@@ -19,11 +19,11 @@ public class CategoryDAO {
     }
 
     // Thêm Category vào database
-    public long addCategory(Category category) {
+    public long addCategory(String name, String description ) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("name", category.getName());
-        values.put("description", category.getDescription());
+        values.put("name", name);
+        values.put("description", description);
         long id = db.insert("categories", null, values);
         db.close();
         return id;
@@ -33,13 +33,18 @@ public class CategoryDAO {
     public List<Category> getAllCategories() {
         List<Category> categoryList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM categories", null);
+        Cursor cursor = db.rawQuery("SELECT c.id, c.name, c.description, \n" +
+                "       COALESCE(SUM(t.amount), 0) AS total_spent \n" +
+                "FROM categories c \n" +
+                "LEFT JOIN Transactions t ON c.id = t.category_id \n" +
+                "GROUP BY c.id, c.name, c.description", null);
         if (cursor.moveToFirst()) {
             do {
                 Category category = new Category(
                         cursor.getLong(cursor.getColumnIndexOrThrow("id")),
                         cursor.getString(cursor.getColumnIndexOrThrow("name")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("description"))
+                        cursor.getString(cursor.getColumnIndexOrThrow("description")),
+                        cursor.getDouble(cursor.getColumnIndexOrThrow("total_spent"))
                 );
                 categoryList.add(category);
             } while (cursor.moveToNext());

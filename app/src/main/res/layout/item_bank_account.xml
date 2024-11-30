@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:orientation="horizontal"
+    android:paddingHorizontal="16dp"
+    android:paddingVertical="16dp"
+    android:layout_height="80dp">
+
+    <FrameLayout
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:background="@drawable/border_icon_bank_account"
+        >
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/bank_account"
+        android:padding="5dp"/>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/tvBankName"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Wallet"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/color_text"
+        android:layout_marginStart="8dp"
+        />
+
+    <TextView
+        android:id="@+id/tvAmountBank"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="400.000đ"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/color_text"
+        android:textAlignment="textEnd"
+        />
+
+</LinearLayout>

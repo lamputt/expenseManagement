@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_gravity="center_horizontal"
+    tools:context=".fragments.TotalIncomeFragment">
+
+
+    <FrameLayout
+        android:layout_marginHorizontal="93dp"
+        android:layout_width="wrap_content"
+        android:layout_height="193dp"
+        >
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/financial_report_income"/>
+
+        <LinearLayout
+            android:layout_marginLeft="40dp"
+            android:layout_width="139dp"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tvSumAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="222222220"
+                android:textSize="23sp"
+                android:textColor="@color/color_text"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                />
+
+            <TextView
+                android:id="@+id/tvD"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="đ"
+                android:textSize="23sp"
+                android:textColor="@color/color_text"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                />
+        </LinearLayout>
+    </FrameLayout>
+
+</LinearLayout>

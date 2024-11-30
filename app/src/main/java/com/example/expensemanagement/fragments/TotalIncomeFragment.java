@@ -1,4 +1,4 @@
-package com.example.expensemanagement;
+package com.example.expensemanagement.fragments;
 
 import android.os.Bundle;
 
@@ -7,13 +7,19 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
+import com.example.expensemanagement.R;
+import com.example.expensemanagement.sqlite_database.dao.TransactionDAO;
 
 /**
  * A simple {@link Fragment} subclass.
- * Use the {@link Fragment_Export_Data#newInstance} factory method to
+ * Use the {@link TotalIncomeFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class Fragment_Export_Data extends Fragment {
+public class TotalIncomeFragment extends Fragment {
+
+    private TransactionDAO transactionDAO;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -24,7 +30,7 @@ public class Fragment_Export_Data extends Fragment {
     private String mParam1;
     private String mParam2;
 
-    public Fragment_Export_Data() {
+    public TotalIncomeFragment() {
         // Required empty public constructor
     }
 
@@ -34,11 +40,11 @@ public class Fragment_Export_Data extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment Fragment_Export_Data.
+     * @return A new instance of fragment TotalIncomeFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static Fragment_Export_Data newInstance(String param1, String param2) {
-        Fragment_Export_Data fragment = new Fragment_Export_Data();
+    public static TotalIncomeFragment newInstance(String param1, String param2) {
+        TotalIncomeFragment fragment = new TotalIncomeFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -49,6 +55,7 @@ public class Fragment_Export_Data extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        transactionDAO = new TransactionDAO(requireContext());
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -58,7 +65,13 @@ public class Fragment_Export_Data extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_total_income, container, false);
+        // thay đổi totalIncome
+        double totalIncome = transactionDAO.getTotalIncome();
+        TextView tvTotalIncome = view.findViewById(R.id.tvSumAmount);
+        tvTotalIncome.setText(String.valueOf(totalIncome));
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_export_data, container, false);
+        return view;
     }
 }

@@ -1,7 +1,10 @@
 package com.example.expensemanagement.sqlite_database.dao;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -13,13 +16,15 @@ import java.util.List;
 
 public class UserDAO {
     private final DatabaseHelper dbHelper;
+    private final Context context;
 
     public UserDAO(Context context) {
+        this.context = context;
         dbHelper = new DatabaseHelper(context);
     }
 
     // Thêm User vào database
-    public long addUser(String userName,String email, String password) {
+    public long addUser(String userName, String email, String password) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("user_name", userName);
@@ -32,7 +37,6 @@ public class UserDAO {
         return id;
     }
 
-
     // Lấy tất cả User
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
@@ -42,14 +46,10 @@ public class UserDAO {
             do {
                 User user = new User(
                         cursor.getLong(cursor.getColumnIndexOrThrow("id")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("userName")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("user_name")),  // sửa tên cột từ userName sang user_name
                         cursor.getString(cursor.getColumnIndexOrThrow("password")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                         cursor.getString(cursor.getColumnIndexOrThrow("email")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("created_at")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("updated_at")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("deleted_at"))
+                        cursor.getString(cursor.getColumnIndexOrThrow("created_at"))
                 );
                 userList.add(user);
             } while (cursor.moveToNext());
@@ -57,5 +57,34 @@ public class UserDAO {
         cursor.close();
         db.close();
         return userList;
+    }
+
+    // Validate User by email and hashed password
+    public boolean validateUser(String email, String hashedPassword) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT * FROM users WHERE email = ? AND password = ?";
+        try {
+            Cursor cursor = db.rawQuery(query, new String[]{email, hashedPassword});
+
+            boolean isValid = cursor.moveToFirst();
+            if (isValid) {
+                // Lấy user_id từ cursor
+                int userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+
+                // Lưu user_id vào SharedPreferences
+                SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("user_id", userId);  // Lưu ID người dùng
+                editor.apply();
+            }
+            cursor.close();
+            db.close();
+
+            return isValid;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 }

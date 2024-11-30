@@ -3,24 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#FFFFFF"
     android:orientation="vertical"
     android:padding="16dp"
-    android:background="#FFFFFF"
     tools:context=".activity.SignInActivity">
 
-
-    <!-- Back Arrow -->
-
-
-    <!-- Name EditText -->
     <ImageView
-        android:id="@+id/backArrowSignIn"
+        android:id="@+id/backArrow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/back"
-        android:src="@drawable/ic_arrow_back"
-        tools:context=".activity.SignUpActivity" />
+        android:layout_gravity="start"
+        android:contentDescription="Back"
+        android:padding="8dp"
+        android:src="@drawable/ic_arrow_back" />
 
+    <!-- Title: Sign Up -->
+
+    <!-- Name EditText -->
     <TextView
         android:id="@+id/signInTitle"
         android:layout_width="wrap_content"
@@ -32,64 +31,63 @@
         android:textSize="24sp" />
 
 
-    <!-- Email EditText -->
     <EditText
         android:id="@+id/etEmail"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:hint="@string/email"
         android:layout_marginTop="24dp"
-        android:padding="12dp"
+        android:background="@drawable/rounded_edittext"
+        android:hint="@string/email"
         android:inputType="textEmailAddress"
-        android:background="@drawable/rounded_edittext"/>
+        android:padding="12dp" />
 
-    <!-- Password EditText -->
+
     <EditText
         android:id="@+id/etPassword"
         android:layout_width="match_parent"
         android:layout_height="56dp"
-        android:hint="@string/password"
         android:layout_marginTop="24dp"
-        android:padding="12dp"
+        android:background="@drawable/rounded_edittext"
+        android:hint="@string/password"
         android:inputType="textPassword"
-        android:background="@drawable/rounded_edittext"/>
+        android:padding="12dp" />
 
     <!-- Terms and Conditions Checkbox -->
     <Button
         android:id="@+id/btnLogin"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/txtLogin"
-        android:textAllCaps="false"
-        android:backgroundTint="@color/background_button"
-        android:textColor="#FFFFFF"
         android:layout_marginTop="27dp"
         android:height="56dp"
-        android:textSize="18sp"
-        />
+        android:backgroundTint="@color/background_button"
+        android:text="@string/txtLogin"
+        android:textAllCaps="false"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp" />
 
     <TextView
+
         android:id="@+id/tvforgotPassword"
-        android:layout_marginTop="33dp"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="33dp"
         android:text="@string/forgot_password"
         android:textAlignment="center"
-        android:textSize="18sp"
-        android:textStyle="bold"
         android:textColor="@color/background_button"
-        />
+        android:textSize="18sp"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvSignIn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:gravity="center"
+        android:padding="16dp"
         android:text="@string/don_t_have_an_account_yet_sign_up"
         android:textColor="@android:color/darker_gray"
-        android:textSize="16sp"
-        android:gravity="center"
-        android:layout_gravity="center"
-        android:padding="16dp"/>
+        android:textSize="16sp" />
 
 
 </LinearLayout>

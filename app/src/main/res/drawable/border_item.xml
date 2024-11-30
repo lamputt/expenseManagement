@@ -1,0 +1,12 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Màu nền (có thể bỏ nếu không cần) -->
+    <solid android:color="@color/background_bottom_bar" />
+
+    <!-- Bo góc -->
+    <corners android:radius="24dp" />
+
+    <!-- Đường viền -->
+    <stroke
+        android:width="2dp"
+        android:color="@color/background_bottom_bar" />
+</shape>

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.expensemanagement.sqlite_database.DatabaseHelper;
 import com.example.expensemanagement.sqlite_database.entities.Acount;
+import com.example.expensemanagement.utils.Constant;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,13 +22,7 @@ public class AccountDAO {
 
     // Thêm Account vào database
     public long addAccount(Acount acount) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("role", acount.getRole());
-        values.put("user_id", acount.getUserId());
-        long id = db.insert("account", null, values);
-        db.close();
-        return id;
+        return 0;
     }
 
     // Lấy tất cả Account

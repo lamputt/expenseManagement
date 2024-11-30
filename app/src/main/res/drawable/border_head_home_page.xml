@@ -1,0 +1,17 @@
+<shape xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- Đặt màu nền cho border -->
+    <solid android:color="@color/background_head_home" />
+
+    <!-- Thiết lập border -->
+    <stroke
+        android:width="2dp"
+        android:color="@color/background_head_home" />
+
+    <!-- Bo góc -->
+    <corners
+        android:topLeftRadius="0dp"
+        android:topRightRadius="0dp"
+        android:bottomLeftRadius="32dp"
+        android:bottomRightRadius="32dp"
+    />
+</shape>
