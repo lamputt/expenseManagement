@@ -4,7 +4,7 @@ public class Transaction {
     private long id;
     private long userId;
     private String type;
-    private long categoryId;
+    private Category category;
     private long bankId;
     private String description;
     private double amount;
@@ -12,11 +12,11 @@ public class Transaction {
     private String status;
 
     // Constructor
-    public Transaction(long id, long userId, String type, long categoryId, long bankId, String description, double amount, String date, String status) {
+    public Transaction(long id, long userId, String type, Category category, long bankId, String description, double amount, String date, String status) {
         this.id = id;
         this.userId = userId;
         this.type = type;
-        this.categoryId = categoryId;
+        this.category = category;
         this.bankId = bankId;
         this.description = description;
         this.amount = amount;
@@ -34,8 +34,8 @@ public class Transaction {
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
 
-    public long getCategoryId() { return categoryId; }
-    public void setCategoryId(long categoryId) { this.categoryId = categoryId; }
+    public Category getCategory() { return category; }
+    public void setCategoryId(long categoryId) { this.category = category; }
 
     public long getBankId() { return bankId; }
     public void setBankId(long bankId) { this.bankId = bankId; }

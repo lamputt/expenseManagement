@@ -16,12 +16,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.expensemanagement.R;
 import com.example.expensemanagement.Model.ItemTransaction;
 import com.example.expensemanagement.adapter.ItemAdapterTransaction;
+import com.example.expensemanagement.sqlite_database.dao.TransactionDAO;
+import com.example.expensemanagement.sqlite_database.entities.Transaction;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
+    private TransactionDAO transactionDAO;
     private Button seeAll;
 
     @Nullable
@@ -29,16 +32,22 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Gắn layout cho Fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
+        transactionDAO = new TransactionDAO(requireContext());
 
         // Khởi tạo RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
+        List<Transaction> transactionList = transactionDAO.getAllTransactions();
+
         // Tạo danh sách dữ liệu
         List<ItemTransaction> itemList = new ArrayList<>();
-        itemList.add(new ItemTransaction("Shopping", "Buy some grocery", "$120", "10:00AM"));
-        itemList.add(new ItemTransaction("Work", "Prepare presentation", "$0", "2:00PM"));
-        itemList.add(new ItemTransaction("Exercise", "Morning run", "$0", "6:30AM"));
+        for (Transaction transaction : transactionList) {
+            itemList.add(new ItemTransaction(transaction.getType(),
+                    transaction.getDescription(),
+                    String.valueOf(transaction.getAmount()),
+                    transaction.getDate()));
+        }
         // Thêm nhiều item khác nếu cần
 
         // Gắn Adapter

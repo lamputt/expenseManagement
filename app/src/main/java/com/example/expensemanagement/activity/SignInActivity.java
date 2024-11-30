@@ -1,6 +1,7 @@
 package com.example.expensemanagement.activity;
 
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Spannable;
@@ -14,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -22,18 +24,22 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.expensemanagement.R;
+import com.example.expensemanagement.sqlite_database.dao.AccountDAO;
+import com.example.expensemanagement.sqlite_database.dao.UserDAO;
 
 public class SignInActivity extends AppCompatActivity {
 
-
+    private UserDAO userDAO;
     private ImageView back;
     private Button login;
     private EditText email;
     private EditText password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signin);
+        userDAO = new UserDAO(this);
         TextView forgotPassword = findViewById(R.id.tvforgotPassword);
         back = findViewById(R.id.backArrow);
         login = findViewById(R.id.btnLogin);
@@ -50,7 +56,7 @@ public class SignInActivity extends AppCompatActivity {
         forgotPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(SignInActivity.this , ForgotPasswordActivity.class);
+                Intent intent = new Intent(SignInActivity.this, ForgotPasswordActivity.class);
                 startActivity(intent);
             }
         });
@@ -60,15 +66,22 @@ public class SignInActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String inputEmail = email.getText().toString();
                 String inputPassword = password.getText().toString();
-                if (TextUtils.isEmpty(inputEmail) ) {
+                if (TextUtils.isEmpty(inputEmail)) {
                     email.setError("Please enter your email");
-                }
-                else if (TextUtils.isEmpty(inputPassword) ) {
+                } else if (TextUtils.isEmpty(inputPassword)) {
                     password.setError("Please enter your password");
-                }
-                else {
-                    Intent intent = new Intent(SignInActivity.this , OtpAuthenticationActivity.class);
-                    startActivity(intent);
+                } else {
+                    boolean checkLogin = userDAO.checkLogin(inputEmail, inputPassword);
+                    if (checkLogin) {
+                        Toast.makeText(SignInActivity.this, "Login successful", Toast.LENGTH_SHORT)
+                                .show();
+                        Intent intent = new Intent(SignInActivity.this, OtpAuthenticationActivity.class);
+                        startActivity(intent);
+                    } else {
+                        Toast.makeText(SignInActivity.this, "Login failed", Toast.LENGTH_SHORT)
+                                .show();
+                    }
+
                 }
             }
         });

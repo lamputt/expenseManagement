@@ -1,5 +1,6 @@
 package com.example.expensemanagement.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -54,7 +55,6 @@ public class SignUpActivity extends AppCompatActivity {
                 if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
                     Toast.makeText(SignUpActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
                 } else {
-                    // Perform sign up logic here (e.g., API call)
                     Toast.makeText(SignUpActivity.this, "Sign up successful", Toast.LENGTH_SHORT).show();
                 }
 
@@ -62,6 +62,8 @@ public class SignUpActivity extends AppCompatActivity {
                 long result = userDAO.addUser(name, email,password);
                 if (result != -1) {
                     Toast.makeText(SignUpActivity.this, "Data saved locally!", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
+                    startActivity(intent);
                 } else {
                     Toast.makeText(SignUpActivity.this, "Failed to save data!", Toast.LENGTH_SHORT).show();
                 }

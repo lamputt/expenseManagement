@@ -22,13 +22,7 @@ public class AccountDAO {
 
     // Thêm Account vào database
     public long addAccount(Acount acount) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        ContentValues values = new ContentValues();
-        values.put("role", Constant.Role.USER.toString());
-        values.put("user_id", acount.getUserId());
-        long id = db.insert("account", null, values);
-        db.close();
-        return id;
+        return 0;
     }
 
     // Lấy tất cả Account

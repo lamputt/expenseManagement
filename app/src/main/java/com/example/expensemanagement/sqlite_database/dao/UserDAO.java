@@ -1,7 +1,10 @@
 package com.example.expensemanagement.sqlite_database.dao;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -13,13 +16,16 @@ import java.util.List;
 
 public class UserDAO {
     private final DatabaseHelper dbHelper;
+    private final Context context;
 
+    // Constructor nhận context
     public UserDAO(Context context) {
+        this.context = context;
         dbHelper = new DatabaseHelper(context);
     }
 
     // Thêm User vào database
-    public long addUser(String userName,String email, String password) {
+    public long addUser(String userName, String email, String password) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("user_name", userName);
@@ -32,6 +38,39 @@ public class UserDAO {
         return id;
     }
 
+    // Kiểm tra login
+    public boolean checkLogin(String inputEmail, String inputPassword) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        boolean result;
+        String[] projection = {
+                "id"  // Chỉ lấy id
+        };
+        String selection = "email = ? AND password = ?";
+        String[] selectionArgs = {inputEmail, inputPassword};
+        try {
+            Cursor cursor = db.query("users", projection, selection, selectionArgs, null, null, null);
+
+
+            result = cursor.getCount() > 0;
+            if (result && cursor.moveToFirst()) {
+                // Lấy user_id từ cursor
+                int userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
+
+                // Lưu user_id vào SharedPreferences
+                SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("user_id", userId);  // Lưu ID người dùng
+                editor.apply();
+            }
+
+            cursor.close();
+            db.close();
+            return result;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
     // Lấy tất cả User
     public List<User> getAllUsers() {
@@ -42,7 +81,7 @@ public class UserDAO {
             do {
                 User user = new User(
                         cursor.getLong(cursor.getColumnIndexOrThrow("id")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("userName")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("user_name")),  // sửa tên cột từ userName sang user_name
                         cursor.getString(cursor.getColumnIndexOrThrow("password")),
                         cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
                         cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
