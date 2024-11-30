@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -43,7 +44,8 @@ public class HomeFragment extends Fragment {
         // Tạo danh sách dữ liệu
         List<ItemTransaction> itemList = new ArrayList<>();
         for (Transaction transaction : transactionList) {
-            itemList.add(new ItemTransaction(transaction.getType(),
+            itemList.add(new ItemTransaction(transaction.getCategory().getName(),
+                    transaction.getType(),
                     transaction.getDescription(),
                     String.valueOf(transaction.getAmount()),
                     transaction.getDate()));
@@ -53,6 +55,24 @@ public class HomeFragment extends Fragment {
         // Gắn Adapter
         ItemAdapterTransaction adapter = new ItemAdapterTransaction(itemList);
         recyclerView.setAdapter(adapter);
+
+        // Totalamount
+        double totalIncome = 0;
+        double totalExpense = 0;
+        for (Transaction transaction : transactionList) {
+            if (transaction.getType() == "income") {
+                totalIncome += transaction.getAmount();
+            } else {
+                totalExpense += transaction.getAmount();
+            }
+        }
+        TextView totalIncomeTextView = view.findViewById(R.id.total_income);
+        TextView totalExpenseTextView = view.findViewById(R.id.total_expense);
+        TextView tvSumAmount = view.findViewById(R.id.tvSumAmount);
+
+        totalIncomeTextView.setText(String.valueOf(totalIncome));
+        totalExpenseTextView.setText(String.valueOf(totalExpense));
+        tvSumAmount.setText(String.valueOf(totalIncome - totalExpense));
 
         // Xử lý nút seeAll
         seeAll = view.findViewById(R.id.btnSeeAll);

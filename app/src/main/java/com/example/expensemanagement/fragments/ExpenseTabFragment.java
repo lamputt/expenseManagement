@@ -14,32 +14,33 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.expensemanagement.Model.ItemDateTransaction;
 import com.example.expensemanagement.R;
 import com.example.expensemanagement.adapter.ItemDateTransactionAdapter;
+import com.example.expensemanagement.sqlite_database.dao.TransactionDAO;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseTabFragment extends Fragment {
+
+    private TransactionDAO transactionDAO;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Tạo view của fragment
         View view = inflater.inflate(R.layout.fragment_expense_tab, container, false);
 
+        transactionDAO = new TransactionDAO(requireContext());
         // Khởi tạo RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.recyclerViewExpenseTab);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
+        // Lấy dữ liệu từ cơ sở dữ liệu
+        List<ItemDateTransaction> data = transactionDAO.getDataByDate("expense");
+
         // Tạo danh sách các item
         List<ItemDateTransaction> itemList = new ArrayList<>();
-        itemList.add(new ItemDateTransaction("January", "100$"));
-        itemList.add(new ItemDateTransaction("February", "200$"));
-        itemList.add(new ItemDateTransaction("March", "300$"));
-        itemList.add(new ItemDateTransaction("May", "400$"));
-        itemList.add(new ItemDateTransaction("March", "300$"));
-        itemList.add(new ItemDateTransaction("March", "300$"));
-        itemList.add(new ItemDateTransaction("March", "300$"));
-        itemList.add(new ItemDateTransaction("March", "300$"));
-        itemList.add(new ItemDateTransaction("March", "300$"));
+        for (ItemDateTransaction item : data) {
+            itemList.add(item);
+        }
 
         // Gắn Adapter vào RecyclerView
         ItemDateTransactionAdapter adapter = new ItemDateTransactionAdapter(itemList);

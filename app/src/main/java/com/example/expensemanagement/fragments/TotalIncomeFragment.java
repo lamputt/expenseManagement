@@ -7,8 +7,10 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.example.expensemanagement.R;
+import com.example.expensemanagement.sqlite_database.dao.TransactionDAO;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -16,6 +18,8 @@ import com.example.expensemanagement.R;
  * create an instance of this fragment.
  */
 public class TotalIncomeFragment extends Fragment {
+
+    private TransactionDAO transactionDAO;
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -51,6 +55,7 @@ public class TotalIncomeFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        transactionDAO = new TransactionDAO(requireContext());
         if (getArguments() != null) {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
@@ -60,7 +65,13 @@ public class TotalIncomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        View view = inflater.inflate(R.layout.fragment_total_income, container, false);
+        // thay đổi totalIncome
+        double totalIncome = transactionDAO.getTotalIncome();
+        TextView tvTotalIncome = view.findViewById(R.id.tvSumAmount);
+        tvTotalIncome.setText(String.valueOf(totalIncome));
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_total_income, container, false);
+        return view;
     }
 }

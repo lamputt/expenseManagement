@@ -20,16 +20,16 @@
             android:layout_height="wrap_content"
             android:src="@drawable/icon_item"
             />
+
         <TextView
-            android:paddingLeft="10dp"
-            android:layout_weight="1"
             android:id="@+id/tvDate"
             android:layout_width="0dp"
-            android:textSize="16sp"
-            android:textStyle="bold"
             android:layout_height="wrap_content"
+            android:layout_weight="2"
+            android:paddingLeft="10dp"
             android:text="January"
-            />
+            android:textSize="16sp"
+            android:textStyle="bold" />
         <TextView
             android:textAlignment="viewEnd"
             android:layout_weight="3"

@@ -14,6 +14,12 @@ public class Category {
         this.totalSpent = totalSpent;
     }
 
+    public Category(long id, String name, String description){
+        this.id = id;
+        this.name = name;
+        this.description = description;
+    }
+
     // Getters và Setters
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }

@@ -1,5 +1,7 @@
 package com.example.expensemanagement.sqlite_database.dao;
 
+import static android.content.Context.MODE_PRIVATE;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.SharedPreferences;
@@ -35,40 +37,6 @@ public class UserDAO {
         return id;
     }
 
-    // Kiểm tra login
-    public boolean checkLogin(String inputEmail, String inputPassword) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-        boolean result;
-        String[] projection = {
-                "id"  // Chỉ lấy id
-        };
-        String selection = "email = ? AND password = ?";
-        String[] selectionArgs = {inputEmail, inputPassword};
-        try {
-            Cursor cursor = db.query("users", projection, selection, selectionArgs, null, null, null);
-
-
-            result = cursor.getCount() > 0;
-            if (result && cursor.moveToFirst()) {
-                // Lấy user_id từ cursor
-                int userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
-
-                // Lưu user_id vào SharedPreferences
-                SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.putInt("user_id", userId);  // Lưu ID người dùng
-                editor.apply();
-            }
-
-            cursor.close();
-            db.close();
-            return result;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
     // Lấy tất cả User
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
@@ -95,12 +63,28 @@ public class UserDAO {
     public boolean validateUser(String email, String hashedPassword) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         String query = "SELECT * FROM users WHERE email = ? AND password = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{email, hashedPassword});
+        try {
+            Cursor cursor = db.rawQuery(query, new String[]{email, hashedPassword});
 
-        boolean isValid = cursor.moveToFirst();
-        cursor.close();
-        db.close();
+            boolean isValid = cursor.moveToFirst();
+            if (isValid) {
+                // Lấy user_id từ cursor
+                int userId = cursor.getInt(cursor.getColumnIndexOrThrow("id"));
 
-        return isValid;
+                // Lưu user_id vào SharedPreferences
+                SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putInt("user_id", userId);  // Lưu ID người dùng
+                editor.apply();
+            }
+            cursor.close();
+            db.close();
+
+            return isValid;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+
     }
 }
