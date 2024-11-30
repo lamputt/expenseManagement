@@ -12,7 +12,9 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 
 import com.example.expensemanagement.R;
+import com.example.expensemanagement.activity.AddNewCategoryActivity;
 import com.example.expensemanagement.activity.ProfileAccountActivity;
+import com.example.expensemanagement.activity.ProfileCategoriesActivity;
 
 
 public class ProfileFragment extends Fragment {
@@ -34,6 +36,15 @@ public class ProfileFragment extends Fragment {
                 startActivity(intent);
             }
         });
+
+        itemCategories.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity() , ProfileCategoriesActivity.class);
+                startActivity(intent);
+            }
+        });
+
         return rootView;
     }
 }

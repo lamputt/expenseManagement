@@ -81,6 +81,9 @@
     <string name="first_name">First name</string>
     <string name="enter_your_fist_name">Enter your fist name</string>
     <string name="save">Save</string>
+    <string name="export_data">Export Data</string>
+    <string name="setting">Setting</string>
+    <string name="what_format_do_you_want_to_export">What Format Do You Want To Export?</string>
     <string name="logout">Logout ?</string>
     <string name="export_data">Export Data</string>
     <string name="setting">Setting</string>

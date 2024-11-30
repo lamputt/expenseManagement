@@ -37,7 +37,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="300dp"
+        android:layout_marginTop="400dp"
         android:background="@drawable/dialog_bg"
         >
         <EditText
@@ -54,7 +54,6 @@
             android:layout_height="56dp"
             android:background="@drawable/rounded_edittext"
             android:hint="@string/enter_your_description"
-            android:inputType="number"
             android:padding="12dp" />
         <Button
             android:id="@+id/btnContinueAddNewCategory"
