@@ -19,7 +19,7 @@ public class UserDAO {
     }
 
     // Thêm User vào database
-    public long addUser(String userName,String email, String password) {
+    public long addUser(String userName, String email, String password) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
         values.put("user_name", userName);
@@ -32,7 +32,6 @@ public class UserDAO {
         return id;
     }
 
-
     // Lấy tất cả User
     public List<User> getAllUsers() {
         List<User> userList = new ArrayList<>();
@@ -42,14 +41,10 @@ public class UserDAO {
             do {
                 User user = new User(
                         cursor.getLong(cursor.getColumnIndexOrThrow("id")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("userName")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("user_name")),
                         cursor.getString(cursor.getColumnIndexOrThrow("password")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("first_name")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("last_name")),
                         cursor.getString(cursor.getColumnIndexOrThrow("email")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("created_at")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("updated_at")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("deleted_at"))
+                        cursor.getString(cursor.getColumnIndexOrThrow("created_at"))
                 );
                 userList.add(user);
             } while (cursor.moveToNext());
@@ -57,5 +52,18 @@ public class UserDAO {
         cursor.close();
         db.close();
         return userList;
+    }
+
+    // Validate User by email and hashed password
+    public boolean validateUser(String email, String hashedPassword) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT * FROM users WHERE email = ? AND password = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{email, hashedPassword});
+
+        boolean isValid = cursor.moveToFirst();
+        cursor.close();
+        db.close();
+
+        return isValid;
     }
 }
