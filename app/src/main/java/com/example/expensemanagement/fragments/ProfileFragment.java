@@ -15,6 +15,7 @@ import com.example.expensemanagement.R;
 import com.example.expensemanagement.activity.AddNewCategoryActivity;
 import com.example.expensemanagement.activity.ProfileAccountActivity;
 import com.example.expensemanagement.activity.ProfileCategoriesActivity;
+//import com.example.expensemanagement.activity.ProfileCategoriesActivity;
 
 
 public class ProfileFragment extends Fragment {
@@ -42,6 +43,7 @@ public class ProfileFragment extends Fragment {
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity() , ProfileCategoriesActivity.class);
                 startActivity(intent);
+
             }
         });
 

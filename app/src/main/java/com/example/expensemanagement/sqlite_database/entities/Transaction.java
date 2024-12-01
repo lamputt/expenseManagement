@@ -10,9 +10,10 @@ public class Transaction {
     private double amount;
     private String date;
     private String status;
+    private String categoryName; // Thêm thuộc tính này
 
     // Constructor
-    public Transaction(long id, long userId, String type, long categoryId, long bankId, String description, double amount, String date, String status) {
+    public Transaction(long id, long userId, String type, long categoryId, long bankId, String description, double amount, String date, String status, String categoryName) {
         this.id = id;
         this.userId = userId;
         this.type = type;
@@ -22,6 +23,7 @@ public class Transaction {
         this.amount = amount;
         this.date = date;
         this.status = status;
+        this.categoryName = categoryName; // Gán giá trị
     }
 
     // Getters and Setters
@@ -51,4 +53,7 @@ public class Transaction {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
+
+    public String getCategoryName() { return categoryName; } // Getter cho categoryName
+    public void setCategoryName(String categoryName) { this.categoryName = categoryName; } // Setter
 }

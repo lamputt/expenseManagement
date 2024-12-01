@@ -86,6 +86,8 @@
     <string name="what_format_do_you_want_to_export">What Format Do You Want To Export?</string>
     <string name="logout">Logout ?</string>
     <string name="are_you_sure_do_you_wanna_logout">Are you sure do you wanna logout ?</string>
+    <string name="detail_category">Detail Category</string>
+    <string name="detail_account">Detail Account</string>
     <string-array name="spinner_items">
         <item>Month</item>
         <item>Year</item>

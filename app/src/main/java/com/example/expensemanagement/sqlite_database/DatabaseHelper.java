@@ -8,6 +8,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "finance_app.db";
     private static final int DATABASE_VERSION = 1;
+    private Context context;  // Thêm một biến context
 
     // Tạo bảng users
     private static final String CREATE_TABLE_USERS =
@@ -108,5 +109,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS account");
         db.execSQL("DROP TABLE IF EXISTS users");
         onCreate(db);
+    }
+    public Context getContext() {
+        return context;  // Trả về context khi cần
     }
 }

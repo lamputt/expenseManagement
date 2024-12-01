@@ -28,7 +28,7 @@
                 android:src="@drawable/icon_item"
                />
             <TextView
-                android:id="@+id/tv_category"
+                android:id="@+id/tv_Namecategory"
                 android:layout_marginStart="8dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -65,7 +65,7 @@
             android:textSize="24sp"
             android:textColor="@color/black"
             android:textStyle="bold"
-            android:id="@+id/tv_sumRemainingTop" />
+            android:id="@+id/tv_sumRemaining" />
         <TextView
             android:layout_marginLeft="5dp"
             android:layout_width="wrap_content"
@@ -98,7 +98,7 @@
             android:textStyle="bold"
             android:textColor="@color/text_description"
             android:textSize="16sp"
-            android:id="@+id/tv_sumRemainingBottom"
+            android:id="@+id/tv_sumExpensebyCategory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="1200"

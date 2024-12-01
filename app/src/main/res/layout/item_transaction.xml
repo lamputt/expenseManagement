@@ -57,14 +57,6 @@
                 android:text="22233232"
                 android:textColor="@color/background_button"
                 />
-            <TextView
-                android:layout_width="wrap_content"
-                android:textSize="16sp"
-                android:textStyle="bold"
-                android:layout_height="wrap_content"
-                android:text="đ"
-                android:textColor="@color/background_button"
-                />
         </LinearLayout>
         <TextView
             android:textAlignment="textEnd"

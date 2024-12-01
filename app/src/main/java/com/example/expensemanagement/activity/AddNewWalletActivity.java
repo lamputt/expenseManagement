@@ -33,6 +33,7 @@ public class AddNewWalletActivity extends AppCompatActivity {
     private EditText selectBankAccount;
     private EditText etAmount;
     private Button btnContinue;
+    private Double totalAmount;
     private BankDAO bankDAO;
 
     @Override
@@ -84,25 +85,37 @@ public class AddNewWalletActivity extends AppCompatActivity {
         });
 
         btnContinue.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
-                if (accountNumber.getText().toString().isEmpty() ||
-                        etAmount.getText().toString().isEmpty() ||
-                        selectBankAccount.getText().toString().isEmpty()) {
+//                bankDAO.resetDataInBanks();
+                String bankName = selectBankAccount.getText().toString().trim();
+                String accountNum = accountNumber.getText().toString().trim();
+                String amount = etAmount.getText().toString().replaceAll("[^0-9]", "");
+                amount = amount.replace("," , "");
+                totalAmount = Double.parseDouble(amount);
+
+                if (bankName.isEmpty() || accountNum.isEmpty() || amount.isEmpty()) {
                     Toast.makeText(AddNewWalletActivity.this, "Please fill in all information", Toast.LENGTH_SHORT).show();
                     return;
-                } else {
-                    long result = bankDAO.addBank(selectBankAccount.getText().toString(),  accountNumber.getText().toString(),  etAmount.getText().toString().replaceAll("[^0-9]", ""));
-                    if (result != -1) {
-                        Toast.makeText(AddNewWalletActivity.this, "Data saved locally!", Toast.LENGTH_SHORT).show();
-                        Intent intent = new Intent();
-                        Toast.makeText(AddNewWalletActivity.this, "Add bank successfully", Toast.LENGTH_SHORT).show();
-                        finish();
-                    } else {
-                        Toast.makeText(AddNewWalletActivity.this, "Failed to save data!", Toast.LENGTH_SHORT).show();
-                    }
                 }
 
+                if (bankDAO.isBankExist(bankName)) {
+                    Toast.makeText(AddNewWalletActivity.this, "Bank already exists. Please choose another bank.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                else {
+                    // Debug log để kiểm tra
+                    System.out.println("Bank không tồn tại, tiếp tục thêm...");
+                }
+
+                long result = bankDAO.addBank(bankName, accountNum, totalAmount);
+                if (result != -1) {
+                    Toast.makeText(AddNewWalletActivity.this, "Add bank successfully", Toast.LENGTH_SHORT).show();
+                    finish();
+                } else {
+                    Toast.makeText(AddNewWalletActivity.this, "Failed to save data!", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 
@@ -179,4 +192,8 @@ public class AddNewWalletActivity extends AppCompatActivity {
         dialog.getWindow().getAttributes().windowAnimations = R.style.DialogAnimation;
         dialog.getWindow().setGravity(Gravity.BOTTOM);
     }
+
+//    private void CheckBankAccount () {
+//
+//    }
 }

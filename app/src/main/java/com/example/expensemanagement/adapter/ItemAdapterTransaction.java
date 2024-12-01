@@ -1,5 +1,6 @@
 package com.example.expensemanagement.adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,18 +9,18 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.expensemanagement.Model.ItemTransaction;
 import com.example.expensemanagement.R;
-import com.example.expensemanagement.Model.ItemTransaction;
+import com.example.expensemanagement.sqlite_database.entities.Transaction;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class ItemAdapterTransaction extends RecyclerView.Adapter<ItemAdapterTransaction.ItemViewHolder> {
 
-    private List<ItemTransaction> itemList;
+    private List<Transaction> itemListTransaction;
 
-    public ItemAdapterTransaction(List<ItemTransaction> itemList) {
-        this.itemList = itemList;
+    public ItemAdapterTransaction(List<Transaction> itemListTransaction) {
+        this.itemListTransaction = itemListTransaction;
     }
 
     @NonNull
@@ -32,16 +33,32 @@ public class ItemAdapterTransaction extends RecyclerView.Adapter<ItemAdapterTran
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        ItemTransaction item = itemList.get(position);
-        holder.tvCategory.setText(item.getCategory());
-        holder.tvDescription.setText(item.getDescription());
-        holder.tvPrice.setText(item.getPrice());
-        holder.tvTime.setText(item.getTime());
+        Transaction transaction = itemListTransaction.get(position);
+        DecimalFormat formatter = new DecimalFormat("###,###");
+        String formattedTotalSpent = formatter.format(transaction.getAmount());
+
+        // Hiển thị thông tin
+        holder.tvCategory.setText(transaction.getCategoryName());
+        holder.tvDescription.setText(transaction.getDescription());
+        holder.tvPrice.setText(formattedTotalSpent);
+        holder.tvTime.setText(transaction.getDate());
+
+        // Kiểm tra type và thay đổi màu sắc và dấu trừ cho tvPrice
+        if ("expense".equalsIgnoreCase(transaction.getType())) {
+            holder.tvPrice.setTextColor(Color.RED);  // Đặt màu đỏ cho tvPrice
+            holder.tvPrice.setText("-" + formattedTotalSpent + "đ");  // Thêm dấu trừ vào trước số tiền
+        } else if ("income".equalsIgnoreCase(transaction.getType())) {
+            holder.tvPrice.setTextColor(Color.GREEN);  // Đặt màu đỏ cho tvPrice
+            holder.tvPrice.setText("+" + formattedTotalSpent + "đ");  // Thêm dấu trừ vào trước số tiền
+        }
+        else {
+            holder.tvPrice.setTextColor(Color.BLUE);
+        }
     }
 
     @Override
     public int getItemCount() {
-        return itemList.size();
+        return itemListTransaction.size();
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {

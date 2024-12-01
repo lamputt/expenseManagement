@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/background_button"
-    android:id="@+id/main"
+    android:id="@+id/CreateBudget"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.CreateBudgetActivity">
@@ -17,7 +17,7 @@
         android:orientation="horizontal"
         >
         <ImageView
-            android:id="@+id/backArrowAddNewWallet"
+            android:id="@+id/backArrowCreateBudget"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/arrow_back_white"

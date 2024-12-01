@@ -10,55 +10,59 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensemanagement.R;
-import com.example.expensemanagement.activity.DetailAccountActivity;
+
 import com.example.expensemanagement.sqlite_database.entities.Bank;
 
 
-import java.text.DecimalFormat;
 import java.util.List;
 
-public class BankAdapter extends RecyclerView.Adapter<BankAdapter.BankViewHolder> {
-    private List<Bank> listBank;
+public class ItemSelectBankTransactionAdapter extends RecyclerView.Adapter<ItemSelectBankTransactionAdapter.BankViewHolder> {
 
-    public BankAdapter(List<Bank> listBank) {
-        this.listBank = listBank;
+    private List<Bank> bankList;
+    private OnBankSelectedListener listener;
+
+    // Constructor
+    public ItemSelectBankTransactionAdapter(List<Bank> bankList, OnBankSelectedListener listener) {
+        this.bankList = bankList;
+        this.listener = listener;
     }
 
     @NonNull
     @Override
     public BankViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.item_bank_account, parent, false);
+                .inflate(R.layout.item_bank_transaction, parent, false);
         return new BankViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull BankViewHolder holder, int position) {
-        Bank bank = listBank.get(position);
-        DecimalFormat formatter = new DecimalFormat("###,###");
-        String formattedTotalSpent = formatter.format(bank.getAmount());
-        holder.tvTotalMoney.setText(formattedTotalSpent);
+        Bank bank = bankList.get(position);
         holder.tvBankName.setText(bank.getName());
 
         holder.itemView.setOnClickListener(v -> {
-            Intent intent = new Intent(v.getContext(), DetailAccountActivity.class);
-            intent.putExtra("bank_id", bank.getId());  // Truyền ID của ngân hàng
-            v.getContext().startActivity(intent);
+            // Khi người dùng chọn ngân hàng, gọi callback và truyền ngân hàng đã chọn
+            listener.onBankSelected(bank);
         });
     }
 
     @Override
     public int getItemCount() {
-        return listBank.size();
+        return bankList.size();
     }
 
     public static class BankViewHolder extends RecyclerView.ViewHolder {
-        TextView tvBankName, tvTotalMoney;
+        TextView tvBankName;
 
         public BankViewHolder(@NonNull View itemView) {
             super(itemView);
-            tvBankName = itemView.findViewById(R.id.tvBankName);
-            tvTotalMoney = itemView.findViewById(R.id.tvAmountBank);
+            tvBankName = itemView.findViewById(R.id.nameBankTransaction);
         }
     }
+
+    // Interface callback để khi chọn ngân hàng thì trả về thông tin ngân hàng đã chọn
+    public interface OnBankSelectedListener {
+        void onBankSelected(Bank bank);
+    }
 }
+

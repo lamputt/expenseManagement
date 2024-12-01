@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,7 +37,6 @@ public class ProfileCategoriesActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile_categories);
-
         recyclerView = findViewById(R.id.recycleListCategory);
         tvTotalSpent = findViewById(R.id.tvSumAmountCategories);
         btnAddNewCategory = findViewById(R.id.btnAddNewCategory);
@@ -58,7 +58,7 @@ public class ProfileCategoriesActivity extends AppCompatActivity {
     }
 
     private void loadCategories() {
-        List<Category> categoryList = categoryDAO.getAllCategories();
+        List<Category> categoryList = categoryDAO.getAllCategoriesByExpense();
         CategoryAdapter adapter = new CategoryAdapter(categoryList);
         recyclerView.setAdapter(adapter);
         long totalSpent = 0;

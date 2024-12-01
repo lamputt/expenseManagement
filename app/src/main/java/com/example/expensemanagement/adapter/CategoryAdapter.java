@@ -1,5 +1,6 @@
 package com.example.expensemanagement.adapter;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.expensemanagement.R;
+import com.example.expensemanagement.activity.DetailAccountActivity;
+import com.example.expensemanagement.activity.DetailCategoryActivity;
 import com.example.expensemanagement.sqlite_database.entities.Category;
 
 import java.text.DecimalFormat;
@@ -37,6 +40,12 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.Catego
         holder.tvTotalSpent.setText(formattedTotalSpent);
         holder.tvCategoryName.setText(category.getName());
         holder.tvCategoryDescription.setText(category.getDescription());
+
+        holder.itemView.setOnClickListener(v -> {
+            Intent intent = new Intent(v.getContext(), DetailCategoryActivity.class);
+            intent.putExtra("category_id", category.getId());  // Truyền ID của ngân hàng
+            v.getContext().startActivity(intent);
+        });
     }
 
     @Override

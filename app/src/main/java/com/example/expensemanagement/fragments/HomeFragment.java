@@ -28,33 +28,32 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Gắn layout cho Fragment
-        View view = inflater.inflate(R.layout.fragment_home, container, false);
 
         // Khởi tạo RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
-        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+//        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
+//
+//        // Tạo danh sách dữ liệu
+//        List<ItemTransaction> itemList = new ArrayList<>();
+//        itemList.add(new ItemTransaction("Shopping", "Buy some grocery", "$120", "10:00AM"));
+//        itemList.add(new ItemTransaction("Work", "Prepare presentation", "$0", "2:00PM"));
+//        itemList.add(new ItemTransaction("Exercise", "Morning run", "$0", "6:30AM"));
+//        // Thêm nhiều item khác nếu cần
+//
+//        // Gắn Adapter
+////        ItemAdapterTransaction adapter = new ItemAdapterTransaction(itemList);
+////        recyclerView.setAdapter(adapter);
+//
+//        // Xử lý nút seeAll
+//        seeAll = view.findViewById(R.id.btnSeeAll);
+//        seeAll.setOnClickListener(v -> {
+//            // Chuyển sang TransactionFragment
+//            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
+//            transaction.replace(R.id.fragmentHome, new TransactionFragment());
+//            transaction.addToBackStack(null); // Thêm vào BackStack để quay lại
+//            transaction.commit();
+//        });
 
-        // Tạo danh sách dữ liệu
-        List<ItemTransaction> itemList = new ArrayList<>();
-        itemList.add(new ItemTransaction("Shopping", "Buy some grocery", "$120", "10:00AM"));
-        itemList.add(new ItemTransaction("Work", "Prepare presentation", "$0", "2:00PM"));
-        itemList.add(new ItemTransaction("Exercise", "Morning run", "$0", "6:30AM"));
-        // Thêm nhiều item khác nếu cần
-
-        // Gắn Adapter
-        ItemAdapterTransaction adapter = new ItemAdapterTransaction(itemList);
-        recyclerView.setAdapter(adapter);
-
-        // Xử lý nút seeAll
-        seeAll = view.findViewById(R.id.btnSeeAll);
-        seeAll.setOnClickListener(v -> {
-            // Chuyển sang TransactionFragment
-            FragmentTransaction transaction = requireActivity().getSupportFragmentManager().beginTransaction();
-            transaction.replace(R.id.fragmentHome, new TransactionFragment());
-            transaction.addToBackStack(null); // Thêm vào BackStack để quay lại
-            transaction.commit();
-        });
-
-        return view;
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 }
