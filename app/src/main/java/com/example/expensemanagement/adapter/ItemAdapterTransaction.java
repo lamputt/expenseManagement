@@ -1,5 +1,6 @@
 package com.example.expensemanagement.adapter;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,15 +14,29 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.expensemanagement.Model.ItemTransaction;
 import com.example.expensemanagement.R;
 import com.example.expensemanagement.Model.ItemTransaction;
+import com.example.expensemanagement.sqlite_database.entities.Transaction;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemAdapterTransaction extends RecyclerView.Adapter<ItemAdapterTransaction.ItemViewHolder> {
 
-    private List<ItemTransaction> itemList;
+    private List<ItemTransaction> itemListTransaction;
 
-    public ItemAdapterTransaction(List<ItemTransaction> itemList) {
-        this.itemList = itemList;
+    public ItemAdapterTransaction(List<Transaction> transactionList) {
+        // Chuyển đổi danh sách Transaction thành danh sách ItemTransaction
+        itemListTransaction = new ArrayList<>();
+        for (Transaction transaction : transactionList) {
+            ItemTransaction itemTransaction = new ItemTransaction(
+                    transaction.getCategory().getName(),
+                    transaction.getType(),
+                    transaction.getDescription(),
+                    String.valueOf(transaction.getAmount()),
+                    transaction.getDate()
+            );
+            itemListTransaction.add(itemTransaction);
+        }
     }
 
     @NonNull
@@ -34,32 +49,32 @@ public class ItemAdapterTransaction extends RecyclerView.Adapter<ItemAdapterTran
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        ItemTransaction item = itemList.get(position);
-        holder.tvCategory.setText(item.getCategory());
-        String type = item.getType();
-        holder.tvDescription.setText(item.getDescription());
-        holder.tvPrice.setText(item.getPrice());
-        holder.tvTime.setText(item.getTime());
+        ItemTransaction transaction = itemListTransaction.get(position);
+        DecimalFormat formatter = new DecimalFormat("###,###");
+        String formattedTotalSpent = transaction.getPrice();
 
-        String category = item.getCategory();
-        if (type != null) {
-            // Thay đổi màu nền của item
-            switch (type.toLowerCase()) {
-                case "expense":
-//                    holder.itemView.setBackgroundColor(holder.itemView.getContext().getResources().getColor(R.color.colorFood));
-                    holder.ivIcon.setImageResource(R.drawable.icon_item_red);
-                    holder.tvPrice.setTextColor(ContextCompat.getColor(holder.itemView.getContext(), R.color.color_expense));
-                    break;
-                case "income":
-                    holder.ivIcon.setImageResource(R.drawable.icon_item);
-                    break;
-            }
+        // Hiển thị thông tin
+        holder.tvCategory.setText(transaction.getCategory());
+        holder.tvDescription.setText(transaction.getDescription());
+        holder.tvPrice.setText(formattedTotalSpent);
+        holder.tvTime.setText(transaction.getTime());
+
+        // Kiểm tra type và thay đổi màu sắc và dấu trừ cho tvPrice
+        if ("expense".equalsIgnoreCase(transaction.getType())) {
+            holder.tvPrice.setTextColor(Color.RED);  // Đặt màu đỏ cho tvPrice
+            holder.tvPrice.setText("-" + formattedTotalSpent + "đ");  // Thêm dấu trừ vào trước số tiền
+        } else if ("income".equalsIgnoreCase(transaction.getType())) {
+            holder.tvPrice.setTextColor(Color.GREEN);  // Đặt màu đỏ cho tvPrice
+            holder.tvPrice.setText("+" + formattedTotalSpent + "đ");  // Thêm dấu trừ vào trước số tiền
+        }
+        else {
+            holder.tvPrice.setTextColor(Color.BLUE);
         }
     }
 
     @Override
     public int getItemCount() {
-        return itemList.size();
+        return itemListTransaction.size();
     }
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
@@ -73,6 +88,22 @@ public class ItemAdapterTransaction extends RecyclerView.Adapter<ItemAdapterTran
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvTime = itemView.findViewById(R.id.tvTime);
             ivIcon = itemView.findViewById(R.id.ivIcon);
+        }
+    }
+
+    public void updateData(List<Transaction> newTransactions) {
+        this.itemListTransaction.clear();
+        itemListTransaction = new ArrayList<>();
+        for (Transaction transaction : newTransactions) {
+            ItemTransaction itemTransaction = new ItemTransaction(
+                    transaction.getCategory().getName(),
+                    transaction.getType(),
+                    transaction.getDescription(),
+                    String.valueOf(transaction.getAmount()),
+                    transaction.getDate()
+            );
+            itemListTransaction.add(itemTransaction);
+            notifyDataSetChanged();
         }
     }
 }

@@ -20,13 +20,15 @@ import com.example.expensemanagement.adapter.ItemAdapterTransaction;
 import com.example.expensemanagement.sqlite_database.dao.TransactionDAO;
 import com.example.expensemanagement.sqlite_database.entities.Transaction;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
     private TransactionDAO transactionDAO;
     private Button seeAll;
+    private RecyclerView recyclerView;
+    private ItemAdapterTransaction adapter;
+    private TextView totalIncomeTextView, totalExpenseTextView, tvSumAmount;
 
     @Nullable
     @Override
@@ -36,43 +38,21 @@ public class HomeFragment extends Fragment {
         transactionDAO = new TransactionDAO(requireContext());
 
         // Khởi tạo RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
+        recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
+        // Khởi tạo Adapter với danh sách ban đầu
         List<Transaction> transactionList = transactionDAO.getAllTransactions();
-
-        // Tạo danh sách dữ liệu
-        List<ItemTransaction> itemList = new ArrayList<>();
-        for (Transaction transaction : transactionList) {
-            itemList.add(new ItemTransaction(transaction.getCategory().getName(),
-                    transaction.getType(),
-                    transaction.getDescription(),
-                    String.valueOf(transaction.getAmount()),
-                    transaction.getDate()));
-        }
-        // Thêm nhiều item khác nếu cần
-
-        // Gắn Adapter
-        ItemAdapterTransaction adapter = new ItemAdapterTransaction(itemList);
+        adapter = new ItemAdapterTransaction(transactionList);
         recyclerView.setAdapter(adapter);
 
-        // Totalamount
-        double totalIncome = 0;
-        double totalExpense = 0;
-        for (Transaction transaction : transactionList) {
-            if (transaction.getType() == "income") {
-                totalIncome += transaction.getAmount();
-            } else {
-                totalExpense += transaction.getAmount();
-            }
-        }
-        TextView totalIncomeTextView = view.findViewById(R.id.total_income);
-        TextView totalExpenseTextView = view.findViewById(R.id.total_expense);
-        TextView tvSumAmount = view.findViewById(R.id.tvSumAmount);
+        // Liên kết các TextView
+        totalIncomeTextView = view.findViewById(R.id.total_income);
+        totalExpenseTextView = view.findViewById(R.id.total_expense);
+        tvSumAmount = view.findViewById(R.id.tvSumAmount);
 
-        totalIncomeTextView.setText(String.valueOf(totalIncome));
-        totalExpenseTextView.setText(String.valueOf(totalExpense));
-        tvSumAmount.setText(String.valueOf(totalIncome - totalExpense));
+        // Tính toán và cập nhật tổng tiền
+        updateTotals(transactionList);
 
         // Xử lý nút seeAll
         seeAll = view.findViewById(R.id.btnSeeAll);
@@ -85,5 +65,31 @@ public class HomeFragment extends Fragment {
         });
 
         return view;
+    }
+
+    // Load lại dữ liệu của trang khi quay lại
+    @Override
+    public void onResume() {
+        super.onResume();
+        // Lấy lại danh sách giao dịch mới
+        List<Transaction> transactionList = transactionDAO.getAllTransactions();
+        adapter.updateData(transactionList); // Cập nhật lại Adapter
+        updateTotals(transactionList); // Cập nhật tổng tiền
+    }
+
+    // Phương thức cập nhật tổng thu nhập, chi tiêu và số dư
+    private void updateTotals(List<Transaction> transactionList) {
+        double totalIncome = 0;
+        double totalExpense = 0;
+        for (Transaction transaction : transactionList) {
+            if ("income".equals(transaction.getType())) { // So sánh đúng kiểu String
+                totalIncome += transaction.getAmount();
+            } else {
+                totalExpense += transaction.getAmount();
+            }
+        }
+        totalIncomeTextView.setText(String.valueOf(totalIncome));
+        totalExpenseTextView.setText(String.valueOf(totalExpense));
+        tvSumAmount.setText(String.valueOf(totalIncome - totalExpense));
     }
 }

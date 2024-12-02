@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.expensemanagement.Model.ItemDateTransaction;
 import com.example.expensemanagement.sqlite_database.DatabaseHelper;
+import com.example.expensemanagement.sqlite_database.entities.Bank;
 import com.example.expensemanagement.sqlite_database.entities.Category;
 import com.example.expensemanagement.sqlite_database.entities.Transaction;
 
@@ -29,13 +30,12 @@ public class TransactionDAO {
         ContentValues values = new ContentValues();
         values.put("user_id", transaction.getUserId());
         values.put("type", transaction.getType());
-        values.put("category_id", transaction.getCategory().getId());
+        values.put("category_id", transaction.getCategoryId());
         values.put("bank_id", transaction.getBankId());
         values.put("description", transaction.getDescription());
         values.put("amount", transaction.getAmount());
         values.put("date", transaction.getDate());
-        values.put("status", transaction.getStatus());
-        long id = db.insert("transaction", null, values);
+        long id = db.insert("transactions", null, values);
         db.close();
         return id;
     }
@@ -97,7 +97,13 @@ public class TransactionDAO {
     // Xóa Transaction
     public void deleteTransaction(long id) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-        db.delete("transaction", "id=?", new String[]{String.valueOf(id)});
+        db.delete("Transactions", "id=?", new String[]{String.valueOf(id)});
+        db.close();
+    }
+
+    public void resetDataInBanks() {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.execSQL("DELETE FROM Transactions "); // Xóa tất cả dữ liệu trong bảng banks
         db.close();
     }
 
@@ -194,5 +200,101 @@ public class TransactionDAO {
 
         return months[monthNumber];  // Ví dụ "November 2024"
     }
+
+
+    public List<Transaction> getTransactionsByBankId(long bankId) {
+        List<Transaction> transactionList = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String query = "SELECT t.*, c.name AS categoryName " +
+                "FROM Transactions t " +
+                "JOIN Categories c ON t.category_id = c.id " +
+                "WHERE t.bank_id = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(bankId)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                Category category = new Category(
+                        cursor.getLong(cursor.getColumnIndexOrThrow("category_id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("category_description"))
+                );
+
+                Transaction transaction = new Transaction(
+                        cursor.getLong(cursor.getColumnIndexOrThrow("id")),
+                        cursor.getLong(cursor.getColumnIndexOrThrow("user_id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("type")),
+                        category,
+                        cursor.getLong(cursor.getColumnIndexOrThrow("bank_id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("description")),
+                        cursor.getDouble(cursor.getColumnIndexOrThrow("amount")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("date")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("status"))
+                );
+                transactionList.add(transaction);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return transactionList;
+    }
+
+    public List<Transaction> getTransactionsByCategoryId(long categoryId) {
+        List<Transaction> transactionList = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String query = "SELECT t.*, c.name AS categoryName " +
+                "FROM Transactions t " +
+                "JOIN Categories c ON t.category_id = c.id " +
+                "WHERE t.category_id = ? AND t.type = 'expense'";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(categoryId)});
+
+        if (cursor.moveToFirst()) {
+            do {
+                Category category = new Category(
+                        cursor.getLong(cursor.getColumnIndexOrThrow("category_id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("category_description"))
+                );
+
+                Transaction transaction = new Transaction(
+                        cursor.getLong(cursor.getColumnIndexOrThrow("id")),
+                        cursor.getLong(cursor.getColumnIndexOrThrow("user_id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("type")),
+                        category,
+                        cursor.getLong(cursor.getColumnIndexOrThrow("bank_id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("description")),
+                        cursor.getDouble(cursor.getColumnIndexOrThrow("amount")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("date")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("status"))
+                );
+                transactionList.add(transaction);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        db.close();
+        return transactionList;
+    }
+
+    public double getTotalExpenseByCategory(long categoryId, String dateStart, String dateEnd) {
+        double total = 0;
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        String query = "SELECT SUM(amount) AS total FROM Transactions " +
+                "WHERE category_id = ? AND type = 'expense' AND date BETWEEN ? AND ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(categoryId), dateStart, dateEnd});
+
+        if (cursor.moveToFirst()) {
+            total = cursor.getDouble(cursor.getColumnIndexOrThrow("total"));
+        }
+        cursor.close();
+        db.close();
+        return total;
+    }
+
+
+
+
+
 
 }

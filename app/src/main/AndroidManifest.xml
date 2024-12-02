@@ -13,6 +13,12 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ExpenseManagement">
         <activity
+            android:name=".activity.DetailCategoryActivity"
+            android:exported="false" />
+        <activity
+            android:name=".activity.DetailAccountActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.EditProfileActivity"
             android:exported="false" />
         <activity
@@ -34,6 +40,9 @@
             android:name=".activity.FinancialReportActivity"
             android:exported="false" />
         <activity
+            android:name=".activity.TransferActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.IncomeActivity"
             android:exported="false" />
         <activity
@@ -44,6 +53,12 @@
             android:exported="false" />
         <activity
             android:name=".activity.ProfileAccountActivity"
+            android:exported="false" />
+        <activity
+            android:name=".profile_account"
+            android:exported="false" />
+        <activity
+            android:name=".SsssActivity"
             android:exported="false" />
         <activity
             android:name=".activity.OtpAuthenSuccessActivity"

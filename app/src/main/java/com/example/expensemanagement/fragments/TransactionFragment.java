@@ -25,14 +25,12 @@ import java.util.List;
 
 public class TransactionFragment extends Fragment {
 
-    private TransactionDAO transactionDAO;
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_transaction, container, false);
 
-        transactionDAO = new TransactionDAO(requireContext());
+        TransactionDAO transactionDAO = new TransactionDAO(requireContext());
 
         // Tìm LinearLayout theo ID
         LinearLayout lnSeeFinancial = view.findViewById(R.id.LnSeeFinancial);
@@ -43,19 +41,8 @@ public class TransactionFragment extends Fragment {
 
         List<Transaction> transactionList = transactionDAO.getAllTransactions();
 
-        // Tạo danh sách dữ liệu
-        List<ItemTransaction> itemList = new ArrayList<>();
-        for (Transaction transaction : transactionList) {
-            itemList.add(new ItemTransaction(transaction.getCategory().getName(),
-                    transaction.getType(),
-                    transaction.getDescription(),
-                    String.valueOf(transaction.getAmount()),
-                    transaction.getDate()));
-        }
-        // Thêm nhiều item khác nếu cần
-
         // Gắn Adapter
-        ItemAdapterTransaction adapter = new ItemAdapterTransaction(itemList);
+        ItemAdapterTransaction adapter = new ItemAdapterTransaction(transactionList);
         recyclerView.setAdapter(adapter);
 
         // Thiết lập click listener

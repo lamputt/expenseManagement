@@ -7,17 +7,18 @@ public class Category {
     private Double totalSpent;
 
     // Constructor
+    public Category(long id, String name, String description) {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+
+    }
+
     public Category(long id, String name, String description, double totalSpent) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.totalSpent = totalSpent;
-    }
-
-    public Category(long id, String name, String description){
-        this.id = id;
-        this.name = name;
-        this.description = description;
     }
 
     // Getters và Setters

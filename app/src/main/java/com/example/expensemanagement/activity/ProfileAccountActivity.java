@@ -7,6 +7,7 @@ import android.util.Log;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -45,7 +46,7 @@ public class ProfileAccountActivity extends AppCompatActivity {
         btnAddNewWallet = findViewById(R.id.btnAddNewWallet);
         btnAddNewWallet.setOnClickListener(v -> {
             Intent intent = new Intent(ProfileAccountActivity.this, AddNewWalletActivity.class);
-            startActivity(intent); // Mã request là 100
+            startActivity(intent);
         });
 
         // Khởi tạo RecyclerView

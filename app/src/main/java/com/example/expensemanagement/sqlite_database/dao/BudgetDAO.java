@@ -19,15 +19,15 @@ public class BudgetDAO {
     }
 
     // Thêm Budget vào database
-    public long addBudget(Budget budget) {
+    public long addBudget(long Category_id , long user_id , double amount , String dateStart , String dateEnd ) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         ContentValues values = new ContentValues();
-        values.put("category_id", budget.getCategoryId());
-        values.put("user_id", budget.getUserId());
-        values.put("amount", budget.getAmount());
-        values.put("date_start", budget.getDateStart());
-        values.put("date_end", budget.getDateEnd());
-        values.put("status", budget.getStatus());
+        values.put("category_id", Category_id);
+        values.put("user_id", user_id);
+        values.put("amount", amount );
+        values.put("date_start" , dateStart);
+        values.put("date_end" , dateEnd);
+        values.putNull("status");
         long id = db.insert("budgets", null, values);
         db.close();
         return id;
@@ -62,5 +62,34 @@ public class BudgetDAO {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.delete("budgets", "id = ?", new String[]{String.valueOf(id)});
         db.close();
+    }
+
+    public String getCategoryNameById(long categoryId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT name FROM categories WHERE id = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(categoryId)});
+        String categoryName = null;
+
+        if (cursor.moveToFirst()) {
+            categoryName = cursor.getString(cursor.getColumnIndexOrThrow("name"));
+        }
+        cursor.close();
+        db.close();
+
+        return categoryName;
+    }
+
+    public boolean isCategoryExist(long categoryId) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT COUNT(*) FROM budgets WHERE category_id = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(categoryId)});
+
+        boolean exists = false;
+        if (cursor.moveToFirst()) {
+            exists = cursor.getInt(0) > 0; // Nếu có ít nhất một bản ghi thì Category đã tồn tại
+        }
+        cursor.close();
+        db.close();
+        return exists;
     }
 }

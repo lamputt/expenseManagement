@@ -15,7 +15,7 @@ import com.example.expensemanagement.R;
 import com.example.expensemanagement.activity.AddNewCategoryActivity;
 import com.example.expensemanagement.activity.ProfileAccountActivity;
 import com.example.expensemanagement.activity.ProfileCategoriesActivity;
-import com.example.expensemanagement.activity.SignInActivity;
+//import com.example.expensemanagement.activity.ProfileCategoriesActivity;
 
 
 public class ProfileFragment extends Fragment {
@@ -26,15 +26,14 @@ public class ProfileFragment extends Fragment {
 
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
         LinearLayout itemAccount = rootView.findViewById(R.id.LnAccount);
-        LinearLayout itemSettings = rootView.findViewById(R.id.LnSetting);
+        LinearLayout itemSettings  = rootView.findViewById(R.id.LnSetting);
         LinearLayout itemCategories = rootView.findViewById(R.id.LnCategory);
         LinearLayout itemExportData = rootView.findViewById(R.id.LnExportData);
-        LinearLayout itemLogout = rootView.findViewById(R.id.LnLogout);
 
         itemAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ProfileAccountActivity.class);
+                Intent intent = new Intent(getActivity() , ProfileAccountActivity.class);
                 startActivity(intent);
             }
         });
@@ -42,17 +41,9 @@ public class ProfileFragment extends Fragment {
         itemCategories.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), ProfileCategoriesActivity.class);
+                Intent intent = new Intent(getActivity() , ProfileCategoriesActivity.class);
                 startActivity(intent);
-            }
-        });
 
-        // logout
-        itemLogout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), SignInActivity.class);
-                startActivity(intent);
             }
         });
 

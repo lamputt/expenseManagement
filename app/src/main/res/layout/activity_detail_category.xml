@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/detail_category_activity"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".activity.DetailCategoryActivity">
+
+    <LinearLayout
+        android:layout_marginTop="16dp"
+        android:layout_marginHorizontal="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <ImageView
+            android:id="@+id/backArrowDetailCategory"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_arrow_back"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/detail_category"
+            android:textSize="18sp"
+            android:textStyle="bold"
+            android:textColor="@color/color_text"
+            android:layout_marginStart="110dp"
+            />
+        <ImageView
+            android:layout_marginLeft="100dp"
+            android:id="@+id/delete_category"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/trash"
+            />
+
+    </LinearLayout>
+
+    <ImageView
+        android:layout_marginTop="35dp"
+        android:layout_gravity="center"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/category"
+        />
+
+    <TextView
+        android:id="@+id/detailNameCategory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:text="Shoppping"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:orientation="horizontal"
+        >
+        <TextView
+            android:id="@+id/detailTotalSpentCategory"
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="100000000"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            />
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/d"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            />
+    </LinearLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerView_List_Transaction_Detail_Category"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="47dp"
+        android:layout_marginHorizontal="16dp"
+        />
+
+
+</LinearLayout>

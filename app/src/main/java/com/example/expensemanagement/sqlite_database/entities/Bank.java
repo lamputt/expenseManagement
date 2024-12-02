@@ -22,6 +22,11 @@ public class Bank {
         this.deletedAt = deletedAt;
     }
 
+    public Bank(long bankId, String name) {
+        this.id = bankId;
+        this.name = name;
+    }
+
     // Getters and Setters
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
