@@ -91,8 +91,14 @@ public class AddNewWalletActivity extends AppCompatActivity {
 //                bankDAO.resetDataInBanks();
                 String bankName = selectBankAccount.getText().toString().trim();
                 String accountNum = accountNumber.getText().toString().trim();
-                String amount = etAmount.getText().toString().replaceAll("[^0-9]", "");
-                amount = amount.replace("," , "");
+                String amount;
+                if(!etAmount.getText().toString().trim().isEmpty()){
+                    amount = etAmount.getText().toString().replaceAll("[^0-9]", "");
+                    amount = amount.replace("," , "");
+                }else {
+                    amount = "0.0";
+                }
+
                 totalAmount = Double.parseDouble(amount);
 
                 if (bankName.isEmpty() || accountNum.isEmpty() || amount.isEmpty()) {

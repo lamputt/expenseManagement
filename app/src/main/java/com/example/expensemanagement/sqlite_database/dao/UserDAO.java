@@ -87,4 +87,22 @@ public class UserDAO {
         }
 
     }
+
+    public String getUserName() {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("user_id", -1);
+        if (userId == -1) {
+            return null;
+        }
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT user_name FROM users WHERE id = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
+        String userName = null;
+        if (cursor.moveToFirst()) {
+            userName = cursor.getString(cursor.getColumnIndexOrThrow("user_name"));
+        }
+        cursor.close();
+        db.close();
+        return userName;
+    }
 }

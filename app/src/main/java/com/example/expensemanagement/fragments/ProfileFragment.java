@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.example.expensemanagement.R;
 import com.example.expensemanagement.activity.AddNewCategoryActivity;
@@ -26,21 +27,31 @@ import com.example.expensemanagement.activity.ProfileAccountActivity;
 import com.example.expensemanagement.activity.ProfileCategoriesActivity;
 import com.example.expensemanagement.activity.SettingActivity;
 import com.example.expensemanagement.activity.SignInActivity;
+import com.example.expensemanagement.sqlite_database.dao.UserDAO;
 //import com.example.expensemanagement.activity.ProfileCategoriesActivity;
 
 
 public class ProfileFragment extends Fragment {
+    private UserDAO userDAO;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
 
         View rootView = inflater.inflate(R.layout.fragment_profile, container, false);
+
+        userDAO = new UserDAO(getContext());
+
         LinearLayout itemAccount = rootView.findViewById(R.id.LnAccount);
         LinearLayout itemSettings  = rootView.findViewById(R.id.LnSetting);
         LinearLayout itemCategories = rootView.findViewById(R.id.LnCategory);
         LinearLayout itemExportData = rootView.findViewById(R.id.LnExportData);
         LinearLayout itemLogout = rootView.findViewById(R.id.LnLogout);
+
+        // đổi tên theo userId
+        String userName = userDAO.getUserName();
+        TextView tvUserName = rootView.findViewById(R.id.tvUsername);
+        tvUserName.setText(userName);
 
         itemAccount.setOnClickListener(new View.OnClickListener() {
             @Override

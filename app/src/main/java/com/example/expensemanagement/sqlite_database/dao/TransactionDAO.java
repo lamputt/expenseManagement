@@ -46,6 +46,7 @@ public class TransactionDAO {
     public List<Transaction> getAllTransactions() {
         SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
         int userId = sharedPreferences.getInt("user_id", -1);
+
         List<Transaction> transactionList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -58,7 +59,8 @@ public class TransactionDAO {
                 " FROM transactions " +
                 "JOIN categories " +
                 "ON transactions.category_id = categories.id " +
-                "WHERE transactions.user_id = ?";
+                "WHERE transactions.user_id = ?" +
+                "ORDER BY transactions.date ASC";
 
         // Thực hiện truy vấn
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});

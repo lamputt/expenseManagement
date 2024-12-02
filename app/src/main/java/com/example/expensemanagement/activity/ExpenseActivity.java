@@ -174,7 +174,7 @@ public class ExpenseActivity extends AppCompatActivity {
                         db.close();
 
                         // Thêm giao dịch vào database
-                        Transaction transaction = new Transaction(idUser, type, selectedCategoryId, selectedBankId, description, amount, date);
+                        Transaction transaction = new Transaction(type, selectedCategoryId, selectedBankId, description, amount, date);
                         long result = transactionDAO.addTransaction(transaction);
                         if (result != -1) {
                             Toast.makeText(ExpenseActivity.this, "Add Transaction successfully", Toast.LENGTH_SHORT).show();
@@ -204,7 +204,7 @@ public class ExpenseActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 (DatePicker view, int selectedYear, int selectedMonth, int selectedDay) -> {
                     // Định dạng ngày (Tháng bắt đầu từ 0 nên cần +1)
-                    String date = selectedDay + "/" + (selectedMonth + 1) + "/" + selectedYear;
+                    String date = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
                     selectDay.setText(date); // Hiển thị ngày vào EditText
                 },
                 year, month, day);
