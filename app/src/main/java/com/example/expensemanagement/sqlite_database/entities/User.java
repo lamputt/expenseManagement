@@ -24,6 +24,9 @@ public class User {
         this.deletedAt = deletedAt;
     }
 
+    public User(long id, String userName, String password, String email, String createdAt) {
+    }
+
     // Getters and Setters
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }

@@ -49,7 +49,6 @@ public class AddNewCategoryActivity extends AppCompatActivity {
         Continue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                categoryDAO.resetCategory();
                 String nameCategory = edtCategory.getText().toString().trim();
                 String descriptionCategory = edtDescription.getText().toString().trim();
 

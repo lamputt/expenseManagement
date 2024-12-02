@@ -4,12 +4,11 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+import com.example.expensemanagement.utils.Constant;
+
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    private static final String DATABASE_NAME = "finance_app.db";
-    private static final int DATABASE_VERSION = 1;
-    private Context context;  // Thêm một biến context
-
+    private Context context;
     // Tạo bảng users
     private static final String CREATE_TABLE_USERS =
             "CREATE TABLE users (" +
@@ -85,8 +84,35 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                     "FOREIGN KEY(user_id) REFERENCES users(id) ON DELETE CASCADE" +
                     ");";
 
+    public void insertSampleData(SQLiteDatabase db) {
+        // Bảng users
+        db.execSQL("INSERT INTO users (user_name, password, first_name, last_name, email, created_at) " +
+                "VALUES ('john_doe', '924a4ee358e0ab428f75085d2174e4767c927dc3fc61b5ff3f62b15c89e9e368', 'John', 'Doe', 'john.doe@example.com', datetime('now'));");
+
+        // Bảng account
+        db.execSQL("INSERT INTO account (role, user_id) " +
+                "VALUES ('admin', 1);");
+
+        // Bảng categories
+        db.execSQL("INSERT INTO categories (name, description) " +
+                "VALUES ('Food', 'Expenses on food and dining'), ('Transport', 'Expenses on travel and transport');");
+
+        // Bảng banks
+        db.execSQL("INSERT INTO banks (name, account_number, account_type, amount, created_at) " +
+                "VALUES ('Bank of America', '1234567890', 'Savings', 5000.00, datetime('now'));");
+
+        // Bảng transaction
+        db.execSQL("INSERT INTO Transactions (user_id, type, category_id, bank_id, description, amount, date, status) " +
+                "VALUES (1, 'expense', 1, 1, 'Lunch at restaurant', 20.50, datetime('now'), 'completed');");
+
+        // Bảng budgets
+        db.execSQL("INSERT INTO budgets (category_id, user_id, amount, date_start, date_end, status) " +
+                "VALUES (1, 1, 300.00, datetime('now', '-30 days'), datetime('now', '+30 days'), 'active');");
+    }
+
+
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
+        super(context, Constant.DATABASE_NAME, null, Constant.DATABASE_VERSION);
     }
 
     @Override
@@ -98,17 +124,19 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         db.execSQL(CREATE_TABLE_BANKS);
         db.execSQL(CREATE_TABLE_TRANSACTION);
         db.execSQL(CREATE_TABLE_BUDGETS);
+
+        insertSampleData(db);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS budgets");
-        db.execSQL("DROP TABLE IF EXISTS Transactions");
-        db.execSQL("DROP TABLE IF EXISTS banks");
-        db.execSQL("DROP TABLE IF EXISTS categories");
-        db.execSQL("DROP TABLE IF EXISTS account");
-        db.execSQL("DROP TABLE IF EXISTS users");
-        onCreate(db);
+            db.execSQL("DROP TABLE IF EXISTS budgets");
+            db.execSQL("DROP TABLE IF EXISTS Transactions");
+            db.execSQL("DROP TABLE IF EXISTS banks");
+            db.execSQL("DROP TABLE IF EXISTS categories");
+            db.execSQL("DROP TABLE IF EXISTS account");
+            db.execSQL("DROP TABLE IF EXISTS users");
+            onCreate(db);
     }
     public Context getContext() {
         return context;  // Trả về context khi cần

@@ -4,26 +4,24 @@ public class Transaction {
     private long id;
     private long userId;
     private String type;
-    private long categoryId;
+    private Category category;
     private long bankId;
     private String description;
     private double amount;
     private String date;
     private String status;
-    private String categoryName; // Thêm thuộc tính này
 
     // Constructor
-    public Transaction(long id, long userId, String type, long categoryId, long bankId, String description, double amount, String date, String status, String categoryName) {
+    public Transaction(long id, long userId, String type, Category category, long bankId, String description, double amount, String date, String status) {
         this.id = id;
         this.userId = userId;
         this.type = type;
-        this.categoryId = categoryId;
+        this.category = category;
         this.bankId = bankId;
         this.description = description;
         this.amount = amount;
         this.date = date;
         this.status = status;
-        this.categoryName = categoryName; // Gán giá trị
     }
 
     // Getters and Setters
@@ -36,8 +34,8 @@ public class Transaction {
     public String getType() { return type; }
     public void setType(String type) { this.type = type; }
 
-    public long getCategoryId() { return categoryId; }
-    public void setCategoryId(long categoryId) { this.categoryId = categoryId; }
+    public Category getCategory() { return category; }
+    public void setCategoryId(long categoryId) { this.category = category; }
 
     public long getBankId() { return bankId; }
     public void setBankId(long bankId) { this.bankId = bankId; }
@@ -53,7 +51,4 @@ public class Transaction {
 
     public String getStatus() { return status; }
     public void setStatus(String status) { this.status = status; }
-
-    public String getCategoryName() { return categoryName; } // Getter cho categoryName
-    public void setCategoryName(String categoryName) { this.categoryName = categoryName; } // Setter
 }

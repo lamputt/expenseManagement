@@ -4,12 +4,16 @@ import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.expensemanagement.Model.ItemTransaction;
 import com.example.expensemanagement.R;
+import com.example.expensemanagement.Model.ItemTransaction;
 import com.example.expensemanagement.sqlite_database.entities.Transaction;
 
 import java.text.DecimalFormat;
@@ -17,9 +21,9 @@ import java.util.List;
 
 public class ItemAdapterTransaction extends RecyclerView.Adapter<ItemAdapterTransaction.ItemViewHolder> {
 
-    private List<Transaction> itemListTransaction;
+    private List<ItemTransaction> itemListTransaction;
 
-    public ItemAdapterTransaction(List<Transaction> itemListTransaction) {
+    public ItemAdapterTransaction(List<ItemTransaction> itemListTransaction) {
         this.itemListTransaction = itemListTransaction;
     }
 
@@ -33,7 +37,7 @@ public class ItemAdapterTransaction extends RecyclerView.Adapter<ItemAdapterTran
 
     @Override
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
-        Transaction transaction = itemListTransaction.get(position);
+        ItemTransaction transaction = itemListTransaction.get(position);
         DecimalFormat formatter = new DecimalFormat("###,###");
         String formattedTotalSpent = formatter.format(transaction.getAmount());
 
@@ -63,6 +67,7 @@ public class ItemAdapterTransaction extends RecyclerView.Adapter<ItemAdapterTran
 
     public static class ItemViewHolder extends RecyclerView.ViewHolder {
         TextView tvCategory, tvDescription, tvPrice, tvTime;
+        ImageView ivIcon;
 
         public ItemViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -70,6 +75,7 @@ public class ItemAdapterTransaction extends RecyclerView.Adapter<ItemAdapterTran
             tvDescription = itemView.findViewById(R.id.tvDescription);
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvTime = itemView.findViewById(R.id.tvTime);
+            ivIcon = itemView.findViewById(R.id.ivIcon);
         }
     }
 }

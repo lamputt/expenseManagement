@@ -24,6 +24,10 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
+
 import com.example.expensemanagement.R;
 import com.example.expensemanagement.fragments.BudgetFragment;
 import com.example.expensemanagement.fragments.HomeFragment;

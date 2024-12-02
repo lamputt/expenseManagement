@@ -21,10 +21,13 @@ import com.example.expensemanagement.R;
 import com.example.expensemanagement.fragments.TotalExpenseFragment;
 import com.example.expensemanagement.fragments.TotalIncomeFragment;
 import com.example.expensemanagement.adapter.ViewPagerAdapter;
+import com.example.expensemanagement.sqlite_database.dao.TransactionDAO;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
 public class FinancialReportActivity extends AppCompatActivity {
+
+    private TransactionDAO transactionDAO;
 
     private ViewPager2 viewPagerTop;
     private ViewPager2 viewPagerBottom;
@@ -34,6 +37,7 @@ public class FinancialReportActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+        transactionDAO = new TransactionDAO(this);
         setContentView(R.layout.activity_financial_report);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
