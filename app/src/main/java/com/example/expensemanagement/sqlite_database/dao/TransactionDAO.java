@@ -27,8 +27,10 @@ public class TransactionDAO {
     // Thêm Transaction vào database
     public long addTransaction(Transaction transaction) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("user_id", -1);
         ContentValues values = new ContentValues();
-        values.put("user_id", transaction.getUserId());
+        values.put("user_id", userId);
         values.put("type", transaction.getType());
         values.put("category_id", transaction.getCategoryId());
         values.put("bank_id", transaction.getBankId());
