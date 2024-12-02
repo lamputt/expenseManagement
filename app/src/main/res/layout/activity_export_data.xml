@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ExportData"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".fragments.Fragment_Export_Data">
+    tools:context=".activity.ExportDataActivity">
 
     <ImageView
-        android:id="@+id/backArrowSignIn"
+        android:id="@+id/backArrowExportData"
         android:layout_width="30dp"
         android:layout_height="30dp"
         android:layout_marginStart="16dp"
@@ -38,6 +40,7 @@
 
 
     <LinearLayout
+        android:id="@+id/lnSelectFileExport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@drawable/rounded_border"
@@ -66,10 +69,11 @@
     </LinearLayout>
 
     <LinearLayout
+        android:id="@+id/LnExport"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:layout_marginTop="810dp"
+        android:layout_marginTop="650dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
         android:background="@drawable/border_expense"
@@ -91,10 +95,8 @@
             android:textColor="#ffffff"
             android:textSize="27sp"
             android:fontFamily="@font/inter_regular"
-        />
+            />
 
     </LinearLayout>
-
-
 
 </FrameLayout>
