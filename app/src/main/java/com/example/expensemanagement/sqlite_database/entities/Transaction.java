@@ -23,6 +23,27 @@ public class Transaction {
         this.status = status;
     }
 
+    public Transaction(long id, long userId, String type, Category category, long bankId, String description, double amount, String date, String status){
+        this.id = id;
+        this.userId = userId;
+        this.type = type;
+        this.category = category;
+        this.bankId = bankId;
+        this.description = description;
+        this.amount = amount;
+        this.date = date;
+        this.status = status;
+    }
+
+    public Transaction(String type, long selectedCategoryId, long selectedBankId, String description, Double amount, String date) {
+        this.type = type;
+        this.categoryId = selectedCategoryId;
+        this.bankId = selectedBankId;
+        this.description = description;
+        this.amount = amount;
+        this.date = date;
+    }
+
     // Getters and Setters
     public long getId() { return id; }
     public void setId(long id) { this.id = id; }
@@ -35,6 +56,8 @@ public class Transaction {
 
     public Category getCategory() { return category; }
     public void setCategoryId(long categoryId) { this.category = category; }
+
+    public Long getCategoryId() { return categoryId; }
 
     public long getBankId() { return bankId; }
     public void setBankId(long bankId) { this.bankId = bankId; }
