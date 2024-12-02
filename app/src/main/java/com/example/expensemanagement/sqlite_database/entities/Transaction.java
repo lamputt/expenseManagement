@@ -6,29 +6,14 @@ public class Transaction {
     private String type;
     private Category category;
     private Long categoryId;
-    private Bank bank;
-    private Long bankId;
+    private long bankId;
     private String description;
     private double amount;
     private String date;
     private String status;
 
     // Constructor
-    public Transaction(long id, long userId, String type, Category category, Bank bank, String description, double amount, String date, String status) {
-        this.id = id;
-        this.userId = userId;
-        this.type = type;
-        this.category = category;
-        this.bank = bank;
-        this.description = description;
-        this.amount = amount;
-        this.date = date;
-        this.status = status;
-    }
-
-    public Transaction(long id, long userId, String type, Category category, Long bankId, String description, double amount, String date, String status) {
-        this.id = id;
-        this.userId = userId;
+    public Transaction(String type, Category category, long bankId, String description, double amount, String date, String status) {
         this.type = type;
         this.category = category;
         this.bankId = bankId;
@@ -36,16 +21,6 @@ public class Transaction {
         this.amount = amount;
         this.date = date;
         this.status = status;
-    }
-
-    public Transaction(long idUser, String type, long selectedCategoryId, long selectedBankId, String description, Double amount, String date) {
-        this.userId = idUser;
-        this.type = type;
-        this.bankId = selectedBankId;
-        this.categoryId = selectedCategoryId;
-        this.description = description;
-        this.amount = amount;
-        this.date = date;
     }
 
     // Getters and Setters
@@ -61,13 +36,8 @@ public class Transaction {
     public Category getCategory() { return category; }
     public void setCategoryId(long categoryId) { this.category = category; }
 
-    public Long getCategoryId() { return categoryId; }
-
-    public Bank getBank() { return bank; }
-    public void setBankId(long bankId) { this.bank = bank; }
-
-    public Long getBankId() { return bankId; }
-    public void setBankId(Long bankId) { this.bankId = bankId; }
+    public long getBankId() { return bankId; }
+    public void setBankId(long bankId) { this.bankId = bankId; }
 
     public String getDescription() { return description; }
     public void setDescription(String description) { this.description = description; }
