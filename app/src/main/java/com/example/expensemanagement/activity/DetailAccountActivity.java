@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.expensemanagement.Model.ItemTransaction;
 import com.example.expensemanagement.R;
 import com.example.expensemanagement.adapter.ItemAdapterTransaction;
 import com.example.expensemanagement.sqlite_database.dao.BankDAO;

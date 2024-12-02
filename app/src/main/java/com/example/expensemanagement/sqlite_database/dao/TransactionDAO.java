@@ -8,6 +8,7 @@ import android.database.sqlite.SQLiteDatabase;
 
 import com.example.expensemanagement.Model.ItemDateTransaction;
 import com.example.expensemanagement.sqlite_database.DatabaseHelper;
+import com.example.expensemanagement.sqlite_database.entities.Bank;
 import com.example.expensemanagement.sqlite_database.entities.Category;
 import com.example.expensemanagement.sqlite_database.entities.Transaction;
 
@@ -29,13 +30,12 @@ public class TransactionDAO {
         ContentValues values = new ContentValues();
         values.put("user_id", transaction.getUserId());
         values.put("type", transaction.getType());
-        values.put("category_id", transaction.getCategory().getId());
+        values.put("category_id", transaction.getCategoryId());
         values.put("bank_id", transaction.getBankId());
         values.put("description", transaction.getDescription());
         values.put("amount", transaction.getAmount());
         values.put("date", transaction.getDate());
-        values.put("status", transaction.getStatus());
-        long id = db.insert("transaction", null, values);
+        long id = db.insert("transactions", null, values);
         db.close();
         return id;
     }
@@ -214,17 +214,22 @@ public class TransactionDAO {
 
         if (cursor.moveToFirst()) {
             do {
+                Category category = new Category(
+                        cursor.getLong(cursor.getColumnIndexOrThrow("category_id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("category_description"))
+                );
+
                 Transaction transaction = new Transaction(
                         cursor.getLong(cursor.getColumnIndexOrThrow("id")),
                         cursor.getLong(cursor.getColumnIndexOrThrow("user_id")),
                         cursor.getString(cursor.getColumnIndexOrThrow("type")),
-                        cursor.getLong(cursor.getColumnIndexOrThrow("category_id")),
+                        category,
                         cursor.getLong(cursor.getColumnIndexOrThrow("bank_id")),
                         cursor.getString(cursor.getColumnIndexOrThrow("description")),
                         cursor.getDouble(cursor.getColumnIndexOrThrow("amount")),
                         cursor.getString(cursor.getColumnIndexOrThrow("date")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("status")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("categoryName")) // Lấy tên danh mục
+                        cursor.getString(cursor.getColumnIndexOrThrow("status"))
                 );
                 transactionList.add(transaction);
             } while (cursor.moveToNext());
@@ -246,17 +251,22 @@ public class TransactionDAO {
 
         if (cursor.moveToFirst()) {
             do {
+                Category category = new Category(
+                        cursor.getLong(cursor.getColumnIndexOrThrow("category_id")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("category_description"))
+                );
+
                 Transaction transaction = new Transaction(
                         cursor.getLong(cursor.getColumnIndexOrThrow("id")),
                         cursor.getLong(cursor.getColumnIndexOrThrow("user_id")),
                         cursor.getString(cursor.getColumnIndexOrThrow("type")),
-                        cursor.getLong(cursor.getColumnIndexOrThrow("category_id")),
+                        category,
                         cursor.getLong(cursor.getColumnIndexOrThrow("bank_id")),
                         cursor.getString(cursor.getColumnIndexOrThrow("description")),
                         cursor.getDouble(cursor.getColumnIndexOrThrow("amount")),
                         cursor.getString(cursor.getColumnIndexOrThrow("date")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("status")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("categoryName")) // Lấy tên danh mục
+                        cursor.getString(cursor.getColumnIndexOrThrow("status"))
                 );
                 transactionList.add(transaction);
             } while (cursor.moveToNext());

@@ -2,11 +2,11 @@ package com.example.expensemanagement.Model;
 
 public class ItemTransaction {
 
-    private String category;
-    private String type;
-    private String description;
-    private String price;
-    private String time;
+    private final String category;
+    private final String type;
+    private final String description;
+    private final String price;
+    private final String time;
 
     public ItemTransaction(String category, String type, String description, String price, String time) {
         this.category = category;

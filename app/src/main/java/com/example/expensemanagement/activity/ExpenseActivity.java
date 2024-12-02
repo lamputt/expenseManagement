@@ -34,6 +34,7 @@ import com.example.expensemanagement.sqlite_database.dao.CategoryDAO;
 import com.example.expensemanagement.sqlite_database.dao.TransactionDAO;
 import com.example.expensemanagement.sqlite_database.entities.Bank;
 import com.example.expensemanagement.sqlite_database.entities.Category;
+import com.example.expensemanagement.sqlite_database.entities.Transaction;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -42,16 +43,14 @@ import java.util.List;
 public class ExpenseActivity extends AppCompatActivity {
 
     private EditText selectDay , selectBankAccount , selectCategory , etAmount , etdescription;
-    private ImageView back;
-    private Button btnContinue;
     private long selectedBankId = -1;
     private long selectedCategoryId = -1;
-    private long idUser = 1;
+    private final long idUser = 1;
     private String date;
     private String totalAmount;
     private Double amount;
     private String description;
-    private String type = "expense";
+    private final String type = "expense";
     private TransactionDAO transactionDAO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,8 +66,8 @@ public class ExpenseActivity extends AppCompatActivity {
         selectCategory = findViewById(R.id.edtSelectCategoryExpense);
         etdescription = findViewById(R.id.edtDescripTionExepense);
         selectDay = findViewById(R.id.edtSelectDate);
-        btnContinue = findViewById(R.id.btnContinueExpense);
-        back = findViewById(R.id.backArrowExpense);
+        Button btnContinue = findViewById(R.id.btnContinueExpense);
+        ImageView back = findViewById(R.id.backArrowExpense);
         transactionDAO = new TransactionDAO(this);
 
         back.setOnClickListener(new View.OnClickListener() {
@@ -137,8 +136,12 @@ public class ExpenseActivity extends AppCompatActivity {
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                totalAmount = etAmount.getText().toString().trim();
-                totalAmount = totalAmount.replace(",", "");
+                if(etAmount.getText().toString().trim().isEmpty()){
+                    totalAmount = "0";
+                }else {
+                    totalAmount = etAmount.getText().toString().trim();
+                    totalAmount = totalAmount.replace(",", "");
+                }
                 amount = Double.parseDouble(totalAmount);
                 date = selectDay.getText().toString().trim();
                 description = etdescription.getText().toString().trim();
@@ -171,10 +174,13 @@ public class ExpenseActivity extends AppCompatActivity {
                         db.close();
 
                         // Thêm giao dịch vào database
-                        long result = transactionDAO.addTransaction(idUser, type, selectedCategoryId, selectedBankId, description, amount, date);
+                        Transaction transaction = new Transaction(idUser, type, selectedCategoryId, selectedBankId, description, amount, date);
+                        long result = transactionDAO.addTransaction(transaction);
                         if (result != -1) {
                             Toast.makeText(ExpenseActivity.this, "Add Transaction successfully", Toast.LENGTH_SHORT).show();
-                            finish(); // Quay lại màn hình trước
+                            // quay lại màn hình trước và load lại dữ liệu ở màn hình đó
+                            setResult(RESULT_OK);
+                            finish();
                         } else {
                             Toast.makeText(ExpenseActivity.this, "Failed to save data!", Toast.LENGTH_SHORT).show();
                         }

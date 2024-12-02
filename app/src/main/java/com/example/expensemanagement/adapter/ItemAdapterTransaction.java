@@ -17,14 +17,26 @@ import com.example.expensemanagement.Model.ItemTransaction;
 import com.example.expensemanagement.sqlite_database.entities.Transaction;
 
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemAdapterTransaction extends RecyclerView.Adapter<ItemAdapterTransaction.ItemViewHolder> {
 
     private List<ItemTransaction> itemListTransaction;
 
-    public ItemAdapterTransaction(List<ItemTransaction> itemListTransaction) {
-        this.itemListTransaction = itemListTransaction;
+    public ItemAdapterTransaction(List<Transaction> transactionList) {
+        // Chuyển đổi danh sách Transaction thành danh sách ItemTransaction
+        itemListTransaction = new ArrayList<>();
+        for (Transaction transaction : transactionList) {
+            ItemTransaction itemTransaction = new ItemTransaction(
+                    transaction.getCategory().getName(),
+                    transaction.getType(),
+                    transaction.getDescription(),
+                    String.valueOf(transaction.getAmount()),
+                    transaction.getDate()
+            );
+            itemListTransaction.add(itemTransaction);
+        }
     }
 
     @NonNull
@@ -39,13 +51,13 @@ public class ItemAdapterTransaction extends RecyclerView.Adapter<ItemAdapterTran
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         ItemTransaction transaction = itemListTransaction.get(position);
         DecimalFormat formatter = new DecimalFormat("###,###");
-        String formattedTotalSpent = formatter.format(transaction.getAmount());
+        String formattedTotalSpent = transaction.getPrice();
 
         // Hiển thị thông tin
-        holder.tvCategory.setText(transaction.getCategoryName());
+        holder.tvCategory.setText(transaction.getCategory());
         holder.tvDescription.setText(transaction.getDescription());
         holder.tvPrice.setText(formattedTotalSpent);
-        holder.tvTime.setText(transaction.getDate());
+        holder.tvTime.setText(transaction.getTime());
 
         // Kiểm tra type và thay đổi màu sắc và dấu trừ cho tvPrice
         if ("expense".equalsIgnoreCase(transaction.getType())) {
@@ -76,6 +88,22 @@ public class ItemAdapterTransaction extends RecyclerView.Adapter<ItemAdapterTran
             tvPrice = itemView.findViewById(R.id.tvPrice);
             tvTime = itemView.findViewById(R.id.tvTime);
             ivIcon = itemView.findViewById(R.id.ivIcon);
+        }
+    }
+
+    public void updateData(List<Transaction> newTransactions) {
+        this.itemListTransaction.clear();
+        itemListTransaction = new ArrayList<>();
+        for (Transaction transaction : newTransactions) {
+            ItemTransaction itemTransaction = new ItemTransaction(
+                    transaction.getCategory().getName(),
+                    transaction.getType(),
+                    transaction.getDescription(),
+                    String.valueOf(transaction.getAmount()),
+                    transaction.getDate()
+            );
+            itemListTransaction.add(itemTransaction);
+            notifyDataSetChanged();
         }
     }
 }

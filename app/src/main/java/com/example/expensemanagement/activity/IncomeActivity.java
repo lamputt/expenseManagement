@@ -36,6 +36,7 @@ import com.example.expensemanagement.sqlite_database.dao.CategoryDAO;
 import com.example.expensemanagement.sqlite_database.dao.TransactionDAO;
 import com.example.expensemanagement.sqlite_database.entities.Bank;
 import com.example.expensemanagement.sqlite_database.entities.Category;
+import com.example.expensemanagement.sqlite_database.entities.Transaction;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -139,8 +140,12 @@ public class IncomeActivity extends AppCompatActivity {
         btnContinue.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                totalAmount = etAmount.getText().toString().trim();
-                totalAmount = totalAmount.replace(",", "");
+                if(etAmount.getText().toString().trim().isEmpty()){
+                    totalAmount = "0";
+                }else {
+                    totalAmount = etAmount.getText().toString().trim();
+                    totalAmount = totalAmount.replace(",", "");
+                }
                 amount = Double.parseDouble(totalAmount);
                 date = selectDay.getText().toString().trim();
                 description = etdescription.getText().toString().trim();
@@ -170,10 +175,13 @@ public class IncomeActivity extends AppCompatActivity {
                         db.close();
 
                         // Thêm giao dịch vào database
-                        long result = transactionDAO.addTransaction(idUser, type, selectedCategoryId, selectedBankId, description, amount, date);
+                        Transaction transaction = new Transaction(idUser, type, selectedCategoryId, selectedBankId, description, amount, date);
+                        long result = transactionDAO.addTransaction(transaction);
                         if (result != -1) {
                             Toast.makeText(IncomeActivity.this, "Add Transaction successfully", Toast.LENGTH_SHORT).show();
-                            finish(); // Quay lại màn hình trước
+                            // quay lại màn hình trước và load lại dữ liệu ở màn hình đó
+                            setResult(RESULT_OK);
+                            finish();
                         } else {
                             Toast.makeText(IncomeActivity.this, "Failed to save data!", Toast.LENGTH_SHORT).show();
                         }
