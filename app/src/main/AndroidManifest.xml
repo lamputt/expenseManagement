@@ -13,6 +13,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ExpenseManagement">
         <activity
+            android:name=".activity.SettingActivity"
+            android:exported="false" />
+        <activity
             android:name=".activity.DetailCategoryActivity"
             android:exported="false" />
         <activity
