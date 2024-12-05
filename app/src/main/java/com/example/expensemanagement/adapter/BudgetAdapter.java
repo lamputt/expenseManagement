@@ -2,9 +2,11 @@ package com.example.expensemanagement.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -57,20 +59,32 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
 
         // Tính số tiền còn lại
         double remaining = budget.getAmount() - sumExpense;
+        double percent = Math.max(0, Math.min(remaining / budget.getAmount(), 1)); // Giá trị trong khoảng [0, 1]
+
         String formattedRemaining = decimalFormat.format(remaining);
         BudgetDAO budgetDAO = new BudgetDAO(context);
         String categoryName = budgetDAO.getCategoryNameById(budget.getCategoryId());
         // Gán dữ liệu
-        holder.tvCategoryName.setText(categoryName); // Có thể thay bằng tên danh mục
+        holder.tvCategoryName.setText(categoryName);
         holder.tvTotalBudget.setText(formattedTotalBudget );
         holder.tvSumExpense.setText(formattedExpense );
         holder.tvSumRemaining.setText(formattedRemaining );
 
+        // Cập nhật chiều dài borderBudget dựa trên percent
+        int maxWidth = holder.borderBudget.getLayoutParams().width;
+        int newWidth = (int) (maxWidth * percent);
+
+        FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) holder.borderBudget.getLayoutParams();
+        params.width = newWidth; // Thay đổi chiều dài
+        holder.borderBudget.setLayoutParams(params);
+
         // Hiển thị cảnh báo nếu vượt ngân sách
         if (remaining < 0) {
             holder.tvExceedWarning.setVisibility(View.VISIBLE);
+            holder.borderBudget.setBackgroundColor(Color.RED);
         } else {
             holder.tvExceedWarning.setVisibility(View.GONE);
+            holder.borderBudget.setBackgroundColor(Color.GREEN);
         }
         holder.itemView.setOnClickListener(v -> {
             Intent intent = new Intent(context, DetailBudgetActivity.class);
@@ -90,6 +104,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
 
     static class BudgetViewHolder extends RecyclerView.ViewHolder {
         TextView tvCategoryName, tvTotalBudget, tvSumExpense, tvSumRemaining, tvExceedWarning;
+        FrameLayout borderBudget;
 
         public BudgetViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -98,6 +113,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
             tvSumExpense = itemView.findViewById(R.id.tv_sumExpensebyCategory);
             tvSumRemaining = itemView.findViewById(R.id.tv_sumRemaining);
             tvExceedWarning = itemView.findViewById(R.id.tv_exceed_warning);
+            borderBudget = itemView.findViewById(R.id.border_budget1);
         }
     }
 }
