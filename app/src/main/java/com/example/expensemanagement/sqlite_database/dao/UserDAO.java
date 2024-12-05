@@ -105,4 +105,29 @@ public class UserDAO {
         db.close();
         return userName;
     }
+
+    public int updateUserName( String newUserName) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("user_id", -1);
+
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("user_name", newUserName);
+
+        // Điều kiện cập nhật dựa trên id
+        int rowsAffected = db.update("users", values, "id = ?", new String[]{String.valueOf(userId)});
+        db.close();
+        return rowsAffected; // Trả về số dòng đã được cập nhật
+    }
+
+    public int updatePassword(String newPassword) {
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("user_id", -1);
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues values = new ContentValues();
+        values.put("password", newPassword);
+        int rowsAffected = db.update("users", values, "id = ?", new String[]{String.valueOf(userId)});
+        db.close();
+        return rowsAffected;
+    }
 }
