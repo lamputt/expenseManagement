@@ -41,7 +41,6 @@ public class CreateBudgetActivity extends AppCompatActivity {
     private EditText etAmount , selectCategory;
     private long selectedCategoryId = -1 ;
     private String totalAmount;
-    private long idUser = 1 ;
     private Double amount;
     private BudgetDAO budgetDAO;
 
@@ -115,12 +114,12 @@ public class CreateBudgetActivity extends AppCompatActivity {
                 }
 
                 Calendar calendar = Calendar.getInstance();
-                String startDate = new SimpleDateFormat("dd-MM-yyyy").format(calendar.getTime());
+                String startDate = new SimpleDateFormat("yyy-MM-dd").format(calendar.getTime());
 
                 calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-                String endDate = new SimpleDateFormat("dd-MM-yyyy").format(calendar.getTime());
+                String endDate = new SimpleDateFormat("yyy-MM-dd").format(calendar.getTime());
 
-                long result = budgetDAO.addBudget(selectedCategoryId, idUser, amount, startDate, endDate);
+                long result = budgetDAO.addBudget(selectedCategoryId, amount, startDate, endDate);
                 if (result != -1) {
                     Toast.makeText(CreateBudgetActivity.this, "Add Transaction successfully", Toast.LENGTH_SHORT).show();
 
