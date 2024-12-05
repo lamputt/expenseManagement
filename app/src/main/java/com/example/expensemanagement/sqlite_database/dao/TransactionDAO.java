@@ -119,7 +119,7 @@ public class TransactionDAO {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String query = "SELECT SUM(amount) AS total_expense FROM transactions WHERE type = ? AND transactions.user_id = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{"expense",String.valueOf(userId)});
+        Cursor cursor = db.rawQuery(query, new String[]{"expense", String.valueOf(userId)});
 
         if (cursor.moveToFirst()) {
             totalExpense = cursor.getDouble(cursor.getColumnIndexOrThrow("total_expense"));
@@ -139,7 +139,7 @@ public class TransactionDAO {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String query = "SELECT SUM(amount) AS total_income FROM transactions WHERE type = ? AND transactions.user_id = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{"income",String.valueOf(userId)});
+        Cursor cursor = db.rawQuery(query, new String[]{"income", String.valueOf(userId)});
 
         if (cursor.moveToFirst()) {
             totalExpense = cursor.getDouble(cursor.getColumnIndexOrThrow("total_income"));
@@ -283,22 +283,27 @@ public class TransactionDAO {
     public double getTotalExpenseByCategory(long categoryId, String dateStart, String dateEnd) {
         double total = 0;
         SQLiteDatabase db = dbHelper.getReadableDatabase();
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("user_id", -1);
 
-        String query = "SELECT SUM(amount) AS total FROM Transactions " +
-                "WHERE category_id = ? AND type = 'expense' AND date BETWEEN ? AND ?";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(categoryId), dateStart, dateEnd});
+        String query = "SELECT category_id, amount AS total " +
+                "FROM Transactions " +
+                "WHERE user_id = ? " +
+                "AND category_id = ? " +
+                "AND type = 'expense' " +
+                "AND date BETWEEN ? AND ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId), String.valueOf(categoryId), dateStart, dateEnd});
 
         if (cursor.moveToFirst()) {
-            total = cursor.getDouble(cursor.getColumnIndexOrThrow("total"));
+            do {
+                total += cursor.getDouble(cursor.getColumnIndexOrThrow("total"));
+                int categoryIdIndex = cursor.getInt(cursor.getColumnIndexOrThrow("category_id"));
+            } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
         return total;
     }
-
-
-
-
 
 
 }
