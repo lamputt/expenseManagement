@@ -20,6 +20,7 @@ import com.example.expensemanagement.adapter.ItemAdapterTransaction;
 import com.example.expensemanagement.sqlite_database.dao.TransactionDAO;
 import com.example.expensemanagement.sqlite_database.entities.Transaction;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
@@ -88,8 +89,12 @@ public class HomeFragment extends Fragment {
                 totalExpense += transaction.getAmount();
             }
         }
-        totalIncomeTextView.setText(String.valueOf(totalIncome));
-        totalExpenseTextView.setText(String.valueOf(totalExpense));
-        tvSumAmount.setText(String.valueOf(totalIncome - totalExpense));
+        DecimalFormat formatter = new DecimalFormat("###,###");
+        String formattedTotalIncome = formatter.format(totalIncome);
+        String formattedTotalExpense = formatter.format(totalExpense);
+        String formattedTotalSpent = formatter.format(totalIncome - totalExpense);
+        totalIncomeTextView.setText(formattedTotalIncome);
+        totalExpenseTextView.setText(formattedTotalExpense);
+        tvSumAmount.setText(formattedTotalSpent);
     }
 }

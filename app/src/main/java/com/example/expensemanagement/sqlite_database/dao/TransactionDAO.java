@@ -210,7 +210,7 @@ public class TransactionDAO {
         List<Transaction> transactionList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT t.*, c.name AS categoryName " +
+        String query = "SELECT t.*, c.name AS categoryName, c.description AS category_description " +
                 "FROM Transactions t " +
                 "JOIN Categories c ON t.category_id = c.id " +
                 "WHERE t.bank_id = ?";
@@ -220,7 +220,7 @@ public class TransactionDAO {
             do {
                 Category category = new Category(
                         cursor.getLong(cursor.getColumnIndexOrThrow("category_id")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("categoryName")),
                         cursor.getString(cursor.getColumnIndexOrThrow("category_description"))
                 );
 
@@ -247,7 +247,7 @@ public class TransactionDAO {
         List<Transaction> transactionList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT t.*, c.name AS categoryName " +
+        String query = "SELECT t.*, c.name AS categoryName , c.description AS category_description " +
                 "FROM Transactions t " +
                 "JOIN Categories c ON t.category_id = c.id " +
                 "WHERE t.category_id = ? AND t.type = 'expense'";
@@ -257,7 +257,7 @@ public class TransactionDAO {
             do {
                 Category category = new Category(
                         cursor.getLong(cursor.getColumnIndexOrThrow("category_id")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("categoryName")),
                         cursor.getString(cursor.getColumnIndexOrThrow("category_description"))
                 );
 
