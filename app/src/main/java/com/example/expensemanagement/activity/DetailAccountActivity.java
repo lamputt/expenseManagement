@@ -16,6 +16,7 @@ import com.example.expensemanagement.sqlite_database.dao.BankDAO;
 import com.example.expensemanagement.sqlite_database.dao.TransactionDAO;
 import com.example.expensemanagement.sqlite_database.entities.Bank;
 import com.example.expensemanagement.sqlite_database.entities.Transaction;
+import com.example.expensemanagement.utils.ToastUtil;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -58,7 +59,7 @@ public class DetailAccountActivity extends AppCompatActivity {
         // Xử lý sự kiện nút "Xóa ngân hàng"
         deleteAccountButton.setOnClickListener(v -> {
             bankDAO.deleteBank(bankId);
-            Toast.makeText(this, "Account Deleted", Toast.LENGTH_SHORT).show();
+            ToastUtil.showCustomToast(DetailAccountActivity.this, "Account Deleted", R.drawable.success_toast);
             finish(); // Quay lại màn hình trước
         });
 

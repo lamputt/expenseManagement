@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.expensemanagement.Model.ItemDateTransaction;
 import com.example.expensemanagement.sqlite_database.DatabaseHelper;
@@ -118,7 +119,8 @@ public class TransactionDAO {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT SUM(amount) AS total_expense FROM transactions WHERE type = ? AND transactions.user_id = ?";
+        String query = "SELECT SUM(amount) AS total_expense FROM transactions" +
+                " WHERE type = ? AND transactions.user_id = ?";
         Cursor cursor = db.rawQuery(query, new String[]{"expense", String.valueOf(userId)});
 
         if (cursor.moveToFirst()) {
@@ -151,35 +153,51 @@ public class TransactionDAO {
         return totalExpense;
     }
 
-    public List<ItemDateTransaction> getDataByDate(String type) {
+    public List<ItemDateTransaction> getDataByDate(String type, boolean year) {
         List<ItemDateTransaction> data = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
         int userId = sharedPreferences.getInt("user_id", -1);
 
-        // Query để lấy tổng tiền theo tháng
-        String query = "SELECT strftime('%Y-%m', date) AS month, SUM(amount) AS total_amount " +
+        // Xây dựng câu lệnh SQL dựa trên giá trị của tham số `year`
+        String groupBy;
+        String labelColumn;
+        if (year) {
+            groupBy = "strftime('%Y', date)"; // Nhóm theo năm
+            labelColumn = "year";             // Cột trả về là năm
+        } else {
+            groupBy = "strftime('%Y-%m', date)"; // Nhóm theo tháng
+            labelColumn = "month";               // Cột trả về là tháng
+        }
+
+        // Query để lấy tổng tiền theo tháng hoặc năm
+        String query = "SELECT " + groupBy + " AS " + labelColumn + ", SUM(amount) AS total_amount " +
                 "FROM transactions " +
-                "WHERE transactions.user_id = ?" +
+                "WHERE transactions.user_id = ? " +
                 "AND transactions.type = ? " +
-                "GROUP BY strftime('%Y-%m', date);";
+                "GROUP BY " + groupBy + ";";
 
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId), type});
 
         // Duyệt qua các kết quả và ánh xạ vào danh sách
         if (cursor.moveToFirst()) {
             do {
-                // Lấy tháng dưới dạng "yyyy-MM" (ví dụ "2024-11")
-                String month = cursor.getString(cursor.getColumnIndexOrThrow("month"));
+                // Lấy giá trị tháng hoặc năm
+                String timeLabel = cursor.getString(cursor.getColumnIndexOrThrow(labelColumn));
                 // Lấy tổng số tiền
-                String totalAmount = String.valueOf(cursor.getDouble(cursor.getColumnIndexOrThrow("total_amount")));
+                Double totalAmount =cursor.getDouble(cursor.getColumnIndexOrThrow("total_amount"));
 
-                // Chuyển đổi tháng từ dạng "yyyy-MM" thành dạng chữ (ví dụ "November 2024")
-                String monthText = convertMonthNumberToText(month);
+                // Nếu là tháng, chuyển đổi từ "yyyy-MM" thành dạng chữ, ngược lại giữ nguyên
+                String displayText;
+                if (year) {
+                    displayText = timeLabel; // Hiển thị năm trực tiếp (ví dụ: "2024")
+                } else {
+                    displayText = convertMonthNumberToText(timeLabel); // Hiển thị tháng dạng chữ (ví dụ: "November 2024")
+                }
 
                 // Tạo một đối tượng ItemDateTransaction và thêm vào danh sách
-                ItemDateTransaction item = new ItemDateTransaction(monthText, totalAmount);
+                ItemDateTransaction item = new ItemDateTransaction(displayText, totalAmount , type);
                 data.add(item);
             } while (cursor.moveToNext());
         }
@@ -190,7 +208,7 @@ public class TransactionDAO {
         return data;
     }
 
-    // Phương thức chuyển đổi tháng từ dạng "yyyy-MM" thành dạng chữ
+
     public String convertMonthNumberToText(String monthYear) {
         // Mảng chứa tên các tháng
         String[] months = {
@@ -198,12 +216,25 @@ public class TransactionDAO {
                 "July", "August", "September", "October", "November", "December"
         };
 
-        // Tách tháng và năm từ chuỗi "yyyy-MM"
-        String[] parts = monthYear.split("-");
-        int monthNumber = Integer.parseInt(parts[1]) - 1;  // Tháng bắt đầu từ 0, vì vậy phải trừ đi 1
+        // Kiểm tra đầu vào null hoặc không hợp lệ
+        if (monthYear == null || !monthYear.matches("\\d{4}-\\d{2}")) {
+            Log.e("TransactionDAO", "Dữ liệu monthYear không hợp lệ: " + monthYear);
+            return "Invalid date"; // Hoặc giá trị mặc định khác
+        }
 
-        return months[monthNumber];  // Ví dụ "November 2024"
+        try {
+            // Tách tháng và năm từ chuỗi "yyyy-MM"
+            String[] parts = monthYear.split("-");
+            int monthNumber = Integer.parseInt(parts[1]) - 1; // Tháng bắt đầu từ 0
+
+            return months[monthNumber]; // Ví dụ "November 2024"
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            // Xử lý lỗi khi dữ liệu không hợp lệ
+            Log.e("TransactionDAO", "Lỗi khi xử lý monthYear: " + monthYear, e);
+            return "Invalid date";
+        }
     }
+
 
 
     public List<Transaction> getTransactionsByBankId(long bankId) {
@@ -304,6 +335,9 @@ public class TransactionDAO {
         db.close();
         return total;
     }
+    // Lấy danh sách Transaction theo năm hoặc tháng
+
+
 
 
 }

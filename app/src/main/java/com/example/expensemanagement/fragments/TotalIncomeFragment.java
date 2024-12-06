@@ -1,5 +1,6 @@
 package com.example.expensemanagement.fragments;
 
+import android.icu.text.DecimalFormat;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -67,9 +68,12 @@ public class TotalIncomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_total_income, container, false);
         // thay đổi totalIncome
+
         double totalIncome = transactionDAO.getTotalIncome();
+        DecimalFormat formatter = new DecimalFormat("###,###");
+        String formattedPrice = formatter.format(totalIncome);
         TextView tvTotalIncome = view.findViewById(R.id.tvSumAmount);
-        tvTotalIncome.setText(String.valueOf(totalIncome));
+        tvTotalIncome.setText(formattedPrice);
 
         // Inflate the layout for this fragment
         return view;

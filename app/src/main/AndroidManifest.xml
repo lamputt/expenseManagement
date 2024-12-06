@@ -42,9 +42,9 @@
         <activity
             android:name=".activity.FinancialReportActivity"
             android:exported="false" />
-        <activity
-            android:name=".activity.TransferActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".activity.TransferActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".activity.IncomeActivity"
             android:exported="false" />
@@ -57,12 +57,16 @@
         <activity
             android:name=".activity.ProfileAccountActivity"
             android:exported="false" />
-        <activity
-            android:name=".profile_account"
-            android:exported="false" />
-        <activity
-            android:name=".SsssActivity"
-            android:exported="false" />
+        <activity android:name=".activity.ExportDataActivity">
+            <!-- Các thông tin cấu hình khác nếu cần -->
+        </activity>
+
+        <!--        <activity-->
+<!--            android:name=".profile_account"-->
+<!--            android:exported="false" />-->
+<!--        <activity-->
+<!--            android:name=".SsssActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".activity.OtpAuthenSuccessActivity"
             android:exported="false" />

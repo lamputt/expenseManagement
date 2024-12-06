@@ -77,27 +77,6 @@ public class MainActivity extends AppCompatActivity {
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottomshett_layout);
 
-        LinearLayout expenseLayout = dialog.findViewById(R.id.Lnexpense);
-        LinearLayout incomeLayout = dialog.findViewById(R.id.Lnincome);
-
-        expenseLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this , "Expense click" , Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, ExpenseActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        incomeLayout.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(MainActivity.this , "Income click" , Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(MainActivity.this, IncomeActivity.class);
-                startActivity(intent);
-            }
-        });
-
 
         dialog.show();
         dialog.getWindow().setLayout(ViewGroup.LayoutParams.MATCH_PARENT,ViewGroup.LayoutParams.WRAP_CONTENT);

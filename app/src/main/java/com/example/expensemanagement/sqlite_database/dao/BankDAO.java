@@ -34,6 +34,8 @@ public class BankDAO {
         return id;
     }
 
+
+
     // Lấy tất cả Banks
     public List<Bank> getAllBanks() {
         List<Bank> bankList = new ArrayList<>();
@@ -57,6 +59,23 @@ public class BankDAO {
         cursor.close();
         db.close();
         return bankList;
+    }
+
+    public double getTotalAmount() {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        double totalAmount = 0.0;
+
+        // Truy vấn tổng số tiền
+        String query = "SELECT SUM(amount) AS total_amount FROM banks";
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor.moveToFirst()) {
+            totalAmount = cursor.getDouble(cursor.getColumnIndexOrThrow("total_amount"));
+        }
+        cursor.close();
+        db.close();
+
+        return totalAmount;
     }
 
     // Xóa Bank theo ID

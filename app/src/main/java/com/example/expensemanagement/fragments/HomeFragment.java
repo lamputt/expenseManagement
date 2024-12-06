@@ -17,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.expensemanagement.R;
 import com.example.expensemanagement.Model.ItemTransaction;
 import com.example.expensemanagement.adapter.ItemAdapterTransaction;
+import com.example.expensemanagement.sqlite_database.dao.BankDAO;
 import com.example.expensemanagement.sqlite_database.dao.TransactionDAO;
 import com.example.expensemanagement.sqlite_database.entities.Transaction;
 
@@ -30,14 +31,14 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerView;
     private ItemAdapterTransaction adapter;
     private TextView totalIncomeTextView, totalExpenseTextView, tvSumAmount;
-
+    private BankDAO bankDAO;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // Gắn layout cho Fragment
         View view = inflater.inflate(R.layout.fragment_home, container, false);
         transactionDAO = new TransactionDAO(requireContext());
-
+        bankDAO =new BankDAO(requireContext());
         // Khởi tạo RecyclerView
         recyclerView = view.findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
@@ -80,6 +81,7 @@ public class HomeFragment extends Fragment {
 
     // Phương thức cập nhật tổng thu nhập, chi tiêu và số dư
     private void updateTotals(List<Transaction> transactionList) {
+        double totalMoneyofBank = 0;
         double totalIncome = 0;
         double totalExpense = 0;
         for (Transaction transaction : transactionList) {
@@ -89,10 +91,16 @@ public class HomeFragment extends Fragment {
                 totalExpense += transaction.getAmount();
             }
         }
+        if (bankDAO != null) {
+            totalMoneyofBank += bankDAO.getTotalAmount();
+        }
+        else {
+            totalMoneyofBank = 0;
+        }
         DecimalFormat formatter = new DecimalFormat("###,###");
         String formattedTotalIncome = formatter.format(totalIncome);
         String formattedTotalExpense = formatter.format(totalExpense);
-        String formattedTotalSpent = formatter.format(totalIncome - totalExpense);
+        String formattedTotalSpent = formatter.format(totalMoneyofBank + totalIncome - totalExpense);
         totalIncomeTextView.setText(formattedTotalIncome);
         totalExpenseTextView.setText(formattedTotalExpense);
         tvSumAmount.setText(formattedTotalSpent);

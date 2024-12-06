@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.expensemanagement.R;
 import com.example.expensemanagement.sqlite_database.dao.UserDAO;
+import com.example.expensemanagement.utils.ToastUtil;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -58,11 +59,11 @@ public class SignUpActivity extends AppCompatActivity {
 
                 // Kiểm tra các trường hợp nhập
                 if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(SignUpActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(SignUpActivity.this, "Please fill all fields", R.drawable.warning_toast);
                 } else if (!isValidEmail(email)) {
-                    Toast.makeText(SignUpActivity.this, "Invalid email format", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(SignUpActivity.this, "Invalid email format", R.drawable.warning_toast);
                 } else if (!isValidPassword(password)) {
-                    Toast.makeText(SignUpActivity.this, "Password must be at least 8 characters, include upper & lower case, a number, and a special character", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(SignUpActivity.this, "Password must be at least 8 characters, include upper & lower case, a number, and a special character", R.drawable.warning_toast);
                 } else {
                     // Hash password
                     String hashedPassword = hashPassword(password);
@@ -71,17 +72,15 @@ public class SignUpActivity extends AppCompatActivity {
                         // Lưu vào SQLite
                         long result = userDAO.addUser(name, email, hashedPassword);
                         if (result != -1) {
-                            Toast.makeText(SignUpActivity.this, "Sign up successful! Data saved locally!", Toast.LENGTH_SHORT).show();
-
-                            // Chuyển đến màn hình đăng nhập sau khi đăng ký thành công
+                            ToastUtil.showCustomToast(SignUpActivity.this, "Sign up successful! Data saved locally!", R.drawable.success_toast);
                             Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                             startActivity(intent);
                             finish(); // Đóng màn hình đăng ký
                         } else {
-                            Toast.makeText(SignUpActivity.this, "Failed to save data!", Toast.LENGTH_SHORT).show();
+                            ToastUtil.showCustomToast(SignUpActivity.this, "Failed to save data!", R.drawable.warning_toast);
                         }
                     } else {
-                        Toast.makeText(SignUpActivity.this, "Error hashing password!", Toast.LENGTH_SHORT).show();
+                        ToastUtil.showCustomToast(SignUpActivity.this, "Error hashing password!", R.drawable.warning_toast);
                     }
                 }
             }

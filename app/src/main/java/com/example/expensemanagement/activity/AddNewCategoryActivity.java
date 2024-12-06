@@ -16,6 +16,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.expensemanagement.R;
 import com.example.expensemanagement.sqlite_database.dao.CategoryDAO;
+import com.example.expensemanagement.utils.ToastUtil;
 
 public class AddNewCategoryActivity extends AppCompatActivity {
     private CategoryDAO categoryDAO;
@@ -53,21 +54,19 @@ public class AddNewCategoryActivity extends AppCompatActivity {
                 String descriptionCategory = edtDescription.getText().toString().trim();
 
                 if (nameCategory.isEmpty() || descriptionCategory.isEmpty()) {
-                    Toast.makeText(AddNewCategoryActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(AddNewCategoryActivity.this, "Please fill all fields", R.drawable.warning_toast);
                 } else {
                     // Perform sign up logic here (e.g., API call)
-                    Toast.makeText(AddNewCategoryActivity.this, "Add category success", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(AddNewCategoryActivity.this, "Add category success", R.drawable.success_toast);
                     finish();
                 }
-
                 long result = categoryDAO.addCategory(nameCategory, descriptionCategory);
                 if (result != -1) {
                     Intent intent = new Intent(AddNewCategoryActivity.this, ProfileCategoriesActivity.class);
                     startActivity(intent);
                     finish();
-                    Toast.makeText(AddNewCategoryActivity.this, "Data saved locally!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(AddNewCategoryActivity.this, "Failed to save data!", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(AddNewCategoryActivity.this, "Failed to save data!", R.drawable.warning_toast);
                 }
 
             }

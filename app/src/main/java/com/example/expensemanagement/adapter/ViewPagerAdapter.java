@@ -15,8 +15,14 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
         super(fragmentActivity);
     }
 
+    // Thêm fragment vào danh sách
     public void addFragment(Fragment fragment) {
         fragmentList.add(fragment);
+    }
+
+    // Truy xuất fragment theo vị trí
+    public Fragment getFragment(int position) {
+        return fragmentList.get(position);
     }
 
     @NonNull
@@ -29,5 +35,4 @@ public class ViewPagerAdapter extends FragmentStateAdapter {
     public int getItemCount() {
         return fragmentList.size();
     }
-
 }
