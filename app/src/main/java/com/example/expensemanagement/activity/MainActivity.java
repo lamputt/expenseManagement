@@ -8,22 +8,12 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.Gravity;
-import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
-import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -35,7 +25,6 @@ import com.example.expensemanagement.fragments.ProfileFragment;
 import com.example.expensemanagement.fragments.TransactionFragment;
 
 public class MainActivity extends AppCompatActivity {
-    private Button add;
     ActivityMainBinding binding;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,12 +47,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         });
 
-        binding.floatingActionButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-               Showdialog();
-            }
-        });
+        binding.floatingActionButton.setOnClickListener(v -> Showdialog());
     }
     private void replaceFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -76,6 +60,21 @@ public class MainActivity extends AppCompatActivity {
         final Dialog dialog = new Dialog(this);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
         dialog.setContentView(R.layout.bottomshett_layout);
+
+        LinearLayout expenseLayout = dialog.findViewById(R.id.Lnexpense);
+        LinearLayout incomeLayout = dialog.findViewById(R.id.Lnincome);
+
+        expenseLayout.setOnClickListener(v -> {
+            Toast.makeText(MainActivity.this , "Expense click" , Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, ExpenseActivity.class);
+            startActivity(intent);
+        });
+
+        incomeLayout.setOnClickListener(v -> {
+            Toast.makeText(MainActivity.this , "Income click" , Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(MainActivity.this, IncomeActivity.class);
+            startActivity(intent);
+        });
 
 
         dialog.show();
