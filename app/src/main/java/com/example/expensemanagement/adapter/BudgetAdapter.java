@@ -17,6 +17,7 @@ import com.example.expensemanagement.activity.DetailBudgetActivity;
 import com.example.expensemanagement.sqlite_database.dao.BudgetDAO;
 import com.example.expensemanagement.sqlite_database.dao.TransactionDAO;
 import com.example.expensemanagement.sqlite_database.entities.Budget;
+import com.example.expensemanagement.sqlite_database.entities.Transaction;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -59,7 +60,6 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
 
         // Tính số tiền còn lại
         double remaining = budget.getAmount() - sumExpense;
-        double percent = Math.max(0, Math.min(remaining / budget.getAmount(), 1)); // Giá trị trong khoảng [0, 1]
 
         String formattedRemaining = decimalFormat.format(remaining);
         BudgetDAO budgetDAO = new BudgetDAO(context);
@@ -72,7 +72,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
 
         // Cập nhật chiều dài borderBudget dựa trên percent
         int maxWidth = holder.borderBudget.getLayoutParams().width;
-        int newWidth = (int) (maxWidth * percent);
+        int newWidth = (int) ((sumExpense / budget.getAmount()) * maxWidth);
 
         FrameLayout.LayoutParams params = (FrameLayout.LayoutParams) holder.borderBudget.getLayoutParams();
         params.width = newWidth; // Thay đổi chiều dài
