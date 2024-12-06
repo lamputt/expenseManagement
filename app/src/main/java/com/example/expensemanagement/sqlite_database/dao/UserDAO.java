@@ -32,6 +32,8 @@ public class UserDAO {
         values.put("email", email);
         values.put("created_at", System.currentTimeMillis());
 
+
+
         long id = db.insert("users", null, values);
         db.close();
         return id;

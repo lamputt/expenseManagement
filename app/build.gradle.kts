@@ -33,7 +33,6 @@ android {
         targetCompatibility = JavaVersion.VERSION_1_8
     }
 }
-
 dependencies {
     implementation(libs.appcompat)
     implementation(libs.material)
@@ -42,7 +41,12 @@ dependencies {
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
-
+    // thư viện retrofit
     // Thêm thư viện jbcrypt
     implementation("org.mindrot:jbcrypt:0.4")  // Đây là cách thêm bcrypt vào dependencies
+    implementation(libs.retrofit)
+    implementation(libs.converter.gson)
+
+
 }
+
