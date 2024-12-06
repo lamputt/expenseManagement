@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.expensemanagement.R;
+import com.example.expensemanagement.utils.ToastUtil;
 
 public class OtpAuthenticationActivity extends AppCompatActivity {
 
@@ -70,7 +71,7 @@ public class OtpAuthenticationActivity extends AppCompatActivity {
         // Xử lý TextView "Haven't received the OTP?"
         TextView tvResendOtp = findViewById(R.id.tvResendOtp);
         tvResendOtp.setOnClickListener(v ->
-                Toast.makeText(OtpAuthenticationActivity.this, "Request to resend OTP was successful!", Toast.LENGTH_SHORT).show()
+                ToastUtil.showCustomToast(OtpAuthenticationActivity.this, "Request to resend OTP was successful!", R.drawable.success_toast)
         );
 
         // Xử lý nút Continue
@@ -84,12 +85,12 @@ public class OtpAuthenticationActivity extends AppCompatActivity {
 
             // Kiểm tra OTP
             if (otp.equals("1234")) { // Giả sử OTP hợp lệ là "1234"
-                Toast.makeText(OtpAuthenticationActivity.this, "OTP hợp lệ!", Toast.LENGTH_SHORT).show();
+                ToastUtil.showCustomToast(OtpAuthenticationActivity.this, "Valid OTP!", R.drawable.success_toast);
                 // Chuyển sang màn hình chính
                 Intent intent = new Intent(OtpAuthenticationActivity.this, OtpAuthenSuccessActivity.class);
                 startActivity(intent);
             } else {
-                Toast.makeText(OtpAuthenticationActivity.this, "OTP không hợp lệ!", Toast.LENGTH_SHORT).show();
+                ToastUtil.showCustomToast(OtpAuthenticationActivity.this, "Invalid OTP!", R.drawable.warning_toast);
             }
         });
     }

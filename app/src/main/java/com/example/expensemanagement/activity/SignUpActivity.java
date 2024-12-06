@@ -2,7 +2,9 @@ package com.example.expensemanagement.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Patterns;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -12,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.expensemanagement.R;
 import com.example.expensemanagement.sqlite_database.dao.UserDAO;
+import com.example.expensemanagement.utils.ToastUtil;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -22,6 +25,7 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText nameEditText, emailEditText, passwordEditText;
     private Button signUpButton;
     private ImageView backArrow;
+    private boolean showPassWord;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +40,7 @@ public class SignUpActivity extends AppCompatActivity {
         passwordEditText = findViewById(R.id.etPassword);
         signUpButton = findViewById(R.id.btnSignUp);
 
+        setupPasswordToggle(passwordEditText);
         // Handle back arrow click
         backArrow.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -54,11 +59,11 @@ public class SignUpActivity extends AppCompatActivity {
 
                 // Kiểm tra các trường hợp nhập
                 if (name.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                    Toast.makeText(SignUpActivity.this, "Please fill all fields", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(SignUpActivity.this, "Please fill all fields", R.drawable.warning_toast);
                 } else if (!isValidEmail(email)) {
-                    Toast.makeText(SignUpActivity.this, "Invalid email format", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(SignUpActivity.this, "Invalid email format", R.drawable.warning_toast);
                 } else if (!isValidPassword(password)) {
-                    Toast.makeText(SignUpActivity.this, "Password must be at least 8 characters, include upper & lower case, a number, and a special character", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(SignUpActivity.this, "Password must be at least 8 characters, include upper & lower case, a number, and a special character", R.drawable.warning_toast);
                 } else {
                     // Hash password
                     String hashedPassword = hashPassword(password);
@@ -67,17 +72,15 @@ public class SignUpActivity extends AppCompatActivity {
                         // Lưu vào SQLite
                         long result = userDAO.addUser(name, email, hashedPassword);
                         if (result != -1) {
-                            Toast.makeText(SignUpActivity.this, "Sign up successful! Data saved locally!", Toast.LENGTH_SHORT).show();
-
-                            // Chuyển đến màn hình đăng nhập sau khi đăng ký thành công
+                            ToastUtil.showCustomToast(SignUpActivity.this, "Sign up successful! Data saved locally!", R.drawable.success_toast);
                             Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
                             startActivity(intent);
                             finish(); // Đóng màn hình đăng ký
                         } else {
-                            Toast.makeText(SignUpActivity.this, "Failed to save data!", Toast.LENGTH_SHORT).show();
+                            ToastUtil.showCustomToast(SignUpActivity.this, "Failed to save data!", R.drawable.warning_toast);
                         }
                     } else {
-                        Toast.makeText(SignUpActivity.this, "Error hashing password!", Toast.LENGTH_SHORT).show();
+                        ToastUtil.showCustomToast(SignUpActivity.this, "Error hashing password!", R.drawable.warning_toast);
                     }
                 }
             }
@@ -120,5 +123,38 @@ public class SignUpActivity extends AppCompatActivity {
             e.printStackTrace();
             return null;
         }
+    }
+    private void setupPasswordToggle(EditText editText) {
+        editText.setOnTouchListener((v, event) -> {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+                // Kiểm tra nếu nhấn vào drawableEnd
+                if (event.getRawX() >= (editText.getRight() - editText.getCompoundDrawablesRelative()[2].getBounds().width())) {
+                    showPassWord = !showPassWord;
+                    togglePasswordVisibility(editText ,showPassWord );
+                    // Gọi performClick() để hỗ trợ accessibility
+                    v.performClick();
+                    return true;
+                }
+            }
+            return false;
+        });
+    }
+
+    private void togglePasswordVisibility(EditText editText, boolean isPasswordVisible) {
+        if (isPasswordVisible) {
+            // Hiển thị mật khẩu
+            editText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+            editText.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    null, null, getResources().getDrawable(R.drawable.showpassword, null), null
+            );
+        } else {
+            // Ẩn mật khẩu
+            editText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+            editText.setCompoundDrawablesRelativeWithIntrinsicBounds(
+                    null, null, getResources().getDrawable(R.drawable.showpassword, null), null
+            );
+        }
+        // Đặt con trỏ ở cuối văn bản
+        editText.setSelection(editText.getText().length());
     }
 }

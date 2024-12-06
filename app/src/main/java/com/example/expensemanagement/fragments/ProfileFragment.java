@@ -17,11 +17,13 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.example.expensemanagement.R;
 import com.example.expensemanagement.activity.AddNewCategoryActivity;
+import com.example.expensemanagement.activity.EditProfileActivity;
 import com.example.expensemanagement.activity.ExportDataActivity;
 import com.example.expensemanagement.activity.ProfileAccountActivity;
 import com.example.expensemanagement.activity.ProfileCategoriesActivity;
@@ -33,6 +35,7 @@ import com.example.expensemanagement.sqlite_database.dao.UserDAO;
 
 public class ProfileFragment extends Fragment {
     private UserDAO userDAO;
+    private ImageView editProfile;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class ProfileFragment extends Fragment {
 
         // đổi tên theo userId
         String userName = userDAO.getUserName();
+        editProfile = rootView.findViewById(R.id.imgvEditProfile);
         TextView tvUserName = rootView.findViewById(R.id.tvUsername);
         tvUserName.setText(userName);
 
@@ -57,6 +61,14 @@ public class ProfileFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity() , ProfileAccountActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        editProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getActivity() , EditProfileActivity.class);
                 startActivity(intent);
             }
         });

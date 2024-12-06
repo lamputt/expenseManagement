@@ -2,19 +2,25 @@ package com.example.expensemanagement.Model;
 
 public class ItemDateTransaction {
     private String Date ;
-    private String Price;
+    private Double Price;
+    private String Type;
 
-    public ItemDateTransaction (String date , String price) {
+    public ItemDateTransaction (String date , Double price , String Type) {
         this.Date  = date;
         this.Price = price;
+        this.Type = Type;
     }
 
     public String getDate() {
         return this.Date;
     }
 
-    public String getPrice () {
+    public Double getPrice () {
         return this.Price;
+    }
+
+    public String getType () {
+        return this.Type;
     }
 
 }

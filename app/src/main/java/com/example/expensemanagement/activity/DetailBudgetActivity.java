@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.expensemanagement.R;
 import com.example.expensemanagement.sqlite_database.dao.BudgetDAO;
+import com.example.expensemanagement.utils.ToastUtil;
 
 import java.text.DecimalFormat;
 
@@ -52,8 +53,7 @@ public class DetailBudgetActivity extends AppCompatActivity {
         if (budgetId != -1) {
             BudgetDAO budgetDAO = new BudgetDAO(this);
             budgetDAO.deleteBudget(budgetId);
-            Toast.makeText(this, "Budget deleted successfully!", Toast.LENGTH_SHORT).show();
-
+            ToastUtil.showCustomToast(DetailBudgetActivity.this, "Budget deleted successfully!", R.drawable.success_toast);
             // Gửi kết quả về BudgetFragment
             Intent intent = new Intent();
             setResult(RESULT_OK, intent);
