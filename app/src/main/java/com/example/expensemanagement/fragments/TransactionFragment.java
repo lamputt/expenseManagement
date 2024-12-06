@@ -25,15 +25,36 @@ import java.util.List;
 
 public class TransactionFragment extends Fragment {
 
+    private View view;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_transaction, container, false);
+        view = inflater.inflate(R.layout.fragment_transaction, container, false);
 
-        TransactionDAO transactionDAO = new TransactionDAO(requireContext());
-
-        // Tìm LinearLayout theo ID
         LinearLayout lnSeeFinancial = view.findViewById(R.id.LnSeeFinancial);
+
+        loadTransactions();
+
+        // Thiết lập click listener
+        lnSeeFinancial.setOnClickListener(v -> {
+            // Tạo Intent để chuyển sang Activity
+            Intent intent = new Intent(getActivity(), FinancialReportActivity.class);
+            startActivity(intent);
+        });
+
+        return view;
+    }
+
+    //tạo hàm load lại dữ liệu khi quay lại trang
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadTransactions();
+    }
+
+    private void loadTransactions() {
+        TransactionDAO transactionDAO = new TransactionDAO(requireContext());
 
         // Khởi tạo RecyclerView
         RecyclerView recyclerView = view.findViewById(R.id.recyclerView);
@@ -44,14 +65,5 @@ public class TransactionFragment extends Fragment {
         // Gắn Adapter
         ItemAdapterTransaction adapter = new ItemAdapterTransaction(transactionList);
         recyclerView.setAdapter(adapter);
-
-        // Thiết lập click listener
-        lnSeeFinancial.setOnClickListener(v -> {
-            // Tạo Intent để chuyển sang Activity
-            Intent intent = new Intent(getActivity(), FinancialReportActivity.class);
-            startActivity(intent);
-        });
-
-        return view;
     }
 }

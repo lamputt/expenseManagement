@@ -236,7 +236,6 @@ public class TransactionDAO {
     }
 
 
-
     public List<Transaction> getTransactionsByBankId(long bankId) {
         List<Transaction> transactionList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
@@ -335,7 +334,8 @@ public class TransactionDAO {
         db.close();
         return total;
     }
-    // Lấy danh sách Transaction theo năm hoặc tháng
+
+
 
 
 
