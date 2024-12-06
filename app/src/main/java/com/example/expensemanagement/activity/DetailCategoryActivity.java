@@ -19,6 +19,7 @@ import com.example.expensemanagement.sqlite_database.dao.CategoryDAO;
 import com.example.expensemanagement.sqlite_database.dao.TransactionDAO;
 import com.example.expensemanagement.sqlite_database.entities.Category;
 import com.example.expensemanagement.sqlite_database.entities.Transaction;
+import com.example.expensemanagement.utils.ToastUtil;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -61,10 +62,10 @@ public class DetailCategoryActivity extends AppCompatActivity {
             tvAmount.setText(formattedAmount);
         }
 
-        // Xử lý sự kiện click nút "Delete" để xóa ngân hàng
+
         deleteCategoryButton.setOnClickListener(v -> {
             categoryDAO.deleteCategory(categoryId);
-            Toast.makeText(this, "Account Deleted", Toast.LENGTH_SHORT).show();
+            ToastUtil.showCustomToast(DetailCategoryActivity.this, "Category Deleted", R.drawable.success_toast);
             finish();  // Quay lại màn hình trước sau khi xóa
         });
 

@@ -18,6 +18,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.expensemanagement.R;
 import com.example.expensemanagement.sqlite_database.dao.UserDAO;
 import com.example.expensemanagement.sqlite_database.entities.User;
+import com.example.expensemanagement.utils.ToastUtil;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -57,32 +58,32 @@ public class EditProfileActivity extends AppCompatActivity {
             String newPassword = newpassword.getText().toString();
             String newPasswordAgain = newwpasswordAgain.getText().toString();
             if (newUserName.isEmpty()) {
-                Toast.makeText(this , "Please Enter your UserName" , Toast.LENGTH_SHORT).show();
+                ToastUtil.showCustomToast(EditProfileActivity.this, "Please Enter your UserName", R.drawable.warning_toast);
             }
             // Kiểm tra mật khẩu mới và xác nhận mật khẩu mới
             if (newPassword.isEmpty() || newPasswordAgain.isEmpty()) {
-                Toast.makeText(this, "Upadete profile success", Toast.LENGTH_SHORT).show();
+                ToastUtil.showCustomToast(EditProfileActivity.this, "Upadete profile success", R.drawable.success_toast);
                 finish();
                 userDAO.updateUserName(newUserName);
             }
             if (!newPasswordAgain.equals(newPassword) ) {
-                Toast.makeText(this, "Please enter password and new password match", Toast.LENGTH_SHORT).show();
+                ToastUtil.showCustomToast(EditProfileActivity.this, "Please enter password and new password match", R.drawable.warning_toast);
                 return;
             }
             else {
                 String hashedPassword = hashPassword(newPasswordAgain);
                 if (!isValidPassword(newPasswordAgain) || !isValidPassword(newPassword)) {
-                    Toast.makeText(this, "Password must be at least 8 characters, include upper & lower case, a number, and a special character", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(EditProfileActivity.this, "Password must be at least 8 characters, include upper & lower case, a number, and a special character", R.drawable.warning_toast);
                     return;
                 }
                 else {
                     if (hashedPassword != null) {
-                        Toast.makeText(this, "Upadete profile success", Toast.LENGTH_SHORT).show();
+                        ToastUtil.showCustomToast(EditProfileActivity.this, "Upadete profile success", R.drawable.success_toast);
                         userDAO.updatePassword(hashedPassword);
                         finish();
 
                     } else {
-                        Toast.makeText(this, "Error hashing password!", Toast.LENGTH_SHORT).show();
+                        ToastUtil.showCustomToast(EditProfileActivity.this, "Error hashing password!", R.drawable.warning_toast);
                     }
                 }
             }

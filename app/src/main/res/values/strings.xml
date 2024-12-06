@@ -95,6 +95,5 @@
     <string-array name="spinner_items">
         <item>Month</item>
         <item>Year</item>
-        <item>Day</item>
     </string-array>
 </resources>

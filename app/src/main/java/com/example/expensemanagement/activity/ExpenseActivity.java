@@ -35,6 +35,7 @@ import com.example.expensemanagement.sqlite_database.dao.TransactionDAO;
 import com.example.expensemanagement.sqlite_database.entities.Bank;
 import com.example.expensemanagement.sqlite_database.entities.Category;
 import com.example.expensemanagement.sqlite_database.entities.Transaction;
+import com.example.expensemanagement.utils.ToastUtil;
 
 import java.text.DecimalFormat;
 import java.util.Calendar;
@@ -115,7 +116,7 @@ public class ExpenseActivity extends AppCompatActivity {
                     String cleanString = s.toString().replaceAll("[^0-9]", "");
 
                     if (cleanString.length() > 9) {
-                        Toast.makeText(ExpenseActivity.this, "Không được nhập quá 9 chữ số", Toast.LENGTH_SHORT).show();
+                        ToastUtil.showCustomToast(ExpenseActivity.this, "Do not enter more than 9 digits", R.drawable.warning_toast);
                         cleanString = cleanString.substring(0, 9);
                     }
 
@@ -147,7 +148,7 @@ public class ExpenseActivity extends AppCompatActivity {
                 description = etdescription.getText().toString().trim();
 
                 if (totalAmount.isEmpty() || date.isEmpty() || selectedCategoryId == -1 || selectedBankId == -1 || description.isEmpty()) {
-                    Toast.makeText(ExpenseActivity.this, "Please fill in all information", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(ExpenseActivity.this, "Please fill in all information", R.drawable.warning_toast);
                     return;
                 } else {
                     // Truy vấn ngân hàng đã chọn
@@ -159,7 +160,7 @@ public class ExpenseActivity extends AppCompatActivity {
 
                         // Kiểm tra xem ngân hàng có đủ tiền hay không
                         if (bankAmount < amount) {
-                            Toast.makeText(ExpenseActivity.this, "Insufficient funds in the selected bank account.", Toast.LENGTH_SHORT).show();
+                            ToastUtil.showCustomToast(ExpenseActivity.this, "Insufficient funds in the selected bank account", R.drawable.warning_toast);
                             return;
                         }
 
@@ -177,12 +178,12 @@ public class ExpenseActivity extends AppCompatActivity {
                         Transaction transaction = new Transaction(type, selectedCategoryId, selectedBankId, description, amount, date);
                         long result = transactionDAO.addTransaction(transaction);
                         if (result != -1) {
-                            Toast.makeText(ExpenseActivity.this, "Add Transaction successfully", Toast.LENGTH_SHORT).show();
+                            ToastUtil.showCustomToast(ExpenseActivity.this, "Add Transaction successfully", R.drawable.success_toast);
                             // quay lại màn hình trước và load lại dữ liệu ở màn hình đó
                             setResult(RESULT_OK);
                             finish();
                         } else {
-                            Toast.makeText(ExpenseActivity.this, "Failed to save data!", Toast.LENGTH_SHORT).show();
+                            ToastUtil.showCustomToast(ExpenseActivity.this, "Failed to save data", R.drawable.warning_toast);
                         }
                     }
                 }
@@ -204,7 +205,10 @@ public class ExpenseActivity extends AppCompatActivity {
         DatePickerDialog datePickerDialog = new DatePickerDialog(this,
                 (DatePicker view, int selectedYear, int selectedMonth, int selectedDay) -> {
                     // Định dạng ngày (Tháng bắt đầu từ 0 nên cần +1)
-                    String date = selectedYear + "-" + (selectedMonth + 1) + "-" + selectedDay;
+                    String date = String.format("%04d-%02d-%02d",
+                            selectedYear,
+                            selectedMonth + 1,
+                            selectedDay);
                     selectDay.setText(date); // Hiển thị ngày vào EditText
                 },
                 year, month, day);

@@ -6,15 +6,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.Spinner;
-import android.widget.Toast;
-
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
-
 import com.example.expensemanagement.fragments.ExpenseTabFragment;
 import com.example.expensemanagement.fragments.IncomeTabFragment;
 import com.example.expensemanagement.R;
@@ -33,21 +30,39 @@ public class FinancialReportActivity extends AppCompatActivity {
     private ViewPager2 viewPagerBottom;
     private TabLayout tabLayout;
     private ImageView back;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         transactionDAO = new TransactionDAO(this);
         setContentView(R.layout.activity_financial_report);
+
+        // Khởi tạo các ViewPager2
+        viewPagerTop = findViewById(R.id.viewPagerTotalIncomeAndExpense); // Đảm bảo viewPagerTop được khởi tạo
+        viewPagerBottom = findViewById(R.id.viewPagerFinancialReport); // Đảm bảo viewPagerBottom được khởi tạo
+
+        // Thiết lập padding cho view
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
-    
-        Spinner spinner = findViewById(R.id.spinner);
 
-        // Tạo adapter cho Spinner
+        // Tạo và gán adapter cho ViewPagerTop
+        ViewPagerAdapter viewPagerAdapterTop = new ViewPagerAdapter(this);
+        viewPagerAdapterTop.addFragment(new TotalExpenseFragment());
+        viewPagerAdapterTop.addFragment(new TotalIncomeFragment());
+        viewPagerTop.setAdapter(viewPagerAdapterTop); // Gọi setAdapter sau khi khởi tạo
+
+        // Tạo và gán adapter cho ViewPagerBottom
+        ViewPagerAdapter viewPagerAdapterBottom = new ViewPagerAdapter(this);
+        viewPagerAdapterBottom.addFragment(new ExpenseTabFragment());
+        viewPagerAdapterBottom.addFragment(new IncomeTabFragment());
+        viewPagerBottom.setAdapter(viewPagerAdapterBottom); // Gọi setAdapter sau khi khởi tạo
+
+        // Khởi tạo Spinner và thiết lập adapter cho Spinner
+        Spinner spinner = findViewById(R.id.spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(
                 this,
                 R.array.spinner_items,
@@ -55,19 +70,31 @@ public class FinancialReportActivity extends AppCompatActivity {
         );
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+        // Thiết lập sự kiện quay lại
         back = findViewById(R.id.back_financialReport);
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-        // Bắt sự kiện chọn
+        back.setOnClickListener(v -> finish());
+
+        // Bắt sự kiện chọn mục trong Spinner
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 String selectedOption = parent.getItemAtPosition(position).toString();
-                Toast.makeText(FinancialReportActivity.this, "Selected: " + selectedOption, Toast.LENGTH_SHORT).show();
+                boolean isYear = selectedOption.equals("Year");
+
+                // Truyền giá trị isYear vào các Fragment
+                Bundle bundle = new Bundle();
+                bundle.putBoolean("isYear", isYear);
+
+                // Truyền vào ExpenseTabFragment
+                ExpenseTabFragment expenseTabFragment = (ExpenseTabFragment) viewPagerAdapterBottom.getFragment(0);
+                expenseTabFragment.setArguments(bundle);
+                expenseTabFragment.updateData(isYear);
+
+                // Truyền vào IncomeTabFragment
+                IncomeTabFragment incomeTabFragment = (IncomeTabFragment) viewPagerAdapterBottom.getFragment(1);
+                incomeTabFragment.setArguments(bundle);
+                incomeTabFragment.updateData(isYear);
             }
 
             @Override
@@ -76,28 +103,8 @@ public class FinancialReportActivity extends AppCompatActivity {
             }
         });
 
-        TabLayout tabLayout = findViewById(R.id.tabLayout);
-        ViewPager2 viewPager = findViewById(R.id.viewPagerFinancialReport);
-
-        // Setup ViewPager Adapter
-        viewPagerTop = findViewById(R.id.viewPagerTotalIncomeAndExpense);
-        viewPagerBottom = findViewById(R.id.viewPagerFinancialReport);
-
-        // Khởi tạo TabLayout
-        tabLayout = findViewById(R.id.tabLayout);
-
-        // Khởi tạo adapter cho ViewPager2
-        ViewPagerAdapter viewPagerAdapterTop = new ViewPagerAdapter(this);
-        viewPagerAdapterTop.addFragment(new TotalExpenseFragment());
-        viewPagerAdapterTop.addFragment(new TotalIncomeFragment());
-        viewPagerTop.setAdapter(viewPagerAdapterTop);
-
-        ViewPagerAdapter viewPagerAdapterBottom = new ViewPagerAdapter(this);
-        viewPagerAdapterBottom.addFragment(new ExpenseTabFragment());
-        viewPagerAdapterBottom.addFragment(new IncomeTabFragment());
-        viewPagerBottom.setAdapter(viewPagerAdapterBottom);
-
         // Liên kết TabLayout với ViewPager2
+        tabLayout = findViewById(R.id.tabLayout);
         new TabLayoutMediator(tabLayout, viewPagerBottom, (tab, position) -> {
             if (position == 0) {
                 tab.setText("Expense");
@@ -106,7 +113,7 @@ public class FinancialReportActivity extends AppCompatActivity {
             }
         }).attach();
 
-        // Thiết lập đồng bộ giữa hai ViewPager2
+        // Đồng bộ ViewPager2 giữa viewPagerTop và viewPagerBottom
         viewPagerBottom.registerOnPageChangeCallback(new ViewPager2.OnPageChangeCallback() {
             @Override
             public void onPageSelected(int position) {
@@ -123,6 +130,4 @@ public class FinancialReportActivity extends AppCompatActivity {
             }
         });
     }
-
-
 }

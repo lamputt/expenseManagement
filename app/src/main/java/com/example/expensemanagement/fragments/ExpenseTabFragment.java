@@ -16,37 +16,43 @@ import com.example.expensemanagement.R;
 import com.example.expensemanagement.adapter.ItemDateTransactionAdapter;
 import com.example.expensemanagement.sqlite_database.dao.TransactionDAO;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ExpenseTabFragment extends Fragment {
+    private RecyclerView recyclerView;
+    private TransactionDAO transactionDAO; // Khai báo TransactionDAO
 
-    private TransactionDAO transactionDAO;
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // Tạo view của fragment
         View view = inflater.inflate(R.layout.fragment_expense_tab, container, false);
 
+        // Khởi tạo đối tượng transactionDAO
         transactionDAO = new TransactionDAO(requireContext());
+
         // Khởi tạo RecyclerView
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerViewExpenseTab);
+        recyclerView = view.findViewById(R.id.recyclerViewExpenseTab);
         recyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
 
         // Lấy dữ liệu từ cơ sở dữ liệu
-        List<ItemDateTransaction> data = transactionDAO.getDataByDate("expense");
-
-        // Tạo danh sách các item
-        List<ItemDateTransaction> itemList = new ArrayList<>();
-        for (ItemDateTransaction item : data) {
-            itemList.add(item);
-        }
-
-        // Gắn Adapter vào RecyclerView
-        ItemDateTransactionAdapter adapter = new ItemDateTransactionAdapter(itemList);
-        recyclerView.setAdapter(adapter);
+        updateData(false);
 
         // Trả về view sau khi đã thiết lập đầy đủ
         return view;
+    }
+
+    public void updateData(boolean isYear) {
+        // Kiểm tra xem transactionDAO có null hay không trước khi gọi phương thức
+        if (transactionDAO != null) {
+            // Lấy dữ liệu từ database dựa trên isYear
+            List<ItemDateTransaction> data = transactionDAO.getDataByDate("expense", isYear);
+
+            // Gắn dữ liệu vào adapter
+            ItemDateTransactionAdapter adapter = new ItemDateTransactionAdapter(data);
+            recyclerView.setAdapter(adapter);
+        } else {
+            // In ra log nếu transactionDAO là null
+            System.out.println("TransactionDAO is null!");
+        }
     }
 }
