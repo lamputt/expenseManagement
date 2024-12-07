@@ -316,7 +316,6 @@ public class TransactionDAO {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
         int userId = sharedPreferences.getInt("user_id", -1);
-
         String query = "SELECT category_id, amount AS total " +
                 "FROM Transactions " +
                 "WHERE user_id = ? " +
@@ -335,13 +334,5 @@ public class TransactionDAO {
         db.close();
         return total;
     }
-    // Lấy danh sách Transaction theo năm hoặc tháng
-
-
-
-
-
-
-
 
 }

@@ -60,7 +60,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"
                     android:src="@drawable/notifiaction" />
-
                 <View
                     android:id="@+id/redDot"
                     android:layout_width="10dp"
@@ -68,7 +67,8 @@
                     android:background="@drawable/circle_red_dot"
                     android:layout_marginStart="-8dp"
                     android:layout_marginTop="4dp"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                     />
             </LinearLayout>
 
             <TextView

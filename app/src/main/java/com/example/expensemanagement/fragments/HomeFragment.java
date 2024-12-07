@@ -1,6 +1,7 @@
     package com.example.expensemanagement.fragments;
 
     import android.os.Bundle;
+    import android.util.Log;
     import android.view.LayoutInflater;
     import android.view.View;
     import android.view.ViewGroup;
@@ -13,9 +14,11 @@
     import androidx.annotation.Nullable;
     import androidx.fragment.app.Fragment;
     import androidx.fragment.app.FragmentTransaction;
+    import androidx.lifecycle.Observer;
     import androidx.recyclerview.widget.LinearLayoutManager;
     import androidx.recyclerview.widget.RecyclerView;
 
+    import com.example.expensemanagement.Model.SharedViewModel;
     import com.example.expensemanagement.R;
     import com.example.expensemanagement.Model.ItemTransaction;
     import com.example.expensemanagement.activity.MainActivity;
@@ -61,7 +64,6 @@
             noTification = view.findViewById(R.id.imgViewNotification);
             // Tính toán và cập nhật tổng tiền
             updateTotals(transactionList);
-
             // Xử lý nút seeAll
             seeAll = view.findViewById(R.id.btnSeeAll);
             seeAll.setOnClickListener(v -> {
@@ -73,7 +75,6 @@
             });
             notificationContainer = view.findViewById(R.id.container_notification);
             noTification = view.findViewById(R.id.imgViewNotification);
-
             noTification.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -89,7 +90,17 @@
                     mainActivity.hideFloatingActionButton();
                 }
             });
+            redDot = view.findViewById(R.id.redDot);
 
+            // Quan sát trạng thái redDot
+            MainActivity mainActivity = (MainActivity) requireActivity();
+            SharedViewModel sharedViewModel = mainActivity.getSharedViewModel();
+            sharedViewModel.getShowRedDot().observe(getViewLifecycleOwner(), new Observer<Boolean>() {
+                @Override
+                public void onChanged(Boolean show) {
+                    redDot.setVisibility(show ? View.VISIBLE : View.GONE);
+                }
+            });
 
             return view;
         }
@@ -102,16 +113,8 @@
             List<Transaction> transactionList = transactionDAO.getAllTransactions();
             adapter.updateData(transactionList); // Cập nhật lại Adapter
             updateTotals(transactionList); // Cập nhật tổng tiền
-        }
-        public void showRedDot() {
-            redDot.setVisibility(View.VISIBLE);
-        }
 
-        // Phương thức để ẩn redDot
-        public void hideRedDot() {
-            redDot.setVisibility(View.GONE);
         }
-
         // Phương thức cập nhật tổng thu nhập, chi tiêu và số dư
         private void updateTotals(List<Transaction> transactionList) {
             double totalMoneyofBank = 0;

@@ -6,11 +6,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.example.expensemanagement.Model.SharedViewModel;
 import com.example.expensemanagement.R;
 import com.example.expensemanagement.activity.MainActivity;
 import com.example.expensemanagement.adapter.NotificationAdapter;
@@ -57,7 +59,6 @@ public class NotificationBudgetFragment extends Fragment {
                 budgetsWithExceed.add(budget);  // Thêm vào danh sách các ngân sách vượt quá
             }
         }
-
         // Gán Adapter cho RecyclerView
         notificationAdapter = new NotificationAdapter(budgetsWithExceed);
         recyclerViewNotification.setAdapter(notificationAdapter);
@@ -66,22 +67,17 @@ public class NotificationBudgetFragment extends Fragment {
             recyclerViewNotification.setVisibility(View.GONE);
             rootView.findViewById(R.id.no_notification).setVisibility(View.VISIBLE);
             // Không có thông báo, ẩn redDot
-            HomeFragment homeFragment = (HomeFragment) requireActivity().getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getName());
-            if (homeFragment != null) {
-                homeFragment.hideRedDot(); // Gọi phương thức trong HomeFragment
-            }
         } else {
             recyclerViewNotification.setVisibility(View.VISIBLE);
             rootView.findViewById(R.id.no_notification).setVisibility(View.GONE);
-
             // Có thông báo, hiển thị redDot
-            HomeFragment homeFragment = (HomeFragment) requireActivity().getSupportFragmentManager().findFragmentByTag(HomeFragment.class.getName());
-            if (homeFragment != null) {
-                homeFragment.showRedDot(); // Gọi phương thức trong HomeFragment
-            }
         }
-
-
+        // Cập nhật trạng thái redDot
+        MainActivity mainActivity = (MainActivity) requireActivity();
+        SharedViewModel sharedViewModel = mainActivity.getSharedViewModel();
+        boolean hasNewNotification = budgetsWithExceed != null && !budgetsWithExceed.isEmpty();
+        sharedViewModel.updateRedDotStatus(hasNewNotification);
+        sharedViewModel.markNotificationsAsSeen(); // Ẩn redDot
         return rootView;
 
     }
