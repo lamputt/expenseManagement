@@ -41,7 +41,7 @@ public class ItemDateTransactionAdapter extends RecyclerView.Adapter<ItemDateTra
         // Format price with comma separator
         DecimalFormat formatter = new DecimalFormat("###,###");
         String formattedPrice = formatter.format(item.getPrice());
-        holder.tvPriceDate.setText(formattedPrice);
+        holder.tvPriceDate.setText(formattedPrice+" đ");
 
         // Set text color based on type
         if ("expense".equalsIgnoreCase(item.getType())) {
