@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.example.expensemanagement.Model.ItemDateTransaction;
 import com.example.expensemanagement.sqlite_database.DatabaseHelper;
-import com.example.expensemanagement.sqlite_database.entities.Bank;
 import com.example.expensemanagement.sqlite_database.entities.Category;
 import com.example.expensemanagement.sqlite_database.entities.Transaction;
 
@@ -234,7 +233,6 @@ public class TransactionDAO {
             return "Invalid date";
         }
     }
-
 
 
     public List<Transaction> getTransactionsByBankId(long bankId) {

@@ -9,6 +9,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.expensemanagement.sqlite_database.DatabaseHelper;
+import com.example.expensemanagement.sqlite_database.controller.AuthenticationController;
+import com.example.expensemanagement.sqlite_database.controller.OtpController;
+import com.example.expensemanagement.sqlite_database.dto.request.RegisterRequest;
 import com.example.expensemanagement.sqlite_database.entities.User;
 
 import java.util.ArrayList;
@@ -17,20 +20,30 @@ import java.util.List;
 public class UserDAO {
     private final DatabaseHelper dbHelper;
     private final Context context;
+    private final AuthenticationController authenticationController;
+    private final OtpController otpController;
 
     public UserDAO(Context context) {
         this.context = context;
         dbHelper = new DatabaseHelper(context);
+        authenticationController = new AuthenticationController(context);
+        otpController = new OtpController(context);
     }
 
     // Thêm User vào database
-    public long addUser(String userName, String email, String password) {
+    public long addUser(String userName, String email, String password, String hashPassword) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SharedPreferences sharedPreferences = context.getSharedPreferences("OtpPrefs", MODE_PRIVATE);
+        String transId = sharedPreferences.getString("transId", null);
+
         ContentValues values = new ContentValues();
         values.put("user_name", userName);
-        values.put("password", password);
+        values.put("password", hashPassword);
         values.put("email", email);
         values.put("created_at", System.currentTimeMillis());
+
+        RegisterRequest registerRequest = new RegisterRequest(transId, email, userName, password);
+        authenticationController.register(registerRequest);
 
         long id = db.insert("users", null, values);
         db.close();
@@ -65,6 +78,8 @@ public class UserDAO {
         String query = "SELECT * FROM users WHERE email = ? AND password = ?";
         try {
             Cursor cursor = db.rawQuery(query, new String[]{email, hashedPassword});
+
+            authenticationController.authenticate(email, hashedPassword);
 
             boolean isValid = cursor.moveToFirst();
             if (isValid) {
@@ -129,5 +144,29 @@ public class UserDAO {
         int rowsAffected = db.update("users", values, "id = ?", new String[]{String.valueOf(userId)});
         db.close();
         return rowsAffected;
+    }
+
+    public void checkEmailExists(String email) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT * FROM users WHERE email = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{email});
+
+        boolean exists = cursor.moveToFirst();
+        if (exists) {
+            return;
+        } else {
+            otpController.sendOtp(email);
+
+        }
+        cursor.close();
+        db.close();
+
+    }
+
+    public boolean checkOtp(String otp) {
+        otpController.verifyOtp(otp);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("OtpPrefs", MODE_PRIVATE);
+        String serverOtp = sharedPreferences.getString("otp", null);
+        return serverOtp != null && serverOtp.equals(otp);
     }
 }

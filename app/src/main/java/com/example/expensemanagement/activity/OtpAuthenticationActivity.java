@@ -1,6 +1,7 @@
 package com.example.expensemanagement.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,14 +16,18 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.expensemanagement.R;
+import com.example.expensemanagement.sqlite_database.dao.UserDAO;
 import com.example.expensemanagement.utils.ToastUtil;
 
 public class OtpAuthenticationActivity extends AppCompatActivity {
+
+    UserDAO userDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.otp_authentication);
+        userDAO = new UserDAO(this);
 
         // AppBar Back Button
         ImageView backArrowSignIn = findViewById(R.id.backArrowSignIn);
@@ -83,9 +88,25 @@ public class OtpAuthenticationActivity extends AppCompatActivity {
                     otpBox3.getText().toString() +
                     otpBox4.getText().toString();
 
+            String email = getIntent().getStringExtra("email");
+            String name = getIntent().getStringExtra("name");
+            String password = getIntent().getStringExtra("password");
+            String hashPassword = getIntent().getStringExtra("hashedPassword");
+
             // Kiểm tra OTP
-            if (otp.equals("1234")) { // Giả sử OTP hợp lệ là "1234"
+            boolean isVerify = userDAO.checkOtp(otp);
+
+            if (isVerify) {
+                // Lưu thông tin vào SQLite
+                userDAO.addUser(name, email, password, hashPassword);
                 ToastUtil.showCustomToast(OtpAuthenticationActivity.this, "Valid OTP!", R.drawable.success_toast);
+
+                // xóa transId trong sharedPreferences
+                SharedPreferences sharedPreferences = getSharedPreferences("OtpPrefs", MODE_PRIVATE);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.remove("transId");
+                editor.apply();
+
                 // Chuyển sang màn hình chính
                 Intent intent = new Intent(OtpAuthenticationActivity.this, OtpAuthenSuccessActivity.class);
                 startActivity(intent);

@@ -10,6 +10,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.expensemanagement.R;
@@ -18,6 +19,7 @@ import com.example.expensemanagement.utils.ToastUtil;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Objects;
 
 public class SignUpActivity extends AppCompatActivity {
 
@@ -69,16 +71,17 @@ public class SignUpActivity extends AppCompatActivity {
                     String hashedPassword = hashPassword(password);
 
                     if (hashedPassword != null) {
-                        // Lưu vào SQLite
-                        long result = userDAO.addUser(name, email, hashedPassword);
-                        if (result != -1) {
-                            ToastUtil.showCustomToast(SignUpActivity.this, "Sign up successful! Data saved locally!", R.drawable.success_toast);
-                            Intent intent = new Intent(SignUpActivity.this, SignInActivity.class);
-                            startActivity(intent);
-                            finish(); // Đóng màn hình đăng ký
-                        } else {
-                            ToastUtil.showCustomToast(SignUpActivity.this, "Failed to save data!", R.drawable.warning_toast);
-                        }
+                        // check email
+                        userDAO.checkEmailExists(email);
+
+                        Intent intent = new Intent(SignUpActivity.this, OtpAuthenticationActivity.class);
+                        intent.putExtra("email", email);
+                        intent.putExtra("name", name);
+                        intent.putExtra("hashedPassword", hashedPassword);
+                        intent.putExtra("password", password);
+                        startActivity(intent);
+                        finish();
+
                     } else {
                         ToastUtil.showCustomToast(SignUpActivity.this, "Error hashing password!", R.drawable.warning_toast);
                     }
@@ -124,13 +127,14 @@ public class SignUpActivity extends AppCompatActivity {
             return null;
         }
     }
+
     private void setupPasswordToggle(EditText editText) {
         editText.setOnTouchListener((v, event) -> {
             if (event.getAction() == MotionEvent.ACTION_UP) {
                 // Kiểm tra nếu nhấn vào drawableEnd
                 if (event.getRawX() >= (editText.getRight() - editText.getCompoundDrawablesRelative()[2].getBounds().width())) {
                     showPassWord = !showPassWord;
-                    togglePasswordVisibility(editText ,showPassWord );
+                    togglePasswordVisibility(editText, showPassWord);
                     // Gọi performClick() để hỗ trợ accessibility
                     v.performClick();
                     return true;
