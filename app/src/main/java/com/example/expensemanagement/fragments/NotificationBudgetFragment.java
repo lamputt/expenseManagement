@@ -44,12 +44,7 @@ public class NotificationBudgetFragment extends Fragment {
         recyclerViewNotification.setLayoutManager(new LinearLayoutManager(requireContext()));
         back = rootView.findViewById(R.id.ImageViewBackNotification);
 
-        back.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                getActivity().onBackPressed();
-            }
-        });
+        back.setOnClickListener(v -> getActivity().onBackPressed());
         List<Budget> allBudgets = budgetDAO.getAllBudgets();
         budgetsWithExceed = new ArrayList<>();
         for (Budget budget : allBudgets) {

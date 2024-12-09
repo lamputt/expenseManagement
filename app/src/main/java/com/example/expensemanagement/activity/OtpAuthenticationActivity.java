@@ -88,30 +88,43 @@ public class OtpAuthenticationActivity extends AppCompatActivity {
                     otpBox3.getText().toString() +
                     otpBox4.getText().toString();
 
-            String email = getIntent().getStringExtra("email");
-            String name = getIntent().getStringExtra("name");
-            String password = getIntent().getStringExtra("password");
-            String hashPassword = getIntent().getStringExtra("hashedPassword");
+            boolean forgotPassword = getIntent().getBooleanExtra("forgotPassword", false);
+            if(forgotPassword){
+                boolean isVerify = userDAO.checkOtp(otp);
+                if(isVerify){
+                    ToastUtil.showCustomToast(OtpAuthenticationActivity.this, "Valid OTP!", R.drawable.success_toast);
+                    Intent intent = new Intent(OtpAuthenticationActivity.this, ResetPasswordActivity.class);
+                    startActivity(intent);
+                    finish();
+                }else{
+                    ToastUtil.showCustomToast(OtpAuthenticationActivity.this, "Invalid OTP!", R.drawable.warning_toast);
+                }
+            } else{
+                String email = getIntent().getStringExtra("email");
+                String name = getIntent().getStringExtra("name");
+                String password = getIntent().getStringExtra("password");
+                String hashPassword = getIntent().getStringExtra("hashedPassword");
 
-            // Kiểm tra OTP
-            boolean isVerify = userDAO.checkOtp(otp);
+                // Kiểm tra OTP
+                boolean isVerify = userDAO.checkOtp(otp);
 
-            if (isVerify) {
-                // Lưu thông tin vào SQLite
-                userDAO.addUser(name, email, password, hashPassword);
-                ToastUtil.showCustomToast(OtpAuthenticationActivity.this, "Valid OTP!", R.drawable.success_toast);
+                if (isVerify) {
+                    // Lưu thông tin vào SQLite
+                    userDAO.addUser(name, email, password, hashPassword);
+                    ToastUtil.showCustomToast(OtpAuthenticationActivity.this, "Valid OTP!", R.drawable.success_toast);
 
-                // xóa transId trong sharedPreferences
-                SharedPreferences sharedPreferences = getSharedPreferences("OtpPrefs", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                editor.remove("transId");
-                editor.apply();
+                    // xóa transId trong sharedPreferences
+                    SharedPreferences sharedPreferences = getSharedPreferences("OtpPrefs", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferences.edit();
+                    editor.remove("transId");
+                    editor.apply();
 
-                // Chuyển sang màn hình chính
-                Intent intent = new Intent(OtpAuthenticationActivity.this, OtpAuthenSuccessActivity.class);
-                startActivity(intent);
-            } else {
-                ToastUtil.showCustomToast(OtpAuthenticationActivity.this, "Invalid OTP!", R.drawable.warning_toast);
+                    // Chuyển sang màn hình chính
+                    Intent intent = new Intent(OtpAuthenticationActivity.this, OtpAuthenSuccessActivity.class);
+                    startActivity(intent);
+                } else {
+                    ToastUtil.showCustomToast(OtpAuthenticationActivity.this, "Invalid OTP!", R.drawable.warning_toast);
+                }
             }
         });
     }
