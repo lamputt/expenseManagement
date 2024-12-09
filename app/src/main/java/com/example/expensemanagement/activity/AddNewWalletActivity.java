@@ -135,14 +135,13 @@ public class AddNewWalletActivity extends AppCompatActivity {
         });
 
         // Xử lý việc lấy chọn ngân hàng
-//        selectBankAccount = findViewById(R.id.edtSelectCash);
-//        selectBankAccount.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Toast.makeText(AddNewWalletActivity.this, "Expense click", Toast.LENGTH_SHORT).show();
-//                Showdialog();
-//            }
-//        });
+        selectBankAccount = findViewById(R.id.edtSelectCash);
+        selectBankAccount.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Showdialog();
+            }
+        });
 
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.AddNewWalletActivity), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());

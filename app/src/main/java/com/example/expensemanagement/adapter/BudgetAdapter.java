@@ -44,7 +44,7 @@ public class BudgetAdapter extends RecyclerView.Adapter<BudgetAdapter.BudgetView
     @Override
     public void onBindViewHolder(@NonNull BudgetViewHolder holder, int position) {
         Budget budget = budgetList.get(position);
-
+        List <String> categoryNameNotification;
         // Định dạng số tiền
         DecimalFormat decimalFormat = new DecimalFormat("###,###");
         String formattedTotalBudget = decimalFormat.format(budget.getAmount());

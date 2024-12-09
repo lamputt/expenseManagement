@@ -9,7 +9,6 @@ import android.util.Log;
 
 import com.example.expensemanagement.Model.ItemDateTransaction;
 import com.example.expensemanagement.sqlite_database.DatabaseHelper;
-import com.example.expensemanagement.sqlite_database.entities.Bank;
 import com.example.expensemanagement.sqlite_database.entities.Category;
 import com.example.expensemanagement.sqlite_database.entities.Transaction;
 
@@ -315,7 +314,6 @@ public class TransactionDAO {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
         SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
         int userId = sharedPreferences.getInt("user_id", -1);
-
         String query = "SELECT category_id, amount AS total " +
                 "FROM Transactions " +
                 "WHERE user_id = ? " +
@@ -334,10 +332,5 @@ public class TransactionDAO {
         db.close();
         return total;
     }
-
-
-
-
-
 
 }
