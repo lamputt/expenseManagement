@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
+    android:layout_marginTop="20dp"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -80,11 +81,23 @@
     </LinearLayout>
 
     <FrameLayout
-        android:layout_marginTop="10dp"
+        android:id="@+id/border_container"
         android:layout_width="match_parent"
         android:layout_height="15dp"
-        android:background="@drawable/border_toolbar_budget"
-        >
+        android:layout_marginTop="10dp">
+
+        <!-- Background Layout -->
+        <FrameLayout
+            android:id="@+id/border_budget"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/border_toolbar_budget_empty" />
+        <!-- Dynamic Layout -->
+        <FrameLayout
+            android:id="@+id/border_budget1"
+            android:layout_width="380dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/border_toolbar_budget" />
     </FrameLayout>
 
     <!-- Spending details -->

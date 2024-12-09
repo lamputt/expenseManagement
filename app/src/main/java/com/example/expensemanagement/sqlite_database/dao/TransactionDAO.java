@@ -5,10 +5,10 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import com.example.expensemanagement.Model.ItemDateTransaction;
 import com.example.expensemanagement.sqlite_database.DatabaseHelper;
-import com.example.expensemanagement.sqlite_database.entities.Bank;
 import com.example.expensemanagement.sqlite_database.entities.Category;
 import com.example.expensemanagement.sqlite_database.entities.Transaction;
 
@@ -27,8 +27,10 @@ public class TransactionDAO {
     // Thêm Transaction vào database
     public long addTransaction(Transaction transaction) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("user_id", -1);
         ContentValues values = new ContentValues();
-        values.put("user_id", transaction.getUserId());
+        values.put("user_id", userId);
         values.put("type", transaction.getType());
         values.put("category_id", transaction.getCategoryId());
         values.put("bank_id", transaction.getBankId());
@@ -44,6 +46,7 @@ public class TransactionDAO {
     public List<Transaction> getAllTransactions() {
         SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
         int userId = sharedPreferences.getInt("user_id", -1);
+
         List<Transaction> transactionList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
@@ -56,7 +59,8 @@ public class TransactionDAO {
                 " FROM transactions " +
                 "JOIN categories " +
                 "ON transactions.category_id = categories.id " +
-                "WHERE transactions.user_id = ?";
+                "WHERE transactions.user_id = ?" +
+                "ORDER BY transactions.date ASC";
 
         // Thực hiện truy vấn
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
@@ -114,8 +118,9 @@ public class TransactionDAO {
 
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT SUM(amount) AS total_expense FROM transactions WHERE type = ? AND transactions.user_id = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{"expense",String.valueOf(userId)});
+        String query = "SELECT SUM(amount) AS total_expense FROM transactions" +
+                " WHERE type = ? AND transactions.user_id = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{"expense", String.valueOf(userId)});
 
         if (cursor.moveToFirst()) {
             totalExpense = cursor.getDouble(cursor.getColumnIndexOrThrow("total_expense"));
@@ -135,7 +140,7 @@ public class TransactionDAO {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         String query = "SELECT SUM(amount) AS total_income FROM transactions WHERE type = ? AND transactions.user_id = ?";
-        Cursor cursor = db.rawQuery(query, new String[]{"income",String.valueOf(userId)});
+        Cursor cursor = db.rawQuery(query, new String[]{"income", String.valueOf(userId)});
 
         if (cursor.moveToFirst()) {
             totalExpense = cursor.getDouble(cursor.getColumnIndexOrThrow("total_income"));
@@ -147,35 +152,51 @@ public class TransactionDAO {
         return totalExpense;
     }
 
-    public List<ItemDateTransaction> getDataByDate(String type) {
+    public List<ItemDateTransaction> getDataByDate(String type, boolean year) {
         List<ItemDateTransaction> data = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
         int userId = sharedPreferences.getInt("user_id", -1);
 
-        // Query để lấy tổng tiền theo tháng
-        String query = "SELECT strftime('%Y-%m', date) AS month, SUM(amount) AS total_amount " +
+        // Xây dựng câu lệnh SQL dựa trên giá trị của tham số `year`
+        String groupBy;
+        String labelColumn;
+        if (year) {
+            groupBy = "strftime('%Y', date)"; // Nhóm theo năm
+            labelColumn = "year";             // Cột trả về là năm
+        } else {
+            groupBy = "strftime('%Y-%m', date)"; // Nhóm theo tháng
+            labelColumn = "month";               // Cột trả về là tháng
+        }
+
+        // Query để lấy tổng tiền theo tháng hoặc năm
+        String query = "SELECT " + groupBy + " AS " + labelColumn + ", SUM(amount) AS total_amount " +
                 "FROM transactions " +
-                "WHERE transactions.user_id = ?" +
+                "WHERE transactions.user_id = ? " +
                 "AND transactions.type = ? " +
-                "GROUP BY strftime('%Y-%m', date);";
+                "GROUP BY " + groupBy + ";";
 
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId), type});
 
         // Duyệt qua các kết quả và ánh xạ vào danh sách
         if (cursor.moveToFirst()) {
             do {
-                // Lấy tháng dưới dạng "yyyy-MM" (ví dụ "2024-11")
-                String month = cursor.getString(cursor.getColumnIndexOrThrow("month"));
+                // Lấy giá trị tháng hoặc năm
+                String timeLabel = cursor.getString(cursor.getColumnIndexOrThrow(labelColumn));
                 // Lấy tổng số tiền
-                String totalAmount = String.valueOf(cursor.getDouble(cursor.getColumnIndexOrThrow("total_amount")));
+                Double totalAmount =cursor.getDouble(cursor.getColumnIndexOrThrow("total_amount"));
 
-                // Chuyển đổi tháng từ dạng "yyyy-MM" thành dạng chữ (ví dụ "November 2024")
-                String monthText = convertMonthNumberToText(month);
+                // Nếu là tháng, chuyển đổi từ "yyyy-MM" thành dạng chữ, ngược lại giữ nguyên
+                String displayText;
+                if (year) {
+                    displayText = timeLabel; // Hiển thị năm trực tiếp (ví dụ: "2024")
+                } else {
+                    displayText = convertMonthNumberToText(timeLabel); // Hiển thị tháng dạng chữ (ví dụ: "November 2024")
+                }
 
                 // Tạo một đối tượng ItemDateTransaction và thêm vào danh sách
-                ItemDateTransaction item = new ItemDateTransaction(monthText, totalAmount);
+                ItemDateTransaction item = new ItemDateTransaction(displayText, totalAmount , type);
                 data.add(item);
             } while (cursor.moveToNext());
         }
@@ -186,7 +207,7 @@ public class TransactionDAO {
         return data;
     }
 
-    // Phương thức chuyển đổi tháng từ dạng "yyyy-MM" thành dạng chữ
+
     public String convertMonthNumberToText(String monthYear) {
         // Mảng chứa tên các tháng
         String[] months = {
@@ -194,11 +215,23 @@ public class TransactionDAO {
                 "July", "August", "September", "October", "November", "December"
         };
 
-        // Tách tháng và năm từ chuỗi "yyyy-MM"
-        String[] parts = monthYear.split("-");
-        int monthNumber = Integer.parseInt(parts[1]) - 1;  // Tháng bắt đầu từ 0, vì vậy phải trừ đi 1
+        // Kiểm tra đầu vào null hoặc không hợp lệ
+        if (monthYear == null || !monthYear.matches("\\d{4}-\\d{2}")) {
+            Log.e("TransactionDAO", "Dữ liệu monthYear không hợp lệ: " + monthYear);
+            return "Invalid date"; // Hoặc giá trị mặc định khác
+        }
 
-        return months[monthNumber];  // Ví dụ "November 2024"
+        try {
+            // Tách tháng và năm từ chuỗi "yyyy-MM"
+            String[] parts = monthYear.split("-");
+            int monthNumber = Integer.parseInt(parts[1]) - 1; // Tháng bắt đầu từ 0
+
+            return months[monthNumber]; // Ví dụ "November 2024"
+        } catch (NumberFormatException | ArrayIndexOutOfBoundsException e) {
+            // Xử lý lỗi khi dữ liệu không hợp lệ
+            Log.e("TransactionDAO", "Lỗi khi xử lý monthYear: " + monthYear, e);
+            return "Invalid date";
+        }
     }
 
 
@@ -206,7 +239,7 @@ public class TransactionDAO {
         List<Transaction> transactionList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT t.*, c.name AS categoryName " +
+        String query = "SELECT t.*, c.name AS categoryName, c.description AS category_description " +
                 "FROM Transactions t " +
                 "JOIN Categories c ON t.category_id = c.id " +
                 "WHERE t.bank_id = ?";
@@ -216,7 +249,7 @@ public class TransactionDAO {
             do {
                 Category category = new Category(
                         cursor.getLong(cursor.getColumnIndexOrThrow("category_id")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("categoryName")),
                         cursor.getString(cursor.getColumnIndexOrThrow("category_description"))
                 );
 
@@ -243,7 +276,7 @@ public class TransactionDAO {
         List<Transaction> transactionList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        String query = "SELECT t.*, c.name AS categoryName " +
+        String query = "SELECT t.*, c.name AS categoryName , c.description AS category_description " +
                 "FROM Transactions t " +
                 "JOIN Categories c ON t.category_id = c.id " +
                 "WHERE t.category_id = ? AND t.type = 'expense'";
@@ -253,7 +286,7 @@ public class TransactionDAO {
             do {
                 Category category = new Category(
                         cursor.getLong(cursor.getColumnIndexOrThrow("category_id")),
-                        cursor.getString(cursor.getColumnIndexOrThrow("name")),
+                        cursor.getString(cursor.getColumnIndexOrThrow("categoryName")),
                         cursor.getString(cursor.getColumnIndexOrThrow("category_description"))
                 );
 
@@ -279,22 +312,25 @@ public class TransactionDAO {
     public double getTotalExpenseByCategory(long categoryId, String dateStart, String dateEnd) {
         double total = 0;
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-
-        String query = "SELECT SUM(amount) AS total FROM Transactions " +
-                "WHERE category_id = ? AND type = 'expense' AND date BETWEEN ? AND ?";
-        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(categoryId), dateStart, dateEnd});
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("user_id", -1);
+        String query = "SELECT category_id, amount AS total " +
+                "FROM Transactions " +
+                "WHERE user_id = ? " +
+                "AND category_id = ? " +
+                "AND type = 'expense' " +
+                "AND date BETWEEN ? AND ?";
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId), String.valueOf(categoryId), dateStart, dateEnd});
 
         if (cursor.moveToFirst()) {
-            total = cursor.getDouble(cursor.getColumnIndexOrThrow("total"));
+            do {
+                total += cursor.getDouble(cursor.getColumnIndexOrThrow("total"));
+                int categoryIdIndex = cursor.getInt(cursor.getColumnIndexOrThrow("category_id"));
+            } while (cursor.moveToNext());
         }
         cursor.close();
         db.close();
         return total;
     }
-
-
-
-
-
 
 }

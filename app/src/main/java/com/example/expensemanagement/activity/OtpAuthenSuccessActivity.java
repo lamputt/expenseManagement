@@ -26,13 +26,10 @@ public class OtpAuthenSuccessActivity extends AppCompatActivity {
         buttonStart = findViewById(R.id.btnStart);
 
         // Thiết lập sự kiện OnClickListener
-        buttonStart.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                // Chuyển đến màn MainActivity
-                Intent intent = new Intent(OtpAuthenSuccessActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+        buttonStart.setOnClickListener(v -> {
+            // Chuyển đến màn MainActivity
+            Intent intent = new Intent(OtpAuthenSuccessActivity.this, SignInActivity.class);
+            startActivity(intent);
         });
     }
 

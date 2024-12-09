@@ -2,6 +2,7 @@ package com.example.expensemanagement.fragments;
 
 import static android.app.Activity.RESULT_OK;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -9,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
@@ -50,7 +50,6 @@ public class BudgetFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_budget, container, false);
 
         // Khởi tạo các đối tượng DAO
@@ -69,7 +68,7 @@ public class BudgetFragment extends Fragment {
         });
 
         // Hiển thị ngày hiện tại trong format "MM/yyyy"
-        SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("MM/yyyy");
         String currentDate = sdf.format(Calendar.getInstance().getTime());
         tvDataBudget = view.findViewById(R.id.tvDateBudget);
         tvDataBudget.setText(currentDate);
@@ -98,5 +97,12 @@ public class BudgetFragment extends Fragment {
             adapter = new BudgetAdapter(budgetList, transactionDAO, requireContext());
             recyclerView.setAdapter(adapter);
         }
+    }
+
+    // Load lại dữ liệu của trang khi quay lại
+    @Override
+    public void onResume() {
+        super.onResume();
+        loadBudgets();
     }
 }

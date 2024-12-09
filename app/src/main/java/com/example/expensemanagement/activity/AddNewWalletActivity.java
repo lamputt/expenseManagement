@@ -25,6 +25,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.expensemanagement.R;
 import com.example.expensemanagement.sqlite_database.dao.BankDAO;
+import com.example.expensemanagement.utils.ToastUtil;
 
 import java.text.DecimalFormat;
 
@@ -65,7 +66,7 @@ public class AddNewWalletActivity extends AppCompatActivity {
                     String cleanString = s.toString().replaceAll("[^0-9]", "");
 
                     if (cleanString.length() > 9) {
-                        Toast.makeText(AddNewWalletActivity.this, "Do not enter more than 9 digits", Toast.LENGTH_SHORT).show();
+                        ToastUtil.showCustomToast(AddNewWalletActivity.this, "Do not enter more than 9 digits", R.drawable.warning_toast);
                         cleanString = cleanString.substring(0, 9);
                     }
 
@@ -91,17 +92,23 @@ public class AddNewWalletActivity extends AppCompatActivity {
 //                bankDAO.resetDataInBanks();
                 String bankName = selectBankAccount.getText().toString().trim();
                 String accountNum = accountNumber.getText().toString().trim();
-                String amount = etAmount.getText().toString().replaceAll("[^0-9]", "");
-                amount = amount.replace("," , "");
+                String amount;
+                if(!etAmount.getText().toString().trim().isEmpty()){
+                    amount = etAmount.getText().toString().replaceAll("[^0-9]", "");
+                    amount = amount.replace("," , "");
+                }else {
+                    amount = "0.0";
+                }
+
                 totalAmount = Double.parseDouble(amount);
 
                 if (bankName.isEmpty() || accountNum.isEmpty() || amount.isEmpty()) {
-                    Toast.makeText(AddNewWalletActivity.this, "Please fill in all information", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(AddNewWalletActivity.this, "Please fill in all information", R.drawable.warning_toast);
                     return;
                 }
 
                 if (bankDAO.isBankExist(bankName)) {
-                    Toast.makeText(AddNewWalletActivity.this, "Bank already exists. Please choose another bank.", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(AddNewWalletActivity.this, "Bank already exists. Please choose another bank.", R.drawable.warning_toast);
                     return;
                 }
                 else {
@@ -111,10 +118,10 @@ public class AddNewWalletActivity extends AppCompatActivity {
 
                 long result = bankDAO.addBank(bankName, accountNum, totalAmount);
                 if (result != -1) {
-                    Toast.makeText(AddNewWalletActivity.this, "Add bank successfully", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(AddNewWalletActivity.this, "Add bank successfully", R.drawable.success_toast);
                     finish();
                 } else {
-                    Toast.makeText(AddNewWalletActivity.this, "Failed to save data!", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(AddNewWalletActivity.this, "Failed to save data!", R.drawable.warning_toast);
                 }
             }
         });
@@ -132,7 +139,6 @@ public class AddNewWalletActivity extends AppCompatActivity {
         selectBankAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(AddNewWalletActivity.this, "Expense click", Toast.LENGTH_SHORT).show();
                 Showdialog();
             }
         });

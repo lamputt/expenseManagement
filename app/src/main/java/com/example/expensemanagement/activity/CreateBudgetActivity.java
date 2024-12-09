@@ -29,6 +29,7 @@ import com.example.expensemanagement.adapter.ItemSelectCategoryTransactionAdapte
 import com.example.expensemanagement.sqlite_database.dao.BudgetDAO;
 import com.example.expensemanagement.sqlite_database.dao.CategoryDAO;
 import com.example.expensemanagement.sqlite_database.entities.Category;
+import com.example.expensemanagement.utils.ToastUtil;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -41,7 +42,6 @@ public class CreateBudgetActivity extends AppCompatActivity {
     private EditText etAmount , selectCategory;
     private long selectedCategoryId = -1 ;
     private String totalAmount;
-    private long idUser = 1 ;
     private Double amount;
     private BudgetDAO budgetDAO;
 
@@ -83,7 +83,7 @@ public class CreateBudgetActivity extends AppCompatActivity {
                     String cleanString = s.toString().replaceAll("[^0-9]", "");
 
                     if (cleanString.length() > 9) {
-                        Toast.makeText(CreateBudgetActivity.this, "Do not enter more than 9 digits", Toast.LENGTH_SHORT).show();
+                        ToastUtil.showCustomToast(CreateBudgetActivity.this, "Do not enter more than 9 digits", R.drawable.warning_toast);
                         cleanString = cleanString.substring(0, 9);
                     }
 
@@ -106,29 +106,29 @@ public class CreateBudgetActivity extends AppCompatActivity {
             amount = Double.parseDouble(totalAmount);
 
             if (totalAmount.isEmpty() || selectedCategoryId == -1) {
-                Toast.makeText(CreateBudgetActivity.this, "Please fill in all information", Toast.LENGTH_SHORT).show();
+                ToastUtil.showCustomToast(CreateBudgetActivity.this, "Please fill in all information", R.drawable.warning_toast);
                 return;
             } else {
                 if (budgetDAO.isCategoryExist(selectedCategoryId)) {
-                    Toast.makeText(CreateBudgetActivity.this, "This category has already been added", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(CreateBudgetActivity.this, "This category has already been added", R.drawable.warning_toast);
                     return;
                 }
 
                 Calendar calendar = Calendar.getInstance();
-                String startDate = new SimpleDateFormat("dd-MM-yyyy").format(calendar.getTime());
+                String startDate = new SimpleDateFormat("yyy-MM-dd").format(calendar.getTime());
 
                 calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH));
-                String endDate = new SimpleDateFormat("dd-MM-yyyy").format(calendar.getTime());
+                String endDate = new SimpleDateFormat("yyy-MM-dd").format(calendar.getTime());
 
-                long result = budgetDAO.addBudget(selectedCategoryId, idUser, amount, startDate, endDate);
+                long result = budgetDAO.addBudget(selectedCategoryId, amount, startDate, endDate);
                 if (result != -1) {
-                    Toast.makeText(CreateBudgetActivity.this, "Add Transaction successfully", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(CreateBudgetActivity.this, "Add Transaction successfully", R.drawable.success_toast);
 
                     Intent intent = new Intent();
                     setResult(RESULT_OK, intent);  // Trả kết quả về BudgetFragment
                     finish(); // Quay lại màn hình BudgetFragment
                 } else {
-                    Toast.makeText(CreateBudgetActivity.this, "Failed to save data!", Toast.LENGTH_SHORT).show();
+                    ToastUtil.showCustomToast(CreateBudgetActivity.this, "Failed to save data!", R.drawable.warning_toast);
                 }
             }
         });

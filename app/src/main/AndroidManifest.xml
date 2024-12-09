@@ -3,7 +3,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Khai báo quyền -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
     <application
+        android:usesCleartextTraffic="true"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:fullBackupContent="@xml/backup_rules"
@@ -42,9 +48,9 @@
         <activity
             android:name=".activity.FinancialReportActivity"
             android:exported="false" />
-        <activity
-            android:name=".activity.TransferActivity"
-            android:exported="false" />
+<!--        <activity-->
+<!--            android:name=".activity.TransferActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".activity.IncomeActivity"
             android:exported="false" />
@@ -57,12 +63,16 @@
         <activity
             android:name=".activity.ProfileAccountActivity"
             android:exported="false" />
-        <activity
-            android:name=".profile_account"
-            android:exported="false" />
-        <activity
-            android:name=".SsssActivity"
-            android:exported="false" />
+        <activity android:name=".activity.ExportDataActivity">
+            <!-- Các thông tin cấu hình khác nếu cần -->
+        </activity>
+
+        <!--        <activity-->
+<!--            android:name=".profile_account"-->
+<!--            android:exported="false" />-->
+<!--        <activity-->
+<!--            android:name=".SsssActivity"-->
+<!--            android:exported="false" />-->
         <activity
             android:name=".activity.OtpAuthenSuccessActivity"
             android:exported="false" />

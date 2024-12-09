@@ -12,6 +12,9 @@ import android.widget.TextView;
 import com.example.expensemanagement.R;
 import com.example.expensemanagement.sqlite_database.dao.TransactionDAO;
 
+import java.text.DecimalFormat;
+import java.util.Formatter;
+
 /**
  * A simple {@link Fragment} subclass.
  * Use the {@link TotalExpenseFragment#newInstance} factory method to
@@ -69,8 +72,11 @@ public class TotalExpenseFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_total_expense, container, false);
         // thay đổi totalExpense
         double totalExpense = transactionDAO.getTotalExpense();
+        DecimalFormat formatter = new DecimalFormat("###,###");
+        String formattedPrice = formatter.format(totalExpense);
         TextView tvTotalExpense = view.findViewById(R.id.tvSumAmount);
-        tvTotalExpense.setText(String.valueOf(totalExpense));
+
+        tvTotalExpense.setText(formattedPrice);
 
         // Inflate the layout for this fragment
         return view;

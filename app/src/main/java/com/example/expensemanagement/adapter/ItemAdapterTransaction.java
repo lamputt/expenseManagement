@@ -32,7 +32,7 @@ public class ItemAdapterTransaction extends RecyclerView.Adapter<ItemAdapterTran
                     transaction.getCategory().getName(),
                     transaction.getType(),
                     transaction.getDescription(),
-                    String.valueOf(transaction.getAmount()),
+                    transaction.getAmount(),
                     transaction.getDate()
             );
             itemListTransaction.add(itemTransaction);
@@ -51,7 +51,7 @@ public class ItemAdapterTransaction extends RecyclerView.Adapter<ItemAdapterTran
     public void onBindViewHolder(@NonNull ItemViewHolder holder, int position) {
         ItemTransaction transaction = itemListTransaction.get(position);
         DecimalFormat formatter = new DecimalFormat("###,###");
-        String formattedTotalSpent = transaction.getPrice();
+        String formattedTotalSpent = formatter.format(transaction.getPrice()) ;
 
         // Hiển thị thông tin
         holder.tvCategory.setText(transaction.getCategory());
@@ -99,7 +99,7 @@ public class ItemAdapterTransaction extends RecyclerView.Adapter<ItemAdapterTran
                     transaction.getCategory().getName(),
                     transaction.getType(),
                     transaction.getDescription(),
-                    String.valueOf(transaction.getAmount()),
+                    transaction.getAmount(),
                     transaction.getDate()
             );
             itemListTransaction.add(itemTransaction);

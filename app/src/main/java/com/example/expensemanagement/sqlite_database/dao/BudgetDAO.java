@@ -2,6 +2,7 @@ package com.example.expensemanagement.sqlite_database.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -13,14 +14,18 @@ import java.util.List;
 
 public class BudgetDAO {
     private DatabaseHelper dbHelper;
+    private Context context;
 
     public BudgetDAO(Context context) {
         dbHelper = new DatabaseHelper(context);
+        this.context = context;
     }
 
     // Thêm Budget vào database
-    public long addBudget(long Category_id , long user_id , double amount , String dateStart , String dateEnd ) {
+    public long addBudget(long Category_id , double amount , String dateStart , String dateEnd ) {
         SQLiteDatabase db = dbHelper.getWritableDatabase();
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        int user_id = sharedPreferences.getInt("user_id", -1);
         ContentValues values = new ContentValues();
         values.put("category_id", Category_id);
         values.put("user_id", user_id);
@@ -37,7 +42,15 @@ public class BudgetDAO {
     public List<Budget> getAllBudgets() {
         List<Budget> budgetList = new ArrayList<>();
         SQLiteDatabase db = dbHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery("SELECT * FROM budgets", null);
+        SharedPreferences sharedPreferences = context.getSharedPreferences("MyAppPrefs", Context.MODE_PRIVATE);
+        int userId = sharedPreferences.getInt("user_id", -1);
+        String query = "SELECT id, category_id, user_id, amount, date_start, date_end, status FROM budgets " +
+                "WHERE user_id = ? " +
+                "AND strftime('%Y-%m', date_start) <= strftime('%Y-%m', 'now') " +
+                "AND strftime('%Y-%m', date_end) >= strftime('%Y-%m', 'now') " +
+                "ORDER BY date_start ASC";
+         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(userId)});
+
         if (cursor.moveToFirst()) {
             do {
                 Budget budget = new Budget(
