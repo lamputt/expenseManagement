@@ -136,7 +136,7 @@
             DecimalFormat formatter = new DecimalFormat("###,###");
             String formattedTotalIncome = formatter.format(totalIncome);
             String formattedTotalExpense = formatter.format(totalExpense);
-            String formattedTotalSpent = formatter.format(totalMoneyofBank + totalIncome - totalExpense);
+            String formattedTotalSpent = formatter.format(totalMoneyofBank);
             totalIncomeTextView.setText(formattedTotalIncome);
             totalExpenseTextView.setText(formattedTotalExpense);
             tvSumAmount.setText(formattedTotalSpent);

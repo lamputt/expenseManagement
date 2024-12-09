@@ -9,9 +9,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.expensemanagement.sqlite_database.DatabaseHelper;
+import com.example.expensemanagement.sqlite_database.controller.AccountController;
 import com.example.expensemanagement.sqlite_database.controller.AuthenticationController;
 import com.example.expensemanagement.sqlite_database.controller.OtpController;
 import com.example.expensemanagement.sqlite_database.dto.request.RegisterRequest;
+import com.example.expensemanagement.sqlite_database.dto.request.UpdateAccountRequest;
 import com.example.expensemanagement.sqlite_database.entities.User;
 
 import java.util.ArrayList;
@@ -22,12 +24,14 @@ public class UserDAO {
     private final Context context;
     private final AuthenticationController authenticationController;
     private final OtpController otpController;
+    private final AccountController accountController;
 
     public UserDAO(Context context) {
         this.context = context;
         dbHelper = new DatabaseHelper(context);
         authenticationController = new AuthenticationController(context);
         otpController = new OtpController(context);
+        accountController = new AccountController(context);
     }
 
     // Thêm User vào database
@@ -142,6 +146,8 @@ public class UserDAO {
         ContentValues values = new ContentValues();
         values.put("password", newPassword);
         int rowsAffected = db.update("users", values, "id = ?", new String[]{String.valueOf(userId)});
+
+        accountController.updateAccount(new UpdateAccountRequest(newPassword));
         db.close();
         return rowsAffected;
     }
@@ -168,5 +174,21 @@ public class UserDAO {
         SharedPreferences sharedPreferences = context.getSharedPreferences("OtpPrefs", MODE_PRIVATE);
         String serverOtp = sharedPreferences.getString("otp", null);
         return serverOtp != null && serverOtp.equals(otp);
+    }
+
+    public void forgotPassword(String email) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+        String query = "SELECT * FROM users WHERE email = ?";
+        Cursor cursor = db.rawQuery(query, new String[]{email});
+
+        boolean exists = cursor.moveToFirst();
+        if (exists) {
+            otpController.sendOtp(email);
+        } else {
+            return;
+        }
+        cursor.close();
+        db.close();
+
     }
 }
